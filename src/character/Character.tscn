@@ -1,19 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://resources/materials/dark_07.tres" type="Material" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
 height = 1.5
 
-[sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.145098, 0.913725, 0.0588235, 1 )
-albedo_texture = ExtResource( 2 )
-uv1_scale = Vector3( 10, 10, 1 )
-
 [sub_resource type="CapsuleMesh" id=2]
-material = SubResource( 3 )
+material = ExtResource( 2 )
 radius = 0.5
 mid_height = 1.5
 
