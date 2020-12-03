@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/impactPunch_medium_001.ogg-d14eaff2f16b0ca0697bc3c6dd625428.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/impact/impactPunch_medium_001.ogg"
+dest_files=[ "res://.import/impactPunch_medium_001.ogg-d14eaff2f16b0ca0697bc3c6dd625428.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

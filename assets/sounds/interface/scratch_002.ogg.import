@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/scratch_002.ogg-ce1e866eba2bfc1ddd6aca9b84eafe6e.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/interface/scratch_002.ogg"
+dest_files=[ "res://.import/scratch_002.ogg-ce1e866eba2bfc1ddd6aca9b84eafe6e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
