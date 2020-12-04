@@ -2,6 +2,7 @@ extends KinematicBody
 
 
 var health = 100
+var target = Vector3()
 
 onready var anim = $Ybot/AnimationPlayer
 
@@ -12,10 +13,14 @@ func _ready():
 
 func _physics_process(_delta):
 	if get_parent().get_node("Character"):
-		look_at(get_parent().get_node("Character").global_transform.origin, Vector3.UP)
+		target.x = get_parent().get_node("Character").global_transform.origin.x
+		target.y = self.transform.origin.y
+		target.z = get_parent().get_node("Character").global_transform.origin.z
+		look_at(target, Vector3.UP)
 
 
 func hit(amount):
+	$AudioStreamPlayer3D.play()
 	health -= amount
 	health = max(health, 0)
 	if health == 0:

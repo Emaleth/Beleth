@@ -11,5 +11,5 @@ dest_files=[ "res://.import/footstep_concrete_004.ogg-925a605166ee9e9df4e017e240
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

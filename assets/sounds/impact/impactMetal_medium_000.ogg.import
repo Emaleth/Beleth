@@ -11,5 +11,5 @@ dest_files=[ "res://.import/impactMetal_medium_000.ogg-d8fc57be474008555c1649366
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

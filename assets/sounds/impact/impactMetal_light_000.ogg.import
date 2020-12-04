@@ -11,5 +11,5 @@ dest_files=[ "res://.import/impactMetal_light_000.ogg-aa40d7f9e30100cceaa16a7a36
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

@@ -1,14 +1,14 @@
 extends KinematicBody
 
+
 var speed = 7
 var jump = 8
 var gravity = 20
 var acceleration = 6
 var air_acceleration = 1
 var ground_acceleration = 6
-var mouse_sensitivity = 0.3
+var mouse_sensitivity = 0.2
 var maxdeg_camera_rotation = 80
-
 
 var full_contact = false
 
@@ -18,8 +18,10 @@ var linear_velocity = Vector3()
 var gravity_vec = Vector3()
 
 onready var head = $Head
+onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var anim = $Ybot/AnimationPlayer
+onready var camera = $Head/Camera
 
 
 func _ready():
@@ -32,7 +34,8 @@ func _physics_process(delta):
 	get_direction()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
-	
+	$Head/Camera/Hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+	$Head/Camera/Hand/Weapon.aim(camera_ray.get_collision_point())
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
 
@@ -49,6 +52,7 @@ func _input(event):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		elif Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 		
 func get_direction():
 	direction = Vector3()
@@ -83,3 +87,4 @@ func calculate_velocity(delta):
 	velocity.z = linear_velocity.z + gravity_vec.z
 	velocity.x = linear_velocity.x + gravity_vec.x
 	velocity.y = gravity_vec.y
+

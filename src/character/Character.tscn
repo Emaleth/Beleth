@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/Ybot.gltf" type="PackedScene" id=2]
 [ext_resource path="res://resources/materials/green_grid_small.tres" type="Material" id=3]
+[ext_resource path="res://src/weapon/Weapon.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/crosshairs/crosshair010.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Idle"
@@ -1509,6 +1511,36 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67179, -0.0183551 )
 
 [node name="Camera" type="Camera" parent="Head"]
 current = true
+
+[node name="CameraRay" type="RayCast" parent="Head/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -200 )
+collision_mask = 3
+
+[node name="Hand" type="Spatial" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.216, -0.2 )
+
+[node name="Weapon" parent="Head/Camera/Hand" instance=ExtResource( 4 )]
+
+[node name="Hud" type="CanvasLayer" parent="Head/Camera"]
+
+[node name="TextureRect" type="TextureRect" parent="Head/Camera/Hud"]
+modulate = Color( 0.0666667, 0.92549, 0.0627451, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_scale = Vector2( 0.1, 0.1 )
+rect_pivot_offset = Vector2( 64, 64 )
+texture = ExtResource( 5 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GroundCheck" type="RayCast" parent="."]
 enabled = true

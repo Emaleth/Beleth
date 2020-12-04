@@ -11,5 +11,5 @@ dest_files=[ "res://.import/impactMining_001.ogg-48015c2a43ed110a2222f5ad79c76a9
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
