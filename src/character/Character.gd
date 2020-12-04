@@ -19,10 +19,12 @@ var gravity_vec = Vector3()
 
 onready var head = $Head
 onready var ground_check = $GroundCheck
+onready var anim = $Ybot/AnimationPlayer
 
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	anim.play("Breathing Idle-loop")
 	
 
 func _physics_process(delta):

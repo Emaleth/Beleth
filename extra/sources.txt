@@ -1,3 +1,0 @@
-skyboxes : https://opengameart.org/content/space-skyboxes-0
-actor and animations : mixamo.com
-weapon models : KenneyNL

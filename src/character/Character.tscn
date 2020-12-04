@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/Ybot.gltf" type="PackedScene" id=2]
-[ext_resource path="res://resources/materials/dark_01.tres" type="Material" id=3]
-[ext_resource path="res://default_env.tres" type="Environment" id=4]
+[ext_resource path="res://resources/materials/green_grid_small.tres" type="Material" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Idle"
@@ -1509,7 +1508,6 @@ shape = SubResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67179, -0.0183551 )
 
 [node name="Camera" type="Camera" parent="Head"]
-environment = ExtResource( 4 )
 current = true
 
 [node name="GroundCheck" type="RayCast" parent="."]
