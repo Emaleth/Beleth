@@ -3,12 +3,15 @@ extends Spatial
 var damage = 10
 enum {SEMI, AUTO, BURST}
 
+var fire_rate = .5
+
 onready var anim = $AnimationPlayer
 onready var bullet = $BulletRay
 var mode
 
 func _ready():
-	mode = BURST
+	anim.playback_speed = fire_rate
+	mode = AUTO
 	
 
 func _process(_delta):
@@ -21,8 +24,8 @@ func _process(_delta):
 				fire(1)
 		
 		BURST:
-			if Input.is_action_pressed("fire"):
-				fire(10)
+			if Input.is_action_just_pressed("fire"):
+				fire(3)
 		
 func fire(shot_num):
 	var i = 1
@@ -39,5 +42,3 @@ func fire(shot_num):
 			yield(anim,"animation_finished")
 			i += 1
 	
-func aim(pos):
-	bullet.cast_to = to_local(pos)

@@ -1,15 +1,18 @@
 extends KinematicBody
 
 
+var maxdeg_camera_rotation = 80
+var mouse_sensitivity = 0.2
+const GUN_SWAY = 30
+const ADS_GUN_SWAY = 30
+var ads_speed = 20
+
 var speed = 7
 var jump = 8
 var gravity = 20
 var acceleration = 6
 var air_acceleration = 1
 var ground_acceleration = 6
-var mouse_sensitivity = 0.2
-var maxdeg_camera_rotation = 80
-
 var full_contact = false
 
 var direction = Vector3()
@@ -22,11 +25,15 @@ onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var anim = $Ybot/AnimationPlayer
 onready var camera = $Head/Camera
+onready var hand = $Head/Camera/Hand
+onready var hand_lock = $Head/Camera/HandLock
+onready var ads_pos = $Head/Camera/Ads
 
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
+	hand.set_as_toplevel(true)
 	
 
 func _physics_process(delta):
@@ -34,8 +41,8 @@ func _physics_process(delta):
 	get_direction()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
-	$Head/Camera/Hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
-	$Head/Camera/Hand/Weapon.aim(camera_ray.get_collision_point())
+	aim(delta)
+	
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
 
@@ -88,3 +95,17 @@ func calculate_velocity(delta):
 	velocity.x = linear_velocity.x + gravity_vec.x
 	velocity.y = gravity_vec.y
 
+
+func aim(delta):
+	if Input.is_action_pressed("ads"):
+		hand.global_transform.origin = ads_pos.global_transform.origin
+#		hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
+		hand.rotation.y = lerp_angle(hand.rotation.y, rotation.y, ADS_GUN_SWAY * delta)
+		hand.rotation.x = lerp_angle(hand.rotation.x, head.rotation.x, ADS_GUN_SWAY * delta)
+		ads_pos.look_at(camera_ray.get_collision_point(), Vector3.UP)	
+	else:
+		hand.global_transform.origin = hand_lock.global_transform.origin
+#		hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hand_lock.global_transform.origin, ads_speed * delta)
+		hand.rotation.y = lerp_angle(hand.rotation.y, rotation.y, GUN_SWAY * delta)
+		hand.rotation.x = lerp_angle(hand.rotation.x, head.rotation.x, GUN_SWAY * delta)
+		hand_lock.look_at(camera_ray.get_collision_point(), Vector3.UP)
