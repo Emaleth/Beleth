@@ -1,14 +1,20 @@
 extends KinematicBody
 
+enum {HIPFIRE, ADS}
 
+var aim_mode
 var maxdeg_camera_rotation = 80
-var mouse_sensitivity = 0.2
-const GUN_SWAY = 30
-const ADS_GUN_SWAY = 30
+var mouse_sensitivity = 0
+var  GUN_SWAY = 30
+var MAX_CAMERA_SHAKE = 0.01
 var ads_speed = 20
+var hipfire_cam_fov = 70
+var ads_cam_fov = 40
+var hipfire_mouse_sensitivity = 0.2
+var ads_mouse_sensitivity = 0.1
 
 var speed = 7
-var jump = 8
+var jump = 9
 var gravity = 20
 var acceleration = 6
 var air_acceleration = 1
@@ -25,15 +31,16 @@ onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var anim = $Ybot/AnimationPlayer
 onready var camera = $Head/Camera
-onready var hand = $Head/Camera/Hand
-onready var hand_lock = $Head/Camera/HandLock
+onready var hand = $Hand
+onready var hipfire_pos = $Head/Camera/Hipfire
 onready var ads_pos = $Head/Camera/Ads
+onready var crosshair = $Head/Camera/Hud/Crosshair
 
 
 func _ready():
+	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
-	hand.set_as_toplevel(true)
 	
 
 func _physics_process(delta):
@@ -42,7 +49,8 @@ func _physics_process(delta):
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta)
-	
+	if not Input.is_action_just_pressed("fire"):
+		camera.translation = lerp(camera.translation, Vector3(0, 0, 0), 0.5)
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
 
@@ -59,6 +67,11 @@ func _input(event):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		elif Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
+	if Input.is_action_just_pressed("ads"):
+		aim_mode = ADS
+	if Input.is_action_just_released("ads"):
+		aim_mode = HIPFIRE
 		
 		
 func get_direction():
@@ -97,15 +110,24 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
-	if Input.is_action_pressed("ads"):
-		hand.global_transform.origin = ads_pos.global_transform.origin
-#		hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
-		hand.rotation.y = lerp_angle(hand.rotation.y, rotation.y, ADS_GUN_SWAY * delta)
-		hand.rotation.x = lerp_angle(hand.rotation.x, head.rotation.x, ADS_GUN_SWAY * delta)
-		ads_pos.look_at(camera_ray.get_collision_point(), Vector3.UP)	
-	else:
-		hand.global_transform.origin = hand_lock.global_transform.origin
-#		hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hand_lock.global_transform.origin, ads_speed * delta)
-		hand.rotation.y = lerp_angle(hand.rotation.y, rotation.y, GUN_SWAY * delta)
-		hand.rotation.x = lerp_angle(hand.rotation.x, head.rotation.x, GUN_SWAY * delta)
-		hand_lock.look_at(camera_ray.get_collision_point(), Vector3.UP)
+	"""
+	THIS HAS TO BE RE-DONE TO SEPARATE SWAY FROM ADS-IN, ADS-OUT
+	"""
+	match aim_mode:
+		HIPFIRE:
+			mouse_sensitivity = hipfire_mouse_sensitivity
+			crosshair.show()
+			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
+			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hipfire_pos.global_transform.origin, ads_speed * delta)
+			
+		ADS:
+			mouse_sensitivity = ads_mouse_sensitivity
+			crosshair.hide()
+			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
+			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
+		
+	hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+
+
+func camera_shake():
+	camera.translation = camera.translation + Vector3(rand_range(MAX_CAMERA_SHAKE, -MAX_CAMERA_SHAKE), rand_range(MAX_CAMERA_SHAKE, -MAX_CAMERA_SHAKE), 0)

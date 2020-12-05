@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/models/actors/Ybot.gltf" type="PackedScene" id=1]
 [ext_resource path="res://resources/materials/red_grid_small.tres" type="Material" id=2]
 [ext_resource path="res://src/dummy/Dummy.gd" type="Script" id=3]
-[ext_resource path="res://assets/sounds/impact/impactPunch_heavy_004.ogg" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.4
@@ -23,6 +22,5 @@ shape = SubResource( 1 )
 material_override = ExtResource( 2 )
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 4 )
 
 [editable path="Ybot"]
