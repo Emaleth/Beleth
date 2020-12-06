@@ -49,8 +49,7 @@ func _physics_process(delta):
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta)
-	if not Input.is_action_just_pressed("fire"):
-		camera.translation = lerp(camera.translation, Vector3(0, 0, 0), 0.5)
+
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
 
@@ -127,7 +126,3 @@ func aim(delta):
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
 		
 	hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
-
-
-func camera_shake():
-	camera.translation = camera.translation + Vector3(rand_range(MAX_CAMERA_SHAKE, -MAX_CAMERA_SHAKE), rand_range(MAX_CAMERA_SHAKE, -MAX_CAMERA_SHAKE), 0)

@@ -1,12 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/Ybot.gltf" type="PackedScene" id=2]
 [ext_resource path="res://resources/materials/green_grid_small.tres" type="Material" id=3]
-[ext_resource path="res://assets/models/weapons/416.gltf" type="PackedScene" id=4]
+[ext_resource path="res://src/weapons/BerettaM9/BerettaM9.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/crosshairs/ar.png" type="Texture" id=5]
-[ext_resource path="res://src/character/Weapon.gd" type="Script" id=6]
-[ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Idle"
@@ -1488,23 +1486,6 @@ tracks/51/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 1.13012e-15, 1, 1, 1, 1, 0.
 radius = 0.2
 height = 1.4
 
-[sub_resource type="Animation" id=6]
-resource_name = "shot"
-length = 0.1
-step = 0.01
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.04, 0.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.1 ), Vector3( 0, 0, 0 ) ]
-}
-
 [node name="Character" type="KinematicBody"]
 collision_layer = 2
 collision_mask = 3
@@ -1573,22 +1554,6 @@ cast_to = Vector3( 0, -0.1, 0 )
 [node name="Hand" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67179, -0.436962 )
 
-[node name="Weapon" type="Spatial" parent="Hand"]
-script = ExtResource( 6 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Hand/Weapon"]
-anims/shot = SubResource( 6 )
-
-[node name="BulletRay" type="RayCast" parent="Hand/Weapon"]
-enabled = true
-cast_to = Vector3( 0, 0, -1000 )
-collision_mask = 3
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Hand/Weapon"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0609479, -0.53035 )
-stream = ExtResource( 7 )
-
-[node name="416" parent="Hand/Weapon" instance=ExtResource( 4 )]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -2.599, -0.062, 0 )
+[node name="BerettaM9" parent="Hand" instance=ExtResource( 4 )]
 
 [editable path="Ybot"]
