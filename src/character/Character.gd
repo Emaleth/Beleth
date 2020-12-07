@@ -5,8 +5,7 @@ enum {HIPFIRE, ADS}
 var aim_mode
 var maxdeg_camera_rotation = 80
 var mouse_sensitivity = 0
-var  GUN_SWAY = 30
-var MAX_CAMERA_SHAKE = 0.01
+var gun_sway = 30
 var ads_speed = 20
 var hipfire_cam_fov = 70
 var ads_cam_fov = 40
@@ -34,14 +33,21 @@ onready var camera = $Head/Camera
 onready var hand = $Hand
 onready var hipfire_pos = $Head/Camera/Hipfire
 onready var ads_pos = $Head/Camera/Ads
-onready var crosshair = $Head/Camera/Hud/Crosshair
+onready var weapon 
+
+onready var pistol = preload("res://src/weapons/BerettaM9/BerettaM9.tscn")
+onready var smg = preload("res://src/weapons/416/416.tscn")
+onready var ar = preload("res://src/weapons/416/416.tscn")
+onready var sr = preload("res://src/weapons/m107/M107.tscn")
+
 
 
 func _ready():
+	get_weapon(pistol)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
-	
+
 
 func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
@@ -72,17 +78,13 @@ func _input(event):
 	if Input.is_action_just_released("ads"):
 		aim_mode = HIPFIRE
 		
-		
+	
 func get_direction():
 	direction = Vector3()
-	if Input.is_action_pressed("move_forward"):
-		direction -= transform.basis.z
-	elif Input.is_action_pressed("move_backward"):
-		direction += transform.basis.z
-	if Input.is_action_pressed("move_left"):
-		direction -= transform.basis.x
-	elif Input.is_action_pressed("move_right"):
-		direction += transform.basis.x
+	
+	direction += (Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) * transform.basis.z
+	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
+	
 	direction = direction.normalized()
 	
 	
@@ -109,20 +111,32 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
-	"""
-	THIS HAS TO BE RE-DONE TO SEPARATE SWAY FROM ADS-IN, ADS-OUT
-	"""
 	match aim_mode:
 		HIPFIRE:
 			mouse_sensitivity = hipfire_mouse_sensitivity
-			crosshair.show()
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hipfire_pos.global_transform.origin, ads_speed * delta)
 			
 		ADS:
 			mouse_sensitivity = ads_mouse_sensitivity
-			crosshair.hide()
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
 		
 	hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+	
+	hand.rotation_degrees.x = clamp(hand.rotation_degrees.x, -70, 70)
+	hand.rotation_degrees.y = clamp(hand.rotation_degrees.y, -70, 70)
+	
+	
+func recoil(force):
+	head.rotate_y(deg2rad(force.x))
+	head.rotate_x(deg2rad(force.y))
+	
+
+func get_weapon(wpn):
+	if hand.get_child_count() < 0:
+		hand.get_child(0).queue_free()
+	weapon = wpn.instance()
+	hand.add_child(weapon)
+	weapon.holder = self
+	ads_pos.transform.origin.y = weapon.sights_offset

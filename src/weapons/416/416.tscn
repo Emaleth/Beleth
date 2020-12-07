@@ -5,7 +5,11 @@
 [ext_resource path="res://src/weapons/416/416.gd" type="Script" id=3]
 
 [node name="416" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 3 )
 
+[node name="Muzzle" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.68 )
+
 [node name="Model" parent="." index="3" instance=ExtResource( 1 )]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.06, 0 )
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.15 )

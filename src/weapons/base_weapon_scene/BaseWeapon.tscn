@@ -17,10 +17,11 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.04, 0.1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.1 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.05 ), Vector3( 0, 0, 0 ) ]
 }
 
 [node name="BaseWeapon" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0935484 )
 script = ExtResource( 1 )
 
 [node name="BulletRay" type="RayCast" parent="."]
