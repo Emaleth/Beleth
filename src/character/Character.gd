@@ -36,7 +36,7 @@ onready var ads_pos = $Head/Camera/Ads
 onready var weapon 
 
 onready var pistol = preload("res://src/weapons/BerettaM9/BerettaM9.tscn")
-onready var smg = preload("res://src/weapons/416/416.tscn")
+onready var smg = preload("res://src/weapons/mp5/Mp5.tscn")
 onready var ar = preload("res://src/weapons/416/416.tscn")
 onready var sr = preload("res://src/weapons/m107/M107.tscn")
 
@@ -128,7 +128,7 @@ func aim(delta):
 	hand.rotation_degrees.y = clamp(hand.rotation_degrees.y, -70, 70)
 	
 	
-func recoil(force):
+func view_recoil(force):
 	head.rotate_y(deg2rad(force.x))
 	head.rotate_x(deg2rad(force.y))
 	
@@ -139,4 +139,4 @@ func get_weapon(wpn):
 	weapon = wpn.instance()
 	hand.add_child(weapon)
 	weapon.holder = self
-	ads_pos.transform.origin.y = weapon.sights_offset
+	ads_pos.transform.origin = -weapon.sights_offset

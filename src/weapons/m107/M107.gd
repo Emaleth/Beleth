@@ -8,5 +8,6 @@ func _ready():
 	default_mode = SEMI
 	clip_size = 70
 	recoil_force = Vector2(0.2, 2)
-	sights_offset = -0.085
+	v_spread = 0.1
+	h_spread = 0.1
 	load_data()

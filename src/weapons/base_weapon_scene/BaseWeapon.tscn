@@ -37,3 +37,5 @@ emission_angle_enabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/shot = SubResource( 1 )
+
+[node name="Sights" type="Position3D" parent="."]
