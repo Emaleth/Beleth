@@ -1510,6 +1510,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67179, -0.0183551 )
 
 [node name="Camera" type="Camera" parent="Head"]
 current = true
+near = 0.01
 
 [node name="CameraRay" type="RayCast" parent="Head/Camera"]
 enabled = true

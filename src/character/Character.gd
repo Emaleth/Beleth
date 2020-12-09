@@ -43,7 +43,7 @@ onready var sr = preload("res://src/weapons/m107/M107.tscn")
 
 
 func _ready():
-	get_weapon(pistol)
+	get_weapon(ar)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
@@ -139,4 +139,4 @@ func get_weapon(wpn):
 	weapon = wpn.instance()
 	hand.add_child(weapon)
 	weapon.holder = self
-	ads_pos.transform.origin = -weapon.sights_offset
+	ads_pos.transform.origin = -weapon.sights.transform.origin

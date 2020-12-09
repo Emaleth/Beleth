@@ -5,14 +5,13 @@
 [ext_resource path="res://src/weapons/m107/M107.gd" type="Script" id=3]
 
 [node name="M107" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 3 )
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.922358 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.864786 )
 
-[node name="m107" parent="." index="3" instance=ExtResource( 1 )]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0803123 )
-
-[node name="Sights" parent="." index="4"]
+[node name="Sights" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0816234, 0.0761109 )
+
+[node name="Model" parent="AnimationPivot" index="0" instance=ExtResource( 1 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.125057 )

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/smg.png-13ca0836abdb7f499e29d676ed78f9b7.s3tc.stex"
-path.etc="res://.import/smg.png-13ca0836abdb7f499e29d676ed78f9b7.etc.stex"
+path.s3tc="res://.import/rear.png-484fd23d132418157708c55e9b6b0959.s3tc.stex"
+path.etc="res://.import/rear.png-484fd23d132418157708c55e9b6b0959.etc.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/crosshairs/smg.png"
-dest_files=[ "res://.import/smg.png-13ca0836abdb7f499e29d676ed78f9b7.s3tc.stex", "res://.import/smg.png-13ca0836abdb7f499e29d676ed78f9b7.etc.stex" ]
+source_file="res://assets/sight_test/rear.png"
+dest_files=[ "res://.import/rear.png-484fd23d132418157708c55e9b6b0959.s3tc.stex", "res://.import/rear.png-484fd23d132418157708c55e9b6b0959.etc.stex" ]
 
 [params]
 
@@ -22,7 +22,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
-flags/filter=true
+flags/filter=false
 flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2

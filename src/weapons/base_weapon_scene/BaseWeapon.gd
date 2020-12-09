@@ -24,21 +24,22 @@ var sway_z_speed = 5
 var mm_v = Vector2()
 var holder = null
 
-onready var sights_offset = $Sights.transform.origin
+onready var sights
 onready var anim = $AnimationPlayer
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var bullet_decal = preload("res://src/decals/BulletDecal.tscn")
+onready var muzzle_flash = $Muzzle/CPUParticles
 
 	
 func load_data():
 	anim.playback_speed = fire_rate
 	mode = default_mode
-
 	
 	
 func _process(delta):
 	sway(delta)
+	sights.align(bullet.get_collision_point(), rotation.z)
 	match mode:
 		SEMI:
 			if Input.is_action_just_pressed("fire"):
@@ -62,6 +63,7 @@ func fire(shot_num):
 				anim.play("shot")
 				clip_size -= 1
 				$Muzzle/AudioStreamPlayer3D.play()
+				muzzle_flash.emitting = true
 				if holder:
 					holder.view_recoil(recoil_force)
 				for shot in slug_size:
@@ -74,7 +76,7 @@ func fire(shot_num):
 						var b = bullet_decal.instance()
 						target.add_child(b)
 						b.global_transform.origin = bullet.get_collision_point()
-						b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
+#						b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
 						if target.has_method("hit"):
 							target.hit(damage)
 				yield(anim,"animation_finished")
@@ -102,3 +104,5 @@ func sway(delta):
 	rotation_degrees.y = lerp(rotation_degrees.y, mm_v.x * sway_x, sway_x_speed * delta) 
 	rotation_degrees.z = lerp(rotation_degrees.z, (mm_v.x * sway_z) * -1, sway_z_speed * delta) 
 	mm_v = Vector2.ZERO
+
+

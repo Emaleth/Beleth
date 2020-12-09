@@ -5,14 +5,13 @@
 [ext_resource path="res://src/weapons/BerettaM9/BerettaM9.gd" type="Script" id=3]
 
 [node name="BerettaM9" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 3 )
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.266 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.178152 )
 
-[node name="BerettaM9" parent="." index="3" instance=ExtResource( 2 )]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.0187431, -0.105853 )
-
-[node name="Sights" parent="." index="4"]
+[node name="Sights" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.021751, 0.034912 )
+
+[node name="Model" parent="AnimationPivot" index="0" instance=ExtResource( 2 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.0187431, -0.105853 )
