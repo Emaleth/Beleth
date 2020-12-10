@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/weapons/base_weapon_scene/BaseWeapon.gd" type="Script" id=1]
 [ext_resource path="res://resources/materials/orange_grid_small.tres" type="Material" id=2]
@@ -9,34 +9,6 @@
 material = ExtResource( 2 )
 radius = 0.005
 height = 0.01
-
-[sub_resource type="Animation" id=2]
-length = 0.1
-step = 0.01
-tracks/0/type = "value"
-tracks/0/path = NodePath("AnimationPivot:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.04, 0.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.05 ), Vector3( 0, 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("AnimationPivot:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.04, 0.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0.5, 0, 0 ), Vector3( 0, 0, 0 ) ]
-}
 
 [node name="BaseWeapon" type="Spatial"]
 script = ExtResource( 1 )
@@ -64,8 +36,7 @@ spread = 15.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 5.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/shot = SubResource( 2 )
+[node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationPivot" type="Spatial" parent="."]
 

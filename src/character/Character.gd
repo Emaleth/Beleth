@@ -34,6 +34,8 @@ onready var camera = $Head/Camera
 onready var hand = $Hand
 onready var hipfire_pos = $Head/Camera/Hipfire
 onready var ads_pos = $Head/Camera/Ads
+onready var tween = $Head/Tween
+
 
 onready var pistol = preload("res://src/weapons/BerettaM9/BerettaM9.tscn")
 onready var smg = preload("res://src/weapons/mp5/Mp5.tscn")
@@ -43,7 +45,7 @@ onready var sr = preload("res://src/weapons/m107/M107.tscn")
 
 
 func _ready():
-	get_weapon(smg)
+	get_weapon(ar)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
@@ -63,6 +65,8 @@ func _physics_process(delta):
 func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
+			if event.relative.y != 0:
+				tween.stop_all() # THIS WORKS. IT WORKS TOO WELL IN FACT. NEED TO ADD MOUSE MOTION TO THE TWEEN.
 			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
 			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
@@ -111,7 +115,6 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
-	reset_head_y_rot(delta)
 	match aim_mode:
 		HIPFIRE:
 			mouse_sensitivity = hipfire_mouse_sensitivity
@@ -135,9 +138,19 @@ func aim(delta):
 	
 	
 func view_recoil(force):
-	head.rotate_y(deg2rad(rand_range(-force.x, force.x)))
-	head.rotate_x(deg2rad(force.y))
-	head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+	tween.stop_all()
+
+	tween.remove_all()
+	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x + deg2rad(force.y), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(camera, "rotation:y", camera.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.start()
+
+	yield(tween, "tween_all_completed")
+
+	tween.remove_all()
+	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x - deg2rad(force.y), 0.4 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(camera, "rotation:y", camera.rotation.y, 0, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.start()
 
 
 func get_weapon(wpn):
@@ -147,7 +160,3 @@ func get_weapon(wpn):
 	hand.add_child(weapon)
 	weapon.holder = self
 	ads_pos.transform.origin = -weapon.sights.transform.origin
-
-
-func reset_head_y_rot(delta):
-	head.rotation.y = lerp(head.rotation.y, 0, delta * 45)

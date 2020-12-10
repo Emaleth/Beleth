@@ -8,7 +8,6 @@ func _ready():
 	permited_modes = [SEMI]
 	default_mode = SEMI
 	clip_size = 700
-	recoil_force = Vector2(0.1, 1)
+	recoil_force = Vector3(0.1, 0.1, 0.01)
 	spread = 2
-	slug_size = 10
 	load_data()

@@ -23,9 +23,10 @@ var sway_z_speed = 5
 
 var mm_v = Vector2()
 var holder = null
+var can_shoot = true
 
 onready var sights = $SightsBase
-onready var anim = $AnimationPlayer
+onready var tween = $Tween
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var bullet_decal = preload("res://src/decals/BulletDecal.tscn")
@@ -33,9 +34,9 @@ onready var muzzle_flash = $Muzzle/CPUParticles
 
 	
 func load_data():
-	anim.playback_speed = fire_rate
+	tween.playback_speed = fire_rate
 	mode = default_mode
-	
+
 	
 func _process(_delta):
 	match mode:
@@ -55,10 +56,17 @@ func fire(shot_num):
 	var i = 1
 	while i <= shot_num:
 		if clip_size > 0:
-			if anim.is_playing():
+			if can_shoot == false:
 				return
 			else:
-				anim.play("shot")
+				can_shoot = false
+				tween.remove_all()
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.4 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.start()
+				yield(tween,"tween_all_completed")
+				tween.remove_all()
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, 0.6 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.start()
 				clip_size -= 1
 				$Muzzle/AudioStreamPlayer3D.play()
 				muzzle_flash.emitting = true
@@ -80,8 +88,9 @@ func fire(shot_num):
 #						b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
 						if target.has_method("hit"):
 							target.hit(damage)
-				yield(anim,"animation_finished")
+				yield(tween,"tween_all_completed")
 				i += 1
+				can_shoot = true
 		else:
 			break
 			
