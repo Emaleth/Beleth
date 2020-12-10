@@ -8,6 +8,5 @@ func _ready():
 	default_mode = AUTO
 	clip_size = 320000
 	recoil_force = Vector2(0, .1)
-	v_spread = 0.1
-	h_spread = 0.1
+	spread = 0.5
 	load_data()

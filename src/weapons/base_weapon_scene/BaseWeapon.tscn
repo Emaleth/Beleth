@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/weapons/base_weapon_scene/BaseWeapon.gd" type="Script" id=1]
 [ext_resource path="res://resources/materials/orange_grid_small.tres" type="Material" id=2]
 [ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=3]
+[ext_resource path="res://src/weapons/sights/base/SightsBase.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SphereMesh" id=1]
 material = ExtResource( 2 )
@@ -67,3 +68,7 @@ initial_velocity = 5.0
 anims/shot = SubResource( 2 )
 
 [node name="AnimationPivot" type="Spatial" parent="."]
+
+[node name="SightsBase" parent="." instance=ExtResource( 4 )]
+
+[editable path="SightsBase"]

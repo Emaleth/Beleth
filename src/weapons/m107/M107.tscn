@@ -10,8 +10,16 @@ script = ExtResource( 3 )
 [node name="Muzzle" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.864786 )
 
-[node name="Sights" parent="." index="3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0816234, 0.0761109 )
-
 [node name="Model" parent="AnimationPivot" index="0" instance=ExtResource( 1 )]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.125057 )
+
+[node name="SightsBase" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.109331, 0 )
+
+[node name="Front" parent="SightsBase" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.270319 )
+
+[node name="Rear" parent="SightsBase" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0982998 )
+
+[editable path="SightsBase"]

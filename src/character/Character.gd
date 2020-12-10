@@ -20,6 +20,7 @@ var air_acceleration = 1
 var ground_acceleration = 6
 var full_contact = false
 
+var weapon = null 
 var direction = Vector3()
 var velocity = Vector3()
 var linear_velocity = Vector3()
@@ -33,7 +34,6 @@ onready var camera = $Head/Camera
 onready var hand = $Hand
 onready var hipfire_pos = $Head/Camera/Hipfire
 onready var ads_pos = $Head/Camera/Ads
-onready var weapon 
 
 onready var pistol = preload("res://src/weapons/BerettaM9/BerettaM9.tscn")
 onready var smg = preload("res://src/weapons/mp5/Mp5.tscn")
@@ -43,7 +43,7 @@ onready var sr = preload("res://src/weapons/m107/M107.tscn")
 
 
 func _ready():
-	get_weapon(ar)
+	get_weapon(smg)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	anim.play("Breathing Idle-loop")
@@ -66,7 +66,7 @@ func _input(event):
 			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
 			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
-	
+			
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -111,27 +111,34 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
+	reset_head_y_rot(delta)
 	match aim_mode:
 		HIPFIRE:
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hipfire_pos.global_transform.origin, ads_speed * delta)
+			weapon.sway(delta, HIPFIRE)
+			weapon.align_sights(HIPFIRE)
 			
 		ADS:
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
-		
+			weapon.sway(delta, ADS)
+			weapon.align_sights(ADS)
+			
 	hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
 	hand.rotation_degrees.x = clamp(hand.rotation_degrees.x, -70, 70)
 	hand.rotation_degrees.y = clamp(hand.rotation_degrees.y, -70, 70)
+	hand.rotation_degrees.z = clamp(hand.rotation_degrees.z, 0, 0)
 	
 	
 func view_recoil(force):
-	head.rotate_y(deg2rad(force.x))
+	head.rotate_y(deg2rad(rand_range(-force.x, force.x)))
 	head.rotate_x(deg2rad(force.y))
-	
+	head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+
 
 func get_weapon(wpn):
 	if hand.get_child_count() < 0:
@@ -140,3 +147,7 @@ func get_weapon(wpn):
 	hand.add_child(weapon)
 	weapon.holder = self
 	ads_pos.transform.origin = -weapon.sights.transform.origin
+
+
+func reset_head_y_rot(delta):
+	head.rotation.y = lerp(head.rotation.y, 0, delta * 45)
