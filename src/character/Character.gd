@@ -37,10 +37,11 @@ onready var ads_pos = $Head/Camera/Ads
 onready var tween = $Head/Tween
 
 
-onready var pistol = preload("res://src/weapons/BerettaM9/BerettaM9.tscn")
-onready var smg = preload("res://src/weapons/mp5/Mp5.tscn")
-onready var ar = preload("res://src/weapons/416/416.tscn")
-onready var sr = preload("res://src/weapons/m107/M107.tscn")
+onready var pistol = preload("res://src/weapons/pistol/Pistol.tscn")
+onready var smg = preload("res://src/weapons/smg/Smg.tscn")
+onready var ar = preload("res://src/weapons/ar/Ar.tscn")
+onready var sr = preload("res://src/weapons/sr/Sr.tscn")
+onready var shotgun = preload("res://src/weapons/shotgun/Shotgun.tscn")
 
 
 
@@ -154,9 +155,32 @@ func view_recoil(force):
 
 
 func get_weapon(wpn):
-	if hand.get_child_count() < 0:
-		hand.get_child(0).queue_free()
+	for w in hand.get_children():
+		w.queue_free()
 	weapon = wpn.instance()
 	hand.add_child(weapon)
 	weapon.holder = self
-	ads_pos.transform.origin = -weapon.sights.transform.origin
+	ads_pos.transform.origin = -weapon.sight_pivot.transform.origin
+
+
+
+
+# DEBUG #
+func _on_ar_pressed():
+	get_weapon(ar)
+
+
+func _on_sr_pressed():
+	get_weapon(sr)
+
+
+func _on_pistol_pressed():
+	get_weapon(pistol)
+
+
+func _on_smg_pressed():
+	get_weapon(smg)
+
+
+func _on_shotgun_pressed():
+	get_weapon(shotgun)

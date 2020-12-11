@@ -2,7 +2,7 @@
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/Ybot.gltf" type="PackedScene" id=2]
-[ext_resource path="res://resources/materials/green_grid_small.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/MetalPlates006.tres" type="Material" id=3]
 [ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
@@ -1532,5 +1532,46 @@ cast_to = Vector3( 0, -0.1, 0 )
 [node name="Hand" type="Spatial" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource( 5 )]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
+anchor_bottom = 1.0
+margin_right = 77.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ar" type="Button" parent="HUD/VBoxContainer"]
+margin_right = 77.0
+margin_bottom = 20.0
+text = "AR"
+
+[node name="sr" type="Button" parent="HUD/VBoxContainer"]
+margin_top = 24.0
+margin_right = 77.0
+margin_bottom = 44.0
+text = "SR"
+
+[node name="pistol" type="Button" parent="HUD/VBoxContainer"]
+margin_top = 48.0
+margin_right = 77.0
+margin_bottom = 68.0
+text = "PISTOL"
+
+[node name="smg" type="Button" parent="HUD/VBoxContainer"]
+margin_top = 72.0
+margin_right = 77.0
+margin_bottom = 92.0
+text = "SMG"
+
+[node name="shotgun" type="Button" parent="HUD/VBoxContainer"]
+margin_top = 96.0
+margin_right = 77.0
+margin_bottom = 116.0
+text = "SHOTGUN"
+[connection signal="pressed" from="HUD/VBoxContainer/ar" to="." method="_on_ar_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/sr" to="." method="_on_sr_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/pistol" to="." method="_on_pistol_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/smg" to="." method="_on_smg_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/shotgun" to="." method="_on_shotgun_pressed"]
 
 [editable path="Ybot"]

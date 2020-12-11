@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://resources/materials/orange_grid_small.tres" type="Material" id=1]
+[ext_resource path="res://resources/materials/Concrete032.tres" type="Material" id=1]
 
 [node name="Island" type="CSGPolygon"]
 use_collision = true
