@@ -13,6 +13,7 @@ var clip_size
 var recoil_force
 var spread
 var slug_size = 1
+var sight_mat = null
 
 var sway_x = 0.3
 var sway_x_speed = 10
@@ -31,15 +32,19 @@ onready var tween = $Tween
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var muzzle_flash = $Muzzle/CPUParticles
+onready var laser = $Laser
 
 onready var bullet_decal = preload("res://src/decals/BulletDecal.tscn")
 
 	
 func load_data():
+	laser.set_as_toplevel(true)
 	f_mode = default_mode
-
+	sight_holo.set_surface_material(0, sight_mat)
+	
 	
 func _process(_delta):
+	point_laser(bullet.get_collision_point(), bullet.get_collision_normal())
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		match f_mode:
 			fire_mode.SEMI:
@@ -89,7 +94,12 @@ func fire(shot_num):
 						var b = bullet_decal.instance()
 						target.add_child(b)
 						b.global_transform.origin = bullet.get_collision_point()
-#						b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
+						if bullet.get_collision_normal() == Vector3.UP:
+							b.rotation.x = deg2rad(90)
+						elif bullet.get_collision_normal() == Vector3.DOWN:
+							b.rotation.x = deg2rad(-90)
+						else:
+							b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
 						if target.has_method("hit"):
 							target.hit(damage)
 				yield(tween,"tween_all_completed")
@@ -112,6 +122,7 @@ func _input(event):
 	
 	if event is InputEventMouseMotion:
 		mm_v = event.relative.normalized()
+
 
 func sway(delta, a_mode):
 	match a_mode:
@@ -137,8 +148,17 @@ func align_sights(a_mode):
 		aim_mode.ADS:
 			if sight_pivot.transform.origin.distance_to(bullet.get_collision_point()) > 1:
 				sight_pivot.look_at(bullet.get_collision_point(), Vector3.UP)
-				sight_pivot.rotation_degrees.x = clamp(rotation_degrees.x, -10, 0)
-	#			sight_pivot.rotation_degrees.y = clamp(rotation_degrees.y, -10, 0)
 				sight_holo.rotation = rotation
 
 
+func point_laser(c_point, c_normal):
+	laser.global_transform.origin = c_point
+	
+	if c_normal == Vector3.UP:
+		laser.rotation = Vector3(deg2rad(-90), 0,0 )
+	
+	elif c_normal == Vector3.DOWN:
+		laser.rotation = Vector3(deg2rad(90), 0,0 )
+		
+	else:
+		laser.look_at(c_point - c_normal, Vector3.UP)

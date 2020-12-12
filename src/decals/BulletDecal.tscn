@@ -4,12 +4,14 @@
 [ext_resource path="res://src/decals/BulletDecal.gd" type="Script" id=2]
 
 [sub_resource type="QuadMesh" id=1]
+size = Vector2( 0.1, 0.1 )
 
-[node name="BulletDecal" type="Spatial"]
+[node name="Decal" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 2 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( -0.1, 0, -3.89414e-08, 0, 0.1, 0, 3.89414e-08, 0, -0.1, 0, 0, -0.01 )
+[node name="BulletHoleDecal" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.001 )
 cast_shadow = 0
 mesh = SubResource( 1 )
 material/0 = ExtResource( 1 )

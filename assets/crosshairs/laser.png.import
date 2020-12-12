@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/minimal.png-06903c3f38f62ca8a14f9bf33342399f.s3tc.stex"
-path.etc="res://.import/minimal.png-06903c3f38f62ca8a14f9bf33342399f.etc.stex"
+path.s3tc="res://.import/laser.png-80d7d710c8867b012349a49e7bb65375.s3tc.stex"
+path.etc="res://.import/laser.png-80d7d710c8867b012349a49e7bb65375.etc.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/crosshairs/minimal.png"
-dest_files=[ "res://.import/minimal.png-06903c3f38f62ca8a14f9bf33342399f.s3tc.stex", "res://.import/minimal.png-06903c3f38f62ca8a14f9bf33342399f.etc.stex" ]
+source_file="res://assets/crosshairs/laser.png"
+dest_files=[ "res://.import/laser.png-80d7d710c8867b012349a49e7bb65375.s3tc.stex", "res://.import/laser.png-80d7d710c8867b012349a49e7bb65375.etc.stex" ]
 
 [params]
 
@@ -22,8 +22,8 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
-flags/filter=false
-flags/mipmaps=false
+flags/filter=true
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true

@@ -1,11 +1,26 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/weapons/base/BaseWeapon.gd" type="Script" id=1]
+[ext_resource path="res://assets/crosshairs/pistol.png" type="Texture" id=2]
 [ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=3]
+[ext_resource path="res://resources/sight_materials/minimal_sight_mat.tres" type="Material" id=4]
 
 [sub_resource type="SphereMesh" id=1]
 radius = 0.005
 height = 0.01
+
+[sub_resource type="QuadMesh" id=2]
+size = Vector2( 0.01, 0.01 )
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+flags_unshaded = true
+params_cull_mode = 2
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=4]
+material = ExtResource( 4 )
+size = Vector2( 0.1, 0.1 )
 
 [node name="BaseWeapon" type="Spatial"]
 script = ExtResource( 1 )
@@ -37,9 +52,15 @@ initial_velocity = 5.0
 
 [node name="SightPivot" type="Spatial" parent="."]
 
-[node name="Holo" type="Sprite3D" parent="SightPivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.109052 )
-pixel_size = 0.0005
+[node name="Holo" type="MeshInstance" parent="SightPivot"]
+cast_shadow = 0
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
-[node name="Laser" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.246334, -0.0418737 )
+[node name="Laser" type="Spatial" parent="."]
+
+[node name="Dot" type="MeshInstance" parent="Laser"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001 )
+cast_shadow = 0
+mesh = SubResource( 4 )
+material/0 = null

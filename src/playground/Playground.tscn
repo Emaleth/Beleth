@@ -87,6 +87,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -14 )
 [node name="Wall" parent="Props" instance=ExtResource( 7 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4, 2.5, 12 )
 
+[node name="Wall2" parent="Props" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.54266, 8.65259, 12 )
+
 [node name="Actors" type="Node" parent="."]
 
 [node name="Character" parent="Actors" instance=ExtResource( 1 )]

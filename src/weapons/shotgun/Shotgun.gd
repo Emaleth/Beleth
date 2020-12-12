@@ -2,6 +2,7 @@ extends "res://src/weapons/base/BaseWeapon.gd"
 
 
 func _ready():
+	sight_mat = preload("res://resources/sight_materials/shotgun_sight_mat.tres")
 	damage = 5
 	fire_rate = 2
 	permited_modes = [fire_mode.SEMI]
