@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://src/weapons/base/BaseWeapon.gd" type="Script" id=1]
-[ext_resource path="res://assets/crosshairs/pistol.png" type="Texture" id=2]
-[ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=3]
-[ext_resource path="res://resources/sight_materials/minimal_sight_mat.tres" type="Material" id=4]
+[ext_resource path="res://src/weapons/_weapon/_Weapon.gd" type="Script" id=1]
+[ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=2]
+[ext_resource path="res://resources/sight_materials/minimal_sight_mat.tres" type="Material" id=3]
+[ext_resource path="res://assets/crosshairs/pistol.png" type="Texture" id=4]
 
 [sub_resource type="SphereMesh" id=1]
 radius = 0.005
@@ -16,10 +16,10 @@ size = Vector2( 0.01, 0.01 )
 flags_transparent = true
 flags_unshaded = true
 params_cull_mode = 2
-albedo_texture = ExtResource( 2 )
+albedo_texture = ExtResource( 4 )
 
 [sub_resource type="QuadMesh" id=4]
-material = ExtResource( 4 )
+material = ExtResource( 3 )
 size = Vector2( 0.1, 0.1 )
 
 [node name="BaseWeapon" type="Spatial"]
@@ -33,7 +33,7 @@ collision_mask = 3
 [node name="Muzzle" type="Position3D" parent="."]
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Muzzle"]
-stream = ExtResource( 3 )
+stream = ExtResource( 2 )
 emission_angle_enabled = true
 
 [node name="CPUParticles" type="CPUParticles" parent="Muzzle"]

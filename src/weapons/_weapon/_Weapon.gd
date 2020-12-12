@@ -14,6 +14,7 @@ var recoil_force
 var spread
 var slug_size = 1
 var sight_mat = null
+var bullet_decal = preload("res://src/decals/Hole.tscn")
 
 var sway_x = 0.3
 var sway_x_speed = 10
@@ -34,13 +35,13 @@ onready var muzzle = $Muzzle
 onready var muzzle_flash = $Muzzle/CPUParticles
 onready var laser = $Laser
 
-onready var bullet_decal = preload("res://src/decals/BulletDecal.tscn")
 
 	
 func load_data():
 	laser.set_as_toplevel(true)
 	f_mode = default_mode
 	sight_holo.set_surface_material(0, sight_mat)
+	tween.playback_speed = fire_rate
 	
 	
 func _process(_delta):
@@ -67,20 +68,8 @@ func fire(shot_num):
 				return
 			else:
 				can_shoot = false
-				tween.playback_speed = 1
-				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.01 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
-				tween.start()
-				yield(tween,"tween_all_completed")
-				tween.playback_speed = fire_rate
-				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, 0.6 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-				tween.start()
 				clip_size -= 1
-				$Muzzle/AudioStreamPlayer3D.play()
-				muzzle_flash.emitting = true
-				if holder:
-					holder.view_recoil(recoil_force)
+				
 				for shot in slug_size:
 					var bs = Vector2(rand_range(-1, 1), rand_range(-1, 1))
 					if bs.length() > 1:
@@ -93,15 +82,22 @@ func fire(shot_num):
 						var target = bullet.get_collider()
 						var b = bullet_decal.instance()
 						target.add_child(b)
-						b.global_transform.origin = bullet.get_collision_point()
-						if bullet.get_collision_normal() == Vector3.UP:
-							b.rotation.x = deg2rad(90)
-						elif bullet.get_collision_normal() == Vector3.DOWN:
-							b.rotation.x = deg2rad(-90)
-						else:
-							b.look_at(bullet.get_collision_point() + bullet.get_collision_normal(), Vector3.UP)
+						b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
 						if target.has_method("hit"):
 							target.hit(damage)
+							
+				$Muzzle/AudioStreamPlayer3D.play()
+				muzzle_flash.emitting = true
+				if holder:
+					holder.view_recoil(recoil_force)
+				tween.remove_all()
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.1 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.start()
+				yield(tween,"tween_all_completed")
+				tween.remove_all()
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, 0.9 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.start()
+					
 				yield(tween,"tween_all_completed")
 				i += 1
 				can_shoot = true

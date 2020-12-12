@@ -46,10 +46,10 @@ onready var shotgun = preload("res://src/weapons/shotgun/Shotgun.tscn")
 
 
 func _ready():
-	get_weapon(ar)
+	get_weapon(shotgun)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	anim.play("Breathing Idle-loop")
+#	anim.play("Breathing Idle-loop")
 
 
 func _physics_process(delta):

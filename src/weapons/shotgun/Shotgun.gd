@@ -1,11 +1,12 @@
-extends "res://src/weapons/base/BaseWeapon.gd"
+extends "res://src/weapons/_weapon/_Weapon.gd"
 
 
 func _ready():
+	bullet_decal = preload("res://src/decals/Nail.tscn")
 	sight_mat = preload("res://resources/sight_materials/shotgun_sight_mat.tres")
-	damage = 5
-	fire_rate = 2
-	permited_modes = [fire_mode.SEMI]
+	damage = 1
+	fire_rate = 3
+	permited_modes = [fire_mode.SEMI, fire_mode.BURST]
 	default_mode = fire_mode.SEMI
 	clip_size = 700
 	recoil_force = Vector3(0.1, 1, 0.2)
