@@ -142,7 +142,7 @@ func align_sights(a_mode):
 			sight_holo.rotation = rotation
 
 		aim_mode.ADS:
-			if sight_pivot.transform.origin.distance_to(bullet.get_collision_point()) > 1:
+			if sight_pivot.global_transform.origin.distance_to(bullet.get_collision_point()) > 1:
 				sight_pivot.look_at(bullet.get_collision_point(), Vector3.UP)
 				sight_holo.rotation = rotation
 

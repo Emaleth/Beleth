@@ -1,14 +1,12 @@
 extends Spatial
 
-export var flat : bool = true
-
-onready var mesh = $MeshInstance
+export(int, "DECAL", "ROD") var mode = 0
 
 
 func set_rot(c_point, c_normal, gun_pos):
 	global_transform.origin = c_point
 	
-	if flat == true:
+	if mode == 0:
 		if c_normal == Vector3.UP:
 			rotation.x = deg2rad(90)
 		elif c_normal == Vector3.DOWN:
@@ -26,7 +24,7 @@ func set_rot(c_point, c_normal, gun_pos):
 		
 		translate(Vector3(0, 0, rand_range(0, 0.2)))
 
-	mesh.rotation.z = deg2rad(rand_range(0, 360))
+	rotation.z = deg2rad(rand_range(0, 360))
 
 
 func _on_Timer_timeout():

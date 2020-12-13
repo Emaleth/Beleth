@@ -130,8 +130,9 @@ func aim(delta):
 			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
 			weapon.sway(delta, ADS)
 			weapon.align_sights(ADS)
-			
-	hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+	
+	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1:
+		hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
 	hand.rotation_degrees.x = clamp(hand.rotation_degrees.x, -70, 70)
 	hand.rotation_degrees.y = clamp(hand.rotation_degrees.y, -70, 70)

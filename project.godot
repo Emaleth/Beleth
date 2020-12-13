@@ -19,10 +19,9 @@ config/name="Beleth"
 run/main_scene="res://src/playground/Playground.tscn"
 config/icon="res://icon.png"
 
-[display]
+[audio]
 
-window/size/test_width=1280
-window/size/test_height=720
+default_bus_layout="res://resources/audio/Audio.tres"
 
 [input]
 

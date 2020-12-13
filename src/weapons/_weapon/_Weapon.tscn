@@ -20,7 +20,7 @@ albedo_texture = ExtResource( 4 )
 
 [sub_resource type="QuadMesh" id=4]
 material = ExtResource( 3 )
-size = Vector2( 0.1, 0.1 )
+size = Vector2( 0.02, 0.02 )
 
 [node name="BaseWeapon" type="Spatial"]
 script = ExtResource( 1 )

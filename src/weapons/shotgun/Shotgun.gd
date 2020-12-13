@@ -10,6 +10,6 @@ func _ready():
 	default_mode = fire_mode.SEMI
 	clip_size = 700
 	recoil_force = Vector3(0.1, 1, 0.2)
-	spread = 2
-	slug_size = 21
+	spread = 5
+	slug_size = 100
 	load_data()
