@@ -2,20 +2,15 @@
 ![alt text](https://media.githubusercontent.com/media/Emaleth-BSE/Beleth/master/extra/screenshots/test.png)
 
 ##### Sources:
-3D Models:
-* Emaleth\*
+3D Models:  
+ ◈ Emaleth  
+Sound:  
+ ◈ Emaleth  
+Fonts:  
+ ◈ KenneyNL  
+Textures:  
+ ◈ https://cc0textures.com  
+ ◈ https://texturehaven.com  
+Crosshairs:  
+ ◈ KenneyNL  
 
-Sound:
-* Emaleth\*
-
-Fonts:
-* KenneyNL
-
-Textures:
-* https://cc0textures.com
-* https://texturehaven.com
-
-Crosshairs:
-* KenneyNL
-
-\*to be soon
