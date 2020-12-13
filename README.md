@@ -1,10 +1,14 @@
-# Beleth
-
+# [Beleth](https://en.wikipedia.org/wiki/Beleth)
+![alt text](https://github.com/Emaleth-BSE/Beleth/tree/master/extra/screenshots/test.png)
 ## Sources:
-actor and animations : mixamo.com
-weapon models : https://opengameart.org/content/low-poly-modern-weapons
-voiceovers : KenneyNL
-sfx : https://opengameart.org/content/q009s-weapon-sounds
-fonts : KenneyNL
-textures : KenneyNL
-crosshairs : KenneyNL
+3D Models:
+	- Emaleth
+Sound: 
+	- Emaleth
+Fonts: 
+	- KenneyNL
+Textures: 
+	- https://cc0textures.com/
+	- https://texturehaven.com/
+crosshairs:
+	- KenneyNL
