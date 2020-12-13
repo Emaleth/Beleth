@@ -3,8 +3,10 @@
 
 ##### Sources:
 **3D Models:**  
+&emsp;◈ https://opengameart.org  
 &emsp;◈ Emaleth  
 **Sound:**  
+&emsp;◈ https://opengameart.org  
 &emsp;◈ Emaleth  
 **Fonts:**  
 &emsp;◈ KenneyNL  

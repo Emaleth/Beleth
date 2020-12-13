@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/muzzleflash.obj-af8d0eb9ab5e5d8de919001c0b940352.mesh"
+
+[deps]
+
+files=[ "res://.import/muzzleflash.obj-af8d0eb9ab5e5d8de919001c0b940352.mesh" ]
+
+source_file="res://assets/models/vfx/muzzleflash.obj"
+dest_files=[ "res://.import/muzzleflash.obj-af8d0eb9ab5e5d8de919001c0b940352.mesh", "res://.import/muzzleflash.obj-af8d0eb9ab5e5d8de919001c0b940352.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

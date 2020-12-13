@@ -1,13 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/weapons/smg/Smg.gd" type="Script" id=2]
 [ext_resource path="res://assets/models/weapons/G36C.gltf" type="PackedScene" id=3]
-[ext_resource path="res://assets/crosshairs/smg.png" type="Texture" id=4]
-[ext_resource path="res://resources/materials/MetalPlates006.tres" type="Material" id=5]
-
-
-
+[ext_resource path="res://resources/materials/Metal032.tres" type="Material" id=4]
 
 [node name="Smg" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -20,13 +16,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0604057, 0 )
 
 [node name="Holo" parent="SightPivot" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.293814 )
-pixel_size = 0.0001
-texture = ExtResource( 4 )
 
 [node name="G36C" parent="." index="5" instance=ExtResource( 3 )]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.138788 )
 
 [node name="G36C" parent="G36C" index="0"]
-material/0 = ExtResource( 5 )
+material/0 = ExtResource( 4 )
 
 [editable path="G36C"]

@@ -26,13 +26,14 @@ var sway_z_speed = 5
 var mm_v = Vector2()
 var holder = null
 var can_shoot = true
+var anim : AnimationPlayer = null
 
 onready var sight_pivot = $SightPivot
 onready var sight_holo = $SightPivot/Holo
 onready var tween = $Tween
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
-onready var muzzle_flash = $Muzzle/CPUParticles
+onready var muzzle_flash = $Muzzle/MuzzleFlash
 onready var laser = $Laser
 
 
@@ -42,6 +43,9 @@ func load_data():
 	f_mode = default_mode
 	sight_holo.set_surface_material(0, sight_mat)
 	tween.playback_speed = fire_rate
+	anim = find_node("AnimationPlayer")
+	if anim:
+		anim.playback_speed = fire_rate
 	
 	
 func _process(_delta):
@@ -51,6 +55,7 @@ func _process(_delta):
 			fire_mode.SEMI:
 				if Input.is_action_just_pressed("fire"):
 					fire(1)
+					
 			fire_mode.AUTO:
 				if Input.is_action_pressed("fire"):
 					fire(1)
@@ -69,36 +74,28 @@ func fire(shot_num):
 			else:
 				can_shoot = false
 				clip_size -= 1
+				shoot_bullet()
 				
-				for shot in slug_size:
-					var bs = Vector2(rand_range(-1, 1), rand_range(-1, 1))
-					if bs.length() > 1:
-						bs = bs.normalized()
-					bullet.rotate_x(deg2rad(bs.y * spread))
-					bullet.rotate_y(deg2rad(bs.x * spread))
-					bullet.force_raycast_update()
-					bullet.rotation = Vector3(0, 0, 0)
-					if bullet.is_colliding():
-						var target = bullet.get_collider()
-						var b = bullet_decal.instance()
-						target.add_child(b)
-						b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
-						if target.has_method("hit"):
-							target.hit(damage)
-							
+				### ANIMATION ###
+				if anim:
+					anim.play("cycle")
 				$Muzzle/AudioStreamPlayer3D.play()
-				muzzle_flash.emitting = true
-				if holder:
-					holder.view_recoil(recoil_force)
+				holder.view_recoil(recoil_force)
+					
+				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
+				muzzle_flash.visible = true
+				
 				tween.remove_all()
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.1 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
+				
+				muzzle_flash.visible = false
 				tween.remove_all()
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, 0.9 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
-					
 				yield(tween,"tween_all_completed")
+					
 				i += 1
 				can_shoot = true
 		else:
@@ -158,3 +155,21 @@ func point_laser(c_point, c_normal):
 		
 	else:
 		laser.look_at(c_point - c_normal, Vector3.UP)
+
+
+func shoot_bullet():
+	for shot in slug_size:
+		var bs = Vector2(rand_range(-1, 1), rand_range(-1, 1))
+		if bs.length() > 1:
+			bs = bs.normalized()
+		bullet.rotate_x(deg2rad(bs.y * spread))
+		bullet.rotate_y(deg2rad(bs.x * spread))
+		bullet.force_raycast_update()
+		bullet.rotation = Vector3(0, 0, 0)
+		if bullet.is_colliding():
+			var target = bullet.get_collider()
+			var b = bullet_decal.instance()
+			target.add_child(b)
+			b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
+			if target.has_method("hit"):
+				target.hit(damage)
