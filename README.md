@@ -1,19 +1,19 @@
 # [Beleth](https://en.wikipedia.org/wiki/Beleth)
-(https://github.com/Emaleth-BSE/Beleth/tree/master/extra/screenshots/test.png)
+![](https://github.com/Emaleth-BSE/Beleth/tree/master/extra/screenshots/test.png)
 
 ## Sources:
-3D Models:
-...* Emaleth
+3D Models:\
+	* Emaleth*\
 
-Sound: 
-...* Emaleth
+Sound:\
+	* Emaleth*\
 
-Fonts: 
-...* KenneyNL
+Fonts:\
+	* KenneyNL\
 
-Textures: 
-...* https://cc0textures.com/
-...* https://texturehaven.com/
+Textures:\
+	* https://cc0textures.com\
+	* https://texturehaven.com\
 
-Crosshairs:
-...* KenneyNL
+Crosshairs:\
+	* KenneyNL\
