@@ -9,9 +9,9 @@
 albedo_texture = ExtResource( 2 )
 metallic = 1.0
 metallic_texture = ExtResource( 1 )
-roughness = 0.0
+roughness = 0.2
 roughness_texture = ExtResource( 3 )
 normal_enabled = true
-normal_scale = -16.0
+normal_scale = 16.0
 normal_texture = ExtResource( 4 )
 uv1_triplanar = true
