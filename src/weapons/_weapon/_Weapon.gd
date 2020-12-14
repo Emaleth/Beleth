@@ -3,27 +3,35 @@ extends Spatial
 enum fire_mode {SEMI, AUTO, BURST}
 enum aim_mode {HIPFIRE, ADS}
 
-var f_mode
-# vars set per weapon
-var damage
-var fire_rate
-var permited_modes
-var default_mode
-var clip_size
-var recoil_force
-var spread
-var slug_size = 1
-var sight_mat = null
-var bullet_decal = preload("res://src/decals/Hole.tscn")
-var sfx
 
+""" // START OF WEAPON DATA // """
+""" following variables can (but don't have to) be modified per each weapon """
+
+var damage = 0
+var fire_rate = 1
+var permited_modes = [fire_mode.AUTO, fire_mode.BURST, fire_mode.SEMI]
+var default_mode = fire_mode.AUTO
+var clip_size = 666
+var recoil_force = Vector3(0, 0, 0)
+var spread = 0
+var slug_size = 1
+var sight_mat = preload("res://resources/sight_materials/ar_sight_mat.tres")
+var bullet_decal = preload("res://src/decals/Hole.tscn")
+var sfx = preload("res://assets/sounds/sfx/minigun.ogg")
+var akimbo = false
+var akimbo_offset = Vector3(0.05, 0, 0)
 var sway_x = 0.3
 var sway_x_speed = 10
 var sway_y = 0.3
 var sway_y_speed = 10
 var sway_z = 10
 var sway_z_speed = 5
+var animation_type = "fire"
 
+""" // END OF WEAPON DATA // """
+
+
+var f_mode
 var mm_v = Vector2()
 var holder = null
 var can_shoot = true
@@ -47,6 +55,7 @@ func load_data():
 	if anim:
 		anim.playback_speed = fire_rate
 	audio.stream = sfx
+	
 	
 func _process(_delta):
 	point_laser(bullet.get_collision_point(), bullet.get_collision_normal())
@@ -75,7 +84,7 @@ func fire(shot_num):
 				can_shoot = false
 				clip_size -= 1
 				if anim:
-					anim.play("fire")
+					anim.play(animation_type)
 				audio.play()
 				
 				shoot_bullet()

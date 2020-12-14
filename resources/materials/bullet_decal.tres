@@ -2,7 +2,6 @@
 
 [ext_resource path="res://assets/textures/bullet_hole/bullet-hole-001.png" type="Texture" id=1]
 
-
 [resource]
 flags_transparent = true
 params_cull_mode = 2

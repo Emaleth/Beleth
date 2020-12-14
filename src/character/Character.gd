@@ -20,7 +20,8 @@ var air_acceleration = 1
 var ground_acceleration = 6
 var full_contact = false
 
-var weapon = null 
+var r_weapon = null 
+var l_weapon = null 
 var direction = Vector3()
 var velocity = Vector3()
 var linear_velocity = Vector3()
@@ -31,16 +32,19 @@ onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var anim = $Ybot/AnimationPlayer
 onready var camera = $Head/Camera
-onready var hand = $Hand
-onready var hipfire_pos = $Head/Camera/Hipfire
-onready var ads_pos = $Head/Camera/Ads
+onready var right_hand = $RHand
+onready var left_hand = $LHand
+onready var right_hipfire_pos = $Head/Camera/RHipfire
+onready var left_hipfire_pos = $Head/Camera/LHipfire
+onready var right_ads_pos = $Head/Camera/RAds
+onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Tween
 
-onready var ar = preload("res://src/weapons/test_gun/Ar.tscn")
+onready var test_weapon = preload("res://src/weapons/test_gun/test_weapon.tscn")
 
 
 func _ready():
-	get_weapon(ar)
+	get_weapon(test_weapon)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")
@@ -114,25 +118,45 @@ func aim(delta):
 		HIPFIRE:
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
-			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(hipfire_pos.global_transform.origin, ads_speed * delta)
-			weapon.sway(delta, HIPFIRE)
-			weapon.align_sights(HIPFIRE)
+			
+			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_hipfire_pos.global_transform.origin, ads_speed * delta)
+			if r_weapon:
+				r_weapon.sway(delta, HIPFIRE)
+				r_weapon.align_sights(HIPFIRE)
+			
+			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_hipfire_pos.global_transform.origin, ads_speed * delta)
+			if l_weapon:
+				l_weapon.sway(delta, HIPFIRE)
+				l_weapon.align_sights(HIPFIRE)
 			
 		ADS:
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
-			hand.global_transform.origin = hand.global_transform.origin.linear_interpolate(ads_pos.global_transform.origin, ads_speed * delta)
-			weapon.sway(delta, ADS)
-			weapon.align_sights(ADS)
+			
+			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
+			if r_weapon:			
+				r_weapon.sway(delta, ADS)
+				r_weapon.align_sights(ADS)
+			
+			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)
+			if l_weapon:			
+				l_weapon.sway(delta, ADS)
+				l_weapon.align_sights(ADS)
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1:
-		hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+		right_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
+		left_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
-	hand.rotation_degrees.x = clamp(hand.rotation_degrees.x, -70, 70)
-	hand.rotation_degrees.y = clamp(hand.rotation_degrees.y, -70, 70)
-	hand.rotation_degrees.z = clamp(hand.rotation_degrees.z, 0, 0)
+	# RIGHT HAND
+	right_hand.rotation_degrees.x = clamp(right_hand.rotation_degrees.x, -70, 70)
+	right_hand.rotation_degrees.y = clamp(right_hand.rotation_degrees.y, -70, 70)
+	right_hand.rotation_degrees.z = clamp(right_hand.rotation_degrees.z, 0, 0)
+	# LEFT HAND
+	left_hand.rotation_degrees.x = clamp(left_hand.rotation_degrees.x, -70, 70)
+	left_hand.rotation_degrees.y = clamp(left_hand.rotation_degrees.y, -70, 70)
+	left_hand.rotation_degrees.z = clamp(left_hand.rotation_degrees.z, 0, 0)
 	
-	
+		
 func view_recoil(force):
 	tween.stop_all()
 
@@ -150,12 +174,22 @@ func view_recoil(force):
 
 
 func get_weapon(wpn):
-	for w in hand.get_children():
+	for w in right_hand.get_children():
 		w.queue_free()
-	weapon = wpn.instance()
-	hand.add_child(weapon)
-	weapon.holder = self
-	ads_pos.transform.origin = -weapon.sight_pivot.transform.origin
+	for w in left_hand.get_children():
+			w.queue_free()
+			
+	r_weapon = wpn.instance()
+	right_hand.add_child(r_weapon)
+	r_weapon.holder = self
+	right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin
+	
+	if r_weapon.akimbo == true:
+		l_weapon = wpn.instance()
+		left_hand.add_child(l_weapon)
+		l_weapon.holder = self
+		left_ads_pos.transform.origin = -l_weapon.sight_pivot.transform.origin - l_weapon.akimbo_offset
+		right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin + r_weapon.akimbo_offset
 
 
 
