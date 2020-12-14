@@ -15,6 +15,7 @@ var spread
 var slug_size = 1
 var sight_mat = null
 var bullet_decal = preload("res://src/decals/Hole.tscn")
+var sfx
 
 var sway_x = 0.3
 var sway_x_speed = 10
@@ -35,6 +36,7 @@ onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var muzzle_flash = $Muzzle/MuzzleFlash
 onready var laser = $Laser
+onready var audio = $Muzzle/AudioStreamPlayer3D
 
 	
 func load_data():
@@ -44,7 +46,7 @@ func load_data():
 	anim = find_node("AnimationPlayer")
 	if anim:
 		anim.playback_speed = fire_rate
-	
+	audio.stream = sfx
 	
 func _process(_delta):
 	point_laser(bullet.get_collision_point(), bullet.get_collision_normal())
@@ -74,7 +76,7 @@ func fire(shot_num):
 				clip_size -= 1
 				if anim:
 					anim.play("fire")
-				$Muzzle/AudioStreamPlayer3D.play()
+				audio.play()
 				
 				shoot_bullet()
 				
@@ -84,14 +86,14 @@ func fire(shot_num):
 				
 				tween.playback_speed = 1
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.01 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.05 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
 				
 				tween.playback_speed = fire_rate
 				muzzle_flash.visible = false
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.01) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.05) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
 				yield(tween,"tween_all_completed")
 					

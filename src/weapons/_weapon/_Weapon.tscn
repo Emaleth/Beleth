@@ -1,24 +1,21 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.gd" type="Script" id=1]
-[ext_resource path="res://assets/sounds/sfx/rifle.ogg" type="AudioStream" id=2]
-[ext_resource path="res://resources/sight_materials/minimal_sight_mat.tres" type="Material" id=3]
-[ext_resource path="res://assets/crosshairs/pistol.png" type="Texture" id=4]
+[ext_resource path="res://resources/sight_materials/laser_dot_mat.tres" type="Material" id=3]
 [ext_resource path="res://resources/materials/muzzle_flash.tres" type="Material" id=5]
 [ext_resource path="res://assets/models/vfx/muzzleflash.obj" type="ArrayMesh" id=6]
 
-[sub_resource type="SphereMesh" id=1]
-radius = 0.005
-height = 0.01
-
-[sub_resource type="QuadMesh" id=2]
+[sub_resource type="QuadMesh" id=1]
 size = Vector2( 0.01, 0.01 )
+
+[sub_resource type="StreamTexture" id=2]
+flags = 23
 
 [sub_resource type="SpatialMaterial" id=3]
 flags_transparent = true
 flags_unshaded = true
 params_cull_mode = 2
-albedo_texture = ExtResource( 4 )
+albedo_texture = SubResource( 2 )
 
 [sub_resource type="QuadMesh" id=4]
 material = ExtResource( 3 )
@@ -35,20 +32,8 @@ collision_mask = 3
 [node name="Muzzle" type="Position3D" parent="."]
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Muzzle"]
-stream = ExtResource( 2 )
+bus = "SFX"
 emission_angle_enabled = true
-
-[node name="CPUParticles" type="CPUParticles" parent="Muzzle"]
-emitting = false
-amount = 100
-lifetime = 0.05
-one_shot = true
-explosiveness = 1.0
-mesh = SubResource( 1 )
-direction = Vector3( 0, 0, -1 )
-spread = 15.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 5.0
 
 [node name="MuzzleFlash" type="MeshInstance" parent="Muzzle"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.056245 )
@@ -66,7 +51,7 @@ material/2 = null
 
 [node name="Holo" type="MeshInstance" parent="SightPivot"]
 cast_shadow = 0
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 material/0 = SubResource( 3 )
 
 [node name="Laser" type="Spatial" parent="."]

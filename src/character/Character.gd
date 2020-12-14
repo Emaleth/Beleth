@@ -36,17 +36,11 @@ onready var hipfire_pos = $Head/Camera/Hipfire
 onready var ads_pos = $Head/Camera/Ads
 onready var tween = $Head/Tween
 
-
-onready var pistol = preload("res://src/weapons/pistol/Pistol.tscn")
-onready var smg = preload("res://src/weapons/smg/Smg.tscn")
-onready var ar = preload("res://src/weapons/ar/Ar.tscn")
-onready var sr = preload("res://src/weapons/sr/Sr.tscn")
-onready var shotgun = preload("res://src/weapons/shotgun/Shotgun.tscn")
-
+onready var ar = preload("res://src/weapons/test_gun/Ar.tscn")
 
 
 func _ready():
-	get_weapon(shotgun)
+	get_weapon(ar)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")
@@ -165,23 +159,3 @@ func get_weapon(wpn):
 
 
 
-
-# DEBUG #
-func _on_ar_pressed():
-	get_weapon(ar)
-
-
-func _on_sr_pressed():
-	get_weapon(sr)
-
-
-func _on_pistol_pressed():
-	get_weapon(pistol)
-
-
-func _on_smg_pressed():
-	get_weapon(smg)
-
-
-func _on_shotgun_pressed():
-	get_weapon(shotgun)
