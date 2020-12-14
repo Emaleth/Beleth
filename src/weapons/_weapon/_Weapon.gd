@@ -99,6 +99,7 @@ func fire(shot_num):
 			
 
 func sway(delta, a_mode):
+	mm_v = mm_v.normalized()
 	match a_mode:
 		aim_mode.HIPFIRE:
 			rotation_degrees.x = lerp(rotation_degrees.x, mm_v.y * sway_y, sway_y_speed * delta) 

@@ -117,7 +117,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2, -4 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.531916, 0.846797, 0, -0.846797, -0.531916, 0, 2.94061, 0 )
+directional_shadow_mode = 0
 
 [node name="BakedLightmap" type="BakedLightmap" parent="."]
+bake_quality = 0
 bake_extents = Vector3( 100, 100, 100 )
 light_data = SubResource( 5 )

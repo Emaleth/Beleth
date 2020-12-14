@@ -130,8 +130,14 @@ func get_direction():
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
 	
 	direction = direction.normalized()
-	r_weapon.mm_v += Vector2(direction.x, direction.z).normalized()
-	l_weapon.mm_v += Vector2(direction.x, direction.z).normalized()
+	r_weapon.mm_v += Vector2(
+		(Input.get_action_strength("move_right") - Input.get_action_strength("move_left")),
+		(Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) 
+		).normalized()
+	l_weapon.mm_v += Vector2(
+		(Input.get_action_strength("move_right") - Input.get_action_strength("move_left")),
+		(Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward"))
+		).normalized()
 	
 	
 func calculate_gravity(delta):
