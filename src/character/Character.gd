@@ -64,6 +64,8 @@ func _physics_process(delta):
 func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
+			r_weapon.mm_v = event.relative.normalized()
+			l_weapon.mm_v = event.relative.normalized()
 			if event.relative.y != 0:
 				tween.stop_all() # THIS WORKS. IT WORKS TOO WELL IN FACT. NEED TO ADD MOUSE MOTION TO THE TWEEN.
 			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
@@ -81,7 +83,46 @@ func _input(event):
 	if Input.is_action_just_released("ads"):
 		aim_mode = HIPFIRE
 		
-	
+	#
+	if Input.is_action_just_pressed("semi"):
+		if r_weapon.fire_mode.SEMI in r_weapon.permited_modes:
+			r_weapon.f_mode = r_weapon.fire_mode.SEMI
+		if l_weapon.fire_mode.SEMI in l_weapon.permited_modes:
+			l_weapon.f_mode = l_weapon.fire_mode.SEMI
+	if Input.is_action_just_pressed("burst"):
+		if r_weapon.fire_mode.BURST in r_weapon.permited_modes:
+			r_weapon.f_mode = r_weapon.fire_mode.BURST
+		if l_weapon.fire_mode.BURST in l_weapon.permited_modes:
+			l_weapon.f_mode = l_weapon.fire_mode.BURST
+	if Input.is_action_just_pressed("auto"):
+		if r_weapon.fire_mode.AUTO in r_weapon.permited_modes:
+			r_weapon.f_mode = r_weapon.fire_mode.AUTO
+		if l_weapon.fire_mode.AUTO in l_weapon.permited_modes:
+			l_weapon.f_mode = l_weapon.fire_mode.AUTO
+		
+		
+func _process(_delta):
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		match r_weapon.f_mode:
+			r_weapon.fire_mode.SEMI:
+				if Input.is_action_just_pressed("fire"):
+					r_weapon.fire(1)
+					if l_weapon:
+						l_weapon.fire(1)
+					
+			r_weapon.fire_mode.AUTO:
+				if Input.is_action_pressed("fire"):
+					r_weapon.fire(1)
+					if l_weapon:
+						l_weapon.fire(1)
+		
+			r_weapon.fire_mode.BURST:
+				if Input.is_action_just_pressed("fire"):
+					r_weapon.fire(3)
+					if l_weapon:
+						l_weapon.fire(3)
+					
+					
 func get_direction():
 	direction = Vector3()
 	
@@ -89,6 +130,8 @@ func get_direction():
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
 	
 	direction = direction.normalized()
+	r_weapon.mm_v += Vector2(direction.x, direction.z).normalized()
+	l_weapon.mm_v += Vector2(direction.x, direction.z).normalized()
 	
 	
 func calculate_gravity(delta):
@@ -134,12 +177,14 @@ func aim(delta):
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
 			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
-			if r_weapon:			
+			if r_weapon:
+				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				r_weapon.sway(delta, ADS)
 				r_weapon.align_sights(ADS)
 			
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)
 			if l_weapon:			
+				l_weapon.rotation.z = lerp_angle(l_weapon.rotation.z, deg2rad(-l_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				l_weapon.sway(delta, ADS)
 				l_weapon.align_sights(ADS)
 	
@@ -161,7 +206,7 @@ func view_recoil(force):
 	tween.stop_all()
 
 	tween.remove_all()
-	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x + deg2rad(force.y), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x + deg2rad(force.y), 0.05 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.interpolate_property(camera, "rotation:y", camera.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()
 
@@ -190,6 +235,8 @@ func get_weapon(wpn):
 		l_weapon.holder = self
 		left_ads_pos.transform.origin = -l_weapon.sight_pivot.transform.origin - l_weapon.akimbo_offset
 		right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin + r_weapon.akimbo_offset
+	
+
 
 
 

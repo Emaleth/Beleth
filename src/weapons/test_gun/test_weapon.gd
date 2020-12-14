@@ -13,5 +13,5 @@ func _ready():
 	recoil_force = Vector3(0.2, 1, 0.01)
 	spread = 0.1
 #	slug_size = 8
-#	akimbo = true
+	akimbo = true
 	load_data()

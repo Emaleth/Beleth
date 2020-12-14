@@ -20,6 +20,7 @@ var bullet_decal = preload("res://src/decals/Hole.tscn")
 var sfx = preload("res://assets/sounds/sfx/minigun.ogg")
 var akimbo = false
 var akimbo_offset = Vector3(0.05, 0, 0)
+var ads_akimbo_z_rot = 30
 var sway_x = 0.3
 var sway_x_speed = 10
 var sway_y = 0.3
@@ -30,9 +31,8 @@ var animation_type = "fire"
 
 """ // END OF WEAPON DATA // """
 
-
-var f_mode
 var mm_v = Vector2()
+var f_mode
 var holder = null
 var can_shoot = true
 var anim : AnimationPlayer
@@ -59,19 +59,6 @@ func load_data():
 	
 func _process(_delta):
 	point_laser(bullet.get_collision_point(), bullet.get_collision_normal())
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		match f_mode:
-			fire_mode.SEMI:
-				if Input.is_action_just_pressed("fire"):
-					fire(1)
-					
-			fire_mode.AUTO:
-				if Input.is_action_pressed("fire"):
-					fire(1)
-		
-			fire_mode.BURST:
-				if Input.is_action_just_pressed("fire"):
-					fire(3)
 		
 		
 func fire(shot_num):
@@ -86,9 +73,6 @@ func fire(shot_num):
 				if anim:
 					anim.play(animation_type)
 				audio.play()
-				
-				shoot_bullet()
-				
 				holder.view_recoil(recoil_force)
 				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
 				muzzle_flash.visible = true
@@ -98,6 +82,8 @@ func fire(shot_num):
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.05 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
+				
+				shoot_bullet()
 				
 				tween.playback_speed = fire_rate
 				muzzle_flash.visible = false
@@ -111,21 +97,6 @@ func fire(shot_num):
 		else:
 			break
 			
-			
-func _input(event):
-	if Input.is_action_just_pressed("semi"):
-		if fire_mode.SEMI in permited_modes:
-			f_mode = fire_mode.SEMI
-	if Input.is_action_just_pressed("burst"):
-		if fire_mode.BURST in permited_modes:
-			f_mode = fire_mode.BURST
-	if Input.is_action_just_pressed("auto"):
-		if fire_mode.AUTO in permited_modes:
-			f_mode = fire_mode.AUTO
-	
-	if event is InputEventMouseMotion:
-		mm_v = event.relative.normalized()
-
 
 func sway(delta, a_mode):
 	match a_mode:
