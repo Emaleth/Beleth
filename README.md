@@ -8,7 +8,6 @@
 ##### Sources:
 **3D Models:**  
 &emsp;◈ https://opengameart.org  
-&emsp;◈ https://free3d.com/3d-model/pack-of-15-modern-weapons-6-attachments-734779.html  
 &emsp;◈ https://mixamo.com  
 &emsp;◈ Emaleth  
 **Sound:**  

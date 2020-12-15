@@ -6,12 +6,12 @@ func _ready():
 #	bullet_decal = preload("res://src/decals/Nail.tscn")
 	sfx = preload("res://assets/sounds/sfx/minigun.ogg")
 	damage = 1
-	fire_rate = 15
+	fire_rate = 20 # 14 bullets per second is maximum
 	permited_modes = [fire_mode.AUTO, fire_mode.BURST, fire_mode.SEMI]
 	default_mode = fire_mode.AUTO
 	clip_size = 320000
-	recoil_force = Vector3(0.2, 1, 0.01)
-	spread = 0.1
+	recoil_force = Vector3(0.1, 0.1, 0.01)
+	spread = 0.5
 #	slug_size = 8
-	akimbo = true
+#	akimbo = true
 	load_data()

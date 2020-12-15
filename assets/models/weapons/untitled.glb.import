@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/AK47.glb-7b78007e8c0b10be2bf941871d7cd888.scn"
+path="res://.import/untitled.glb-561d106e777aa9bad4765433a13dbdc7.scn"
 
 [deps]
 
-source_file="res://assets/models/weapons/AK47.glb"
-dest_files=[ "res://.import/AK47.glb-7b78007e8c0b10be2bf941871d7cd888.scn" ]
+source_file="res://assets/models/weapons/untitled.glb"
+dest_files=[ "res://.import/untitled.glb-561d106e777aa9bad4765433a13dbdc7.scn" ]
 
 [params]
 

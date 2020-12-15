@@ -2,7 +2,6 @@
 
 [ext_resource path="res://assets/crosshairs/laser_dot.png" type="Texture" id=1]
 
-
 [resource]
 flags_transparent = true
 flags_unshaded = true
