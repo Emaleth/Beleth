@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://resources/materials/PaintedMetal013.tres" type="Material" id=2]
+[ext_resource path="res://resources/materials/MetalPlates002.tres" type="Material" id=1]
 [ext_resource path="res://resources/materials/Metal032.tres" type="Material" id=3]
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/weapons/test_gun/test_weapon.gd" type="Script" id=6]
@@ -15,10 +15,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 1 ),
+"times": PoolRealArray( 0, 0.2, 1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.16939, -0.00120127, 0 ), Vector3( 0.14235, -0.00120127, -4.40533e-09 ), Vector3( 0.169, -0.001, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.0332709 ), Vector3( 0, 0, 0 ) ]
 }
 
 [node name="Ar" instance=ExtResource( 5 )]
@@ -27,25 +27,26 @@ script = ExtResource( 6 )
 [node name="Muzzle" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.23234 )
 
-[node name="SightPivot" parent="." index="3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0312615, 0 )
+[node name="SightPivot" parent="." index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0236451, 0 )
 
 [node name="Holo" parent="SightPivot" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.196676 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.180813 )
 
-[node name="Laser" parent="." index="4"]
+[node name="Laser" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.582039 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
 anims/fire = SubResource( 1 )
 
 [node name="untitled" parent="." index="6" instance=ExtResource( 7 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.0445978, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0353567, 0 )
 
 [node name="Body" parent="untitled" index="0"]
-material/0 = ExtResource( 2 )
+material/0 = ExtResource( 1 )
 
 [node name="Slider" parent="untitled" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0332709 )
 material/0 = ExtResource( 3 )
 
 [editable path="untitled"]

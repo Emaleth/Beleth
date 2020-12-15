@@ -45,8 +45,6 @@ material/0 = null
 material/1 = null
 material/2 = null
 
-[node name="Tween" type="Tween" parent="."]
-
 [node name="SightPivot" type="Spatial" parent="."]
 
 [node name="Holo" type="MeshInstance" parent="SightPivot"]
@@ -61,3 +59,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001 )
 cast_shadow = 0
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

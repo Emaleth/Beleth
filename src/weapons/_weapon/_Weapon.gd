@@ -39,13 +39,15 @@ var anim : AnimationPlayer
 
 onready var sight_pivot = $SightPivot
 onready var sight_holo = $SightPivot/Holo
-onready var tween = $Tween
+onready var tween  = $Tween
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var muzzle_flash = $Muzzle/MuzzleFlash
 onready var laser = $Laser
 onready var audio = $Muzzle/AudioStreamPlayer3D
 
+var start_t
+var stop_t
 	
 func load_data():
 	laser.set_as_toplevel(true)
@@ -68,34 +70,36 @@ func fire(shot_num):
 			if can_shoot == false:
 				return
 			else:
+				start_t = OS.get_ticks_msec()
 				can_shoot = false
+				$Timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox 15ms 
+				i += 1
 				clip_size -= 1
-				if anim:
-					anim.play(animation_type)
 				audio.play()
+				if anim:
+#					anim.playback_speed = 1
+					anim.play(animation_type)
+					
 				holder.view_recoil(recoil_force)
 				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
 				muzzle_flash.visible = true
-				var start_t = OS.get_ticks_msec()
-				tween.playback_speed = 1
+				
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, transform.origin.z + recoil_force.z, 0.01 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
 				
 				shoot_bullet()
 				
-				tween.playback_speed = fire_rate
+#				if anim:
+#					anim.playback_speed = fire_rate
+##					anim.play(animation_type)
+					
 				muzzle_flash.visible = false
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.01) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
-				yield(tween,"tween_all_completed")
-				var stop_t = OS.get_ticks_msec()
-				print("bullet time = ",stop_t - start_t, " ms")
-				print(get_physics_process_delta_time())
-				i += 1
-				can_shoot = true
+		
 		else:
 			break
 			
@@ -157,3 +161,9 @@ func shoot_bullet():
 			b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
 			if target.has_method("hit"):
 				target.hit(damage)
+
+
+func _on_Timer_timeout():
+	can_shoot = true
+	stop_t = OS.get_ticks_msec()	
+	print("bullet time = ",stop_t - start_t, " ms")

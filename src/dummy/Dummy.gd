@@ -17,8 +17,7 @@ func _physics_process(_delta):
 		target.y = self.transform.origin.y
 		target.z = get_parent().get_node("Character").global_transform.origin.z
 		look_at(target, Vector3.UP)
-	if health == 0:
-		queue_free()
+
 
 func hit(amount):
 	$AudioStreamPlayer3D.play()

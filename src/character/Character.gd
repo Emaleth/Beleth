@@ -89,18 +89,21 @@ func _input(event):
 	if Input.is_action_just_pressed("semi"):
 		if r_weapon.fire_mode.SEMI in r_weapon.permited_modes:
 			r_weapon.f_mode = r_weapon.fire_mode.SEMI
-		if l_weapon.fire_mode.SEMI in l_weapon.permited_modes:
-			l_weapon.f_mode = l_weapon.fire_mode.SEMI
+		if l_weapon:
+			if l_weapon.fire_mode.SEMI in l_weapon.permited_modes:
+				l_weapon.f_mode = l_weapon.fire_mode.SEMI
 	if Input.is_action_just_pressed("burst"):
 		if r_weapon.fire_mode.BURST in r_weapon.permited_modes:
 			r_weapon.f_mode = r_weapon.fire_mode.BURST
-		if l_weapon.fire_mode.BURST in l_weapon.permited_modes:
-			l_weapon.f_mode = l_weapon.fire_mode.BURST
+		if l_weapon:
+			if l_weapon.fire_mode.BURST in l_weapon.permited_modes:
+				l_weapon.f_mode = l_weapon.fire_mode.BURST
 	if Input.is_action_just_pressed("auto"):
 		if r_weapon.fire_mode.AUTO in r_weapon.permited_modes:
 			r_weapon.f_mode = r_weapon.fire_mode.AUTO
-		if l_weapon.fire_mode.AUTO in l_weapon.permited_modes:
-			l_weapon.f_mode = l_weapon.fire_mode.AUTO
+		if l_weapon:
+			if l_weapon.fire_mode.AUTO in l_weapon.permited_modes:
+				l_weapon.f_mode = l_weapon.fire_mode.AUTO
 		
 		
 func _process(_delta):
@@ -108,19 +111,22 @@ func _process(_delta):
 		match r_weapon.f_mode:
 			r_weapon.fire_mode.SEMI:
 				if Input.is_action_just_pressed("fire"):
-					r_weapon.fire(1)
+					if r_weapon:
+						r_weapon.fire(1)
 					if l_weapon:
 						l_weapon.fire(1)
 					
 			r_weapon.fire_mode.AUTO:
 				if Input.is_action_pressed("fire"):
-					r_weapon.fire(1)
+					if r_weapon:
+						r_weapon.fire(1)
 					if l_weapon:
 						l_weapon.fire(1)
 		
 			r_weapon.fire_mode.BURST:
 				if Input.is_action_just_pressed("fire"):
-					r_weapon.fire(3)
+					if r_weapon:
+						r_weapon.fire(3)
 					if l_weapon:
 						l_weapon.fire(3)
 					
