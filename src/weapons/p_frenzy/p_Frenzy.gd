@@ -4,7 +4,7 @@ extends "res://src/weapons/_weapon/_Weapon.gd"
 func _ready():
 	sight_mat = preload("res://resources/sight_materials/ar_sight_mat.tres")
 #	bullet_decal = preload("res://src/decals/Nail.tscn")
-	sfx = preload("res://assets/sounds/sfx/frenzy_shot.ogg")
+	sfx = preload("res://assets/sounds/sfx/frenzy_shot.wav")
 	fire_rate = 10 # 50 bullets per second is maximum
 	damage = 1
 	permited_modes = [fire_mode.AUTO, fire_mode.BURST, fire_mode.SEMI]
