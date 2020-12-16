@@ -28,6 +28,8 @@ var sway_y_speed = 10
 var sway_z = 10
 var sway_z_speed = 5
 var animation_type = "fire"
+var slider_mov_dist 
+var slider = null
 
 """ // END OF WEAPON DATA // """
 
@@ -35,7 +37,6 @@ var mm_v = Vector2()
 var f_mode
 var holder = null
 var can_shoot = true
-var anim : AnimationPlayer
 
 onready var sight_pivot = $SightPivot
 onready var sight_holo = $SightPivot/Holo
@@ -53,9 +54,6 @@ func load_data():
 	laser.set_as_toplevel(true)
 	f_mode = default_mode
 	sight_holo.set_surface_material(0, sight_mat)
-	anim = find_node("AnimationPlayer")
-	if anim:
-		anim.playback_speed = fire_rate
 	audio.stream = sfx
 	
 	
@@ -76,28 +74,23 @@ func fire(shot_num):
 				i += 1
 				clip_size -= 1
 				audio.play()
-				if anim:
-#					anim.playback_speed = 1
-					anim.play(animation_type)
-					
+
 				holder.view_recoil(recoil_force)
 				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
 				muzzle_flash.visible = true
 				
 				tween.remove_all()
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.interpolate_property(slider, "transform:origin:z", transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
 				
 				shoot_bullet()
-				
-#				if anim:
-#					anim.playback_speed = fire_rate
-##					anim.play(animation_type)
 					
 				muzzle_flash.visible = false
 				tween.remove_all()
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.interpolate_property(slider, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
 		
 		else:
