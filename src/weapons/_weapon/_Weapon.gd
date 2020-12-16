@@ -15,7 +15,7 @@ var clip_size = 666
 var recoil_force = Vector3(0, 0, 0)
 var spread = 0
 var slug_size = 1
-var sight_mat = preload("res://resources/sight_materials/ar_sight_mat.tres")
+var sight_mat #= preload("res://resources/sight_materials/ar_sight_mat.tres")
 var bullet_decal = preload("res://src/decals/Hole.tscn")
 var sfx# = preload("res://assets/sounds/sfx/minigun.ogg")
 var akimbo = false
@@ -47,8 +47,8 @@ onready var muzzle_flash = $Muzzle/MuzzleFlash
 onready var laser = $Laser
 onready var audio = $Muzzle/AudioStreamPlayer3D
 
-var start_t
-var stop_t
+#var start_t
+#var stop_t
 	
 func load_data():
 	laser.set_as_toplevel(true)
@@ -62,16 +62,15 @@ func _process(_delta):
 		
 		
 func fire(shot_num):
-	var i = 1
-	while i <= shot_num:
+	for i in shot_num:
 		if clip_size > 0:
 			if can_shoot == false:
 				return
+				
 			else:
-				start_t = OS.get_ticks_msec()
+#				start_t = OS.get_ticks_msec()
 				can_shoot = false
 				$Timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox 15ms 
-				i += 1
 				clip_size -= 1
 				audio.play()
 
@@ -92,7 +91,8 @@ func fire(shot_num):
 				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.interpolate_property(slider, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
-		
+				yield(tween,"tween_all_completed")
+
 		else:
 			break
 			
@@ -158,5 +158,6 @@ func shoot_bullet():
 
 func _on_Timer_timeout():
 	can_shoot = true
-	stop_t = OS.get_ticks_msec()	
-	print("bullet time = ",stop_t - start_t, " ms")
+#	stop_t = OS.get_ticks_msec()	
+#	print("bullet time = ",stop_t - start_t, " ms")
+	

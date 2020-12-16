@@ -40,7 +40,7 @@ onready var right_ads_pos = $Head/Camera/RAds
 onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Tween
 
-onready var p_frenzy = preload("res://src/weapons/p_frenzy/p_frenzy.tscn")
+onready var p_frenzy = preload("res://src/weapons/p_frenzy/p_Frenzy.tscn")
 
 
 func _ready():
@@ -194,7 +194,6 @@ func aim(delta):
 			
 			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
 			if r_weapon:
-#				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				r_weapon.sway(delta, ADS)
 				r_weapon.align_sights(ADS)
 			
@@ -205,7 +204,7 @@ func aim(delta):
 				l_weapon.sway(delta, ADS)
 				l_weapon.align_sights(ADS)
 	
-	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1:
+	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 0.5:
 		right_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 		left_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
