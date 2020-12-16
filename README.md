@@ -7,11 +7,9 @@
 
 ##### Sources:
 **3D Models:**  
-&emsp;◈ https://opengameart.org  
 &emsp;◈ https://mixamo.com  
 &emsp;◈ Emaleth  
 **Sound:**  
-&emsp;◈ https://opengameart.org  
 &emsp;◈ Emaleth  
 **Fonts:**  
 &emsp;◈ KenneyNL  

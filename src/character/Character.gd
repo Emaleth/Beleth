@@ -40,11 +40,11 @@ onready var right_ads_pos = $Head/Camera/RAds
 onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Tween
 
-onready var test_weapon = preload("res://src/weapons/test_gun/test_weapon.tscn")
+onready var p_frenzy = preload("res://src/weapons/p_frenzy/p_frenzy.tscn")
 
 
 func _ready():
-	get_weapon(test_weapon)
+	get_weapon(p_frenzy)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")

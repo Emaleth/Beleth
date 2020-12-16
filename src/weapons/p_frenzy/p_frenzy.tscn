@@ -3,8 +3,8 @@
 [ext_resource path="res://resources/materials/MetalPlates002.tres" type="Material" id=1]
 [ext_resource path="res://resources/materials/Metal032.tres" type="Material" id=3]
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://src/weapons/test_gun/test_weapon.gd" type="Script" id=6]
-[ext_resource path="res://assets/models/weapons/untitled.glb" type="PackedScene" id=7]
+[ext_resource path="res://src/weapons/p_frenzy/p_frenzy.gd" type="Script" id=6]
+[ext_resource path="res://assets/models/weapons/p_frenzy/Frenzy.glb" type="PackedScene" id=7]
 
 [node name="Ar" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
