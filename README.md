@@ -14,10 +14,10 @@
 **Fonts:**  
 &emsp;◈ KenneyNL  
 **Textures:**  
+&emsp;◈ https://opengameart.org/content/lens-flares-and-particles  
 &emsp;◈ https://cc0textures.com  
 &emsp;◈ https://texturehaven.com  
 &emsp;◈ https://opengameart.org  
-**Crosshairs:**  
-&emsp;◈ KenneyNL  
+
 
 

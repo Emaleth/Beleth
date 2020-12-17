@@ -1,9 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.gd" type="Script" id=1]
-[ext_resource path="res://resources/sight_materials/laser_dot_mat.tres" type="Material" id=3]
-[ext_resource path="res://resources/materials/muzzle_flash.tres" type="Material" id=5]
+[ext_resource path="res://resources/materials/sights/laser_dot.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/vfx/muzzle_flash.tres" type="Material" id=5]
 [ext_resource path="res://assets/models/vfx/muzzleflash.obj" type="ArrayMesh" id=6]
+
+
+
+
 
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 0.01, 0.01 )

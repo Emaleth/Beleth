@@ -15,9 +15,9 @@ var clip_size = 666
 var recoil_force = Vector3(0, 0, 0)
 var spread = 0
 var slug_size = 1
-var sight_mat #= preload("res://resources/sight_materials/ar_sight_mat.tres")
+var sight_mat
 var bullet_decal = preload("res://src/decals/Hole.tscn")
-var sfx# = preload("res://assets/sounds/sfx/minigun.ogg")
+var sfx
 var akimbo = false
 var akimbo_offset = Vector3(0.05, 0, 0)
 var ads_akimbo_z_rot = 30

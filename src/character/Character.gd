@@ -205,7 +205,7 @@ func aim(delta):
 				l_weapon.sway(delta, ADS)
 				l_weapon.align_sights(ADS)
 	
-	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 0.5:
+	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 0.2:
 		right_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 		left_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
