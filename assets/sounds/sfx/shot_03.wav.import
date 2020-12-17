@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/frenzy_shot.wav-7e165082dbb722f97566fce86aec7ba2.sample"
+path="res://.import/shot_03.wav-f95bb298faa794a2160438441b4ef02b.sample"
 
 [deps]
 
-source_file="res://assets/sounds/sfx/frenzy_shot.wav"
-dest_files=[ "res://.import/frenzy_shot.wav-7e165082dbb722f97566fce86aec7ba2.sample" ]
+source_file="res://assets/sounds/sfx/shot_03.wav"
+dest_files=[ "res://.import/shot_03.wav-f95bb298faa794a2160438441b4ef02b.sample" ]
 
 [params]
 

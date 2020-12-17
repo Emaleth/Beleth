@@ -10,7 +10,7 @@
 &emsp;◈ https://mixamo.com  
 &emsp;◈ Emaleth  
 **Sound:**  
-&emsp;◈ Emaleth  
+&emsp;◈ https://opengameart.org/content/25-cc0-bang-firework-sfx  
 **Fonts:**  
 &emsp;◈ KenneyNL  
 **Textures:**  
