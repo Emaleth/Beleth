@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/decals/_decal/_Decal.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/materials/MetalPlates006.tres" type="Material" id=2]
-
+[ext_resource path="res://resources/materials/MetalPlates002.tres" type="Material" id=2]
+[ext_resource path="res://assets/models/objects/Nail.glb" type="PackedScene" id=3]
 
 [node name="Nail" instance=ExtResource( 1 )]
 mode = 1
 
-[node name="CSGCylinder" type="CSGCylinder" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -0.119969 )
-radius = 0.005
-height = 0.4
-cone = true
-material = ExtResource( 2 )
+[node name="Nail" parent="." index="1" instance=ExtResource( 3 )]
+
+[node name="Cone" parent="Nail" index="0"]
+material/0 = ExtResource( 2 )
+
+[editable path="Nail"]
