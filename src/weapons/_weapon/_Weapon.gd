@@ -154,6 +154,7 @@ func shoot_bullet():
 			b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
 			if target.has_method("hit"):
 				target.hit(damage)
+				Console.target = target
 
 
 func _on_Timer_timeout():

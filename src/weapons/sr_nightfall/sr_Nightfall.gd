@@ -11,8 +11,8 @@ func _ready():
 	default_mode = fire_mode.AUTO
 	clip_size = 320000
 	recoil_force = Vector3(0.05, 0.5, 0.1)
-	spread = 3.0
-	slug_size = 72
+	spread = 5.0
+	slug_size = 8
 #	akimbo = true
 	slider = $Nightfall/Slider
 	slider_mov_dist = 0.120

@@ -46,10 +46,11 @@ onready var sr_nightfall = preload("res://src/weapons/sr_nightfall/sr_Nightfall.
 
 
 func _ready():
-	get_weapon(sr_nightfall)
+	get_weapon(p_rabidity)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")
+	Console.player = self
 
 
 func _physics_process(delta):

@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/console/Console.gd" type="Script" id=1]
+
+[node name="Console" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsoleBlock" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsoleBlockSplit" type="HBoxContainer" parent="ConsoleBlock"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+custom_constants/separation = 5
+
+[node name="Cmd" type="VBoxContainer" parent="ConsoleBlock/ConsoleBlockSplit"]
+margin_right = 807.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Output" type="TextEdit" parent="ConsoleBlock/ConsoleBlockSplit/Cmd"]
+margin_right = 807.0
+margin_bottom = 526.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 9.0
+readonly = true
+smooth_scrolling = true
+wrap_enabled = true
+
+[node name="Input" type="LineEdit" parent="ConsoleBlock/ConsoleBlockSplit/Cmd"]
+margin_top = 531.0
+margin_right = 807.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+caret_blink = true
+
+[node name="Monitor" type="TextEdit" parent="ConsoleBlock/ConsoleBlockSplit"]
+margin_left = 812.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+readonly = true
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="text_entered" from="ConsoleBlock/ConsoleBlockSplit/Cmd/Input" to="." method="_on_Input_text_entered"]
