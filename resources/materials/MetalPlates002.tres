@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/textures/MetalPlates002_2K-PNG/MetalPlates002_2K_Roughness.png" type="Texture" id=4]
 
 [resource]
+albedo_color = Color( 1, 0.0156863, 0.0156863, 1 )
 albedo_texture = ExtResource( 1 )
 metallic = 1.0
 metallic_texture = ExtResource( 3 )

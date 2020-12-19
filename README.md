@@ -18,6 +18,7 @@
 &emsp;◈ https://cc0textures.com  
 &emsp;◈ https://texturehaven.com  
 &emsp;◈ https://opengameart.org  
+&emsp;◈ https://3dtextures.me  
 
 
 

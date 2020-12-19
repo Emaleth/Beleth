@@ -48,7 +48,7 @@ onready var shotgun_pumpflu = preload("res://src/weapons/shotgun_pumpflu/shotgun
 
 
 func _ready():
-	get_weapon(sr_nightfall)
+	get_weapon(smg_frenzy)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")

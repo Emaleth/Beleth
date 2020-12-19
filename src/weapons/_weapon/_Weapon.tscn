@@ -5,10 +5,6 @@
 [ext_resource path="res://resources/materials/vfx/muzzle_flash.tres" type="Material" id=5]
 [ext_resource path="res://assets/models/vfx/muzzleflash.obj" type="ArrayMesh" id=6]
 
-
-
-
-
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 0.01, 0.01 )
 

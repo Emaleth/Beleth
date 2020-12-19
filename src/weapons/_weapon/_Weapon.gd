@@ -130,11 +130,10 @@ func point_laser(c_point, c_normal):
 	laser.global_transform.origin = c_point
 	
 	if c_normal == Vector3.UP:
-		laser.rotation = Vector3(deg2rad(-90), 0,0 )
-	
+		laser.rotation.x = deg2rad(90)
 	elif c_normal == Vector3.DOWN:
-		laser.rotation = Vector3(deg2rad(90), 0,0 )
-		
+		laser.rotation.x = deg2rad(-90)
+
 	else:
 		laser.look_at(c_point - c_normal, Vector3.UP)
 
