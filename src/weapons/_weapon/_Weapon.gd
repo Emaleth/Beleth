@@ -55,6 +55,7 @@ func load_data():
 	f_mode = default_mode
 	sight_holo.set_surface_material(0, sight_mat)
 	audio.stream = sfx
+	slider = find_node("Slider")
 	
 	
 func _process(_delta):

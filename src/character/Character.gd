@@ -40,13 +40,15 @@ onready var right_ads_pos = $Head/Camera/RAds
 onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Tween
 
-onready var p_frenzy = preload("res://src/weapons/p_frenzy/p_Frenzy.tscn")
+onready var smg_frenzy = preload("res://src/weapons/smg_frenzy/smg_Frenzy.tscn")
 onready var p_rabidity = preload("res://src/weapons/p_rabidity/p_Rabidity.tscn")
 onready var sr_nightfall = preload("res://src/weapons/sr_nightfall/sr_Nightfall.tscn")
+onready var ar_turmoil = preload("res://src/weapons/ar_turmoil/ar_Turmoil.tscn")
+onready var shotgun_pumpflu = preload("res://src/weapons/shotgun_pumpflu/shotgun_Pumpflu.tscn")
 
 
 func _ready():
-	get_weapon(p_rabidity)
+	get_weapon(sr_nightfall)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")

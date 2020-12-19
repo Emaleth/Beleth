@@ -25,7 +25,7 @@ func set_rot(c_point, c_normal, gun_pos):
 		translate(Vector3(0, 0, rand_range(0, 0.2)))
 
 	rotation.z = deg2rad(rand_range(0, 360))
-
+	
 
 func _on_Timer_timeout():
 	queue_free()

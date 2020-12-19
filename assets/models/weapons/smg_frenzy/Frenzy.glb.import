@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Frenzy.glb-ef34ac9c26373f5e2d8899439c8787ef.scn"
+path="res://.import/Frenzy.glb-7e9ebaeaaf71c62f994f3384277ddf8f.scn"
 
 [deps]
 
-source_file="res://assets/models/weapons/p_frenzy/Frenzy.glb"
-dest_files=[ "res://.import/Frenzy.glb-ef34ac9c26373f5e2d8899439c8787ef.scn" ]
+source_file="res://assets/models/weapons/smg_frenzy/Frenzy.glb"
+dest_files=[ "res://.import/Frenzy.glb-7e9ebaeaaf71c62f994f3384277ddf8f.scn" ]
 
 [params]
 
