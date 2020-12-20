@@ -6,18 +6,17 @@
 [ext_resource path="res://resources/materials/Metal032.tres" type="Material" id=4]
 [ext_resource path="res://assets/models/weapons/smg_frenzy/Frenzy.glb" type="PackedScene" id=5]
 
-
 [node name="Frenzy" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.323775 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.370263 )
 
 [node name="SightPivot" parent="." index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0298627, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.043421, 0 )
 
 [node name="Holo" parent="SightPivot" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.069807 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.308165 )
 material/0 = null
 
 [node name="Laser" parent="." index="3"]

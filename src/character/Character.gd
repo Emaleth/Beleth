@@ -46,9 +46,11 @@ onready var sr_nightfall = preload("res://src/weapons/sr_nightfall/sr_Nightfall.
 onready var ar_turmoil = preload("res://src/weapons/ar_turmoil/ar_Turmoil.tscn")
 onready var shotgun_pumpflu = preload("res://src/weapons/shotgun_pumpflu/shotgun_Pumpflu.tscn")
 
+var current_w = 0
+
 
 func _ready():
-	get_weapon(smg_frenzy)
+	get_weapon(p_rabidity)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 #	anim.play("Breathing Idle-loop")
@@ -111,6 +113,13 @@ func _input(event):
 				l_weapon.f_mode = l_weapon.fire_mode.AUTO
 		
 		
+		
+	if Input.is_action_just_pressed("next_weapon"):
+		cycle_w(1)
+	if Input.is_action_just_pressed("previous_weapon"):
+		cycle_w(-1)
+
+	
 func _process(_delta):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		match r_weapon.f_mode:
@@ -258,6 +267,8 @@ func get_weapon(wpn):
 		right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin + r_weapon.akimbo_offset
 	
 
-
-
-
+func cycle_w(updown):
+	var w = [p_rabidity, smg_frenzy, ar_turmoil, shotgun_pumpflu, sr_nightfall]
+	current_w += updown
+	current_w = clamp(current_w, 0, w.size() - 1)
+	get_weapon(w[current_w])

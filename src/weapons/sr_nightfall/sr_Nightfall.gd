@@ -12,5 +12,5 @@ func _ready():
 	clip_size = 320000
 	recoil_force = Vector3(0.01, 1.0, 0.1)
 	spread = 0.01
-	slider_mov_dist = 0.120
+	slider_mov_dist = 0.24
 	load_data()
