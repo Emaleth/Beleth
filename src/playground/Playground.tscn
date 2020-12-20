@@ -9,14 +9,14 @@
 [ext_resource path="res://src/props/MetalWall.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/props/Column.tscn" type="PackedScene" id=8]
 
-[sub_resource type="PlaneMesh" id=6]
+[sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 3 )
 size = Vector2( 100, 100 )
 
-[sub_resource type="ConcavePolygonShape" id=7]
+[sub_resource type="ConcavePolygonShape" id=2]
 data = PoolVector3Array( 50, 0, 50, -50, 0, 50, 50, 0, -50, -50, 0, 50, -50, 0, -50, 50, 0, -50 )
 
-[sub_resource type="BakedLightmapData" id=8]
+[sub_resource type="BakedLightmapData" id=3]
 bounds = AABB( -50, -50, -50, 100, 100, 100 )
 cell_space_transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 200, 200, 200 )
 cell_subdiv = 10
@@ -34,14 +34,14 @@ data = PoolVector3Array( 0, 100, 0, 0, 100, 0, 0, 99.5472, 9.5056, 0.9317, 99.54
 [node name="Playground" type="Spatial"]
 
 [node name="Arena" type="MeshInstance" parent="."]
-mesh = SubResource( 6 )
+mesh = SubResource( 1 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Arena"]
 collision_mask = 3
 
 [node name="CollisionShape" type="CollisionShape" parent="Arena/StaticBody"]
-shape = SubResource( 7 )
+shape = SubResource( 2 )
 
 [node name="Props" type="Node" parent="."]
 
@@ -152,7 +152,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2, -4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.171684, -0.148897, 0.0223122 )
 bake_quality = 0
 bake_extents = Vector3( 50, 50, 50 )
-light_data = SubResource( 8 )
+light_data = SubResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 visible = false
