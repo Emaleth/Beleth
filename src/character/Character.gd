@@ -7,8 +7,8 @@ var maxdeg_camera_rotation = 80
 var mouse_sensitivity = 0
 var gun_sway = 30
 var ads_speed = 20
-var hipfire_cam_fov = 70
-var ads_cam_fov = 40
+var hipfire_cam_fov = 90
+var ads_cam_fov = 30
 var hipfire_mouse_sensitivity = 0.2
 var ads_mouse_sensitivity = 0.1
 
