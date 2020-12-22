@@ -1505,7 +1505,7 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.9,
 shape = SubResource( 5 )
 
 [node name="Head" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67179, -0.0183551 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.018 )
 
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.86265e-09 )
@@ -1528,7 +1528,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.4 )
 
 [node name="LAds" type="Position3D" parent="Head/Camera"]
 
-[node name="Tween" type="Tween" parent="Head"]
+[node name="Recoil" type="Tween" parent="Head"]
+
+[node name="HeadBobbing" type="Tween" parent="Head"]
 
 [node name="GroundCheck" type="RayCast" parent="."]
 enabled = true

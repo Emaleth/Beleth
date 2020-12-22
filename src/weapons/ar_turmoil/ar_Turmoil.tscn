@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://resources/materials/Greeble_Techno_001.tres" type="Material" id=1]
+[ext_resource path="res://resources/materials/Sci-fi_Door_001.tres" type="Material" id=1]
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/materials/Metal025.tres" type="Material" id=3]
 [ext_resource path="res://assets/models/weapons/ar_turmoil/Turmoil.glb" type="PackedScene" id=4]

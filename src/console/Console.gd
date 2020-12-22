@@ -15,9 +15,7 @@ var on_screen = false
 
 
 func _ready():
-	console_block.rect_size.x = rect_size.x
-	console_block.rect_size.y = rect_size.y / 3
-	console_block.rect_position.y = -console_block.rect_size.y
+	initial_setup()
 	
 
 func _process(_delta):
@@ -71,8 +69,8 @@ func hide_console():
 	tween.start()
 	on_screen = false
 	
-	
-	
-	
-	
-	
+
+func initial_setup():
+	console_block.rect_size.x = rect_size.x
+	console_block.rect_size.y = rect_size.y / 3
+	console_block.rect_position.y = -console_block.rect_size.y

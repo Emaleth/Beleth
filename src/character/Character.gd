@@ -7,8 +7,8 @@ var maxdeg_camera_rotation = 80
 var mouse_sensitivity = 0
 var gun_sway = 30
 var ads_speed = 20
-var hipfire_cam_fov = 90
-var ads_cam_fov = 30
+var hipfire_cam_fov = 70
+var ads_cam_fov = 40
 var hipfire_mouse_sensitivity = 0.2
 var ads_mouse_sensitivity = 0.1
 
@@ -19,6 +19,9 @@ var acceleration = 6
 var air_acceleration = 1
 var ground_acceleration = 6
 var full_contact = false
+var bobbing_offset_v = 0.03
+var bobbing_offset_h = 0.02
+var bobbing_dir = 1
 
 var r_weapon = null 
 var l_weapon = null 
@@ -28,6 +31,7 @@ var linear_velocity = Vector3()
 var gravity_vec = Vector3()
 
 onready var head = $Head
+onready var head_tween = $Head/HeadBobbing
 onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var anim = $Ybot/AnimationPlayer
@@ -38,7 +42,7 @@ onready var right_hipfire_pos = $Head/Camera/RHipfire
 onready var left_hipfire_pos = $Head/Camera/LHipfire
 onready var right_ads_pos = $Head/Camera/RAds
 onready var left_ads_pos = $Head/Camera/LAds
-onready var tween = $Head/Tween
+onready var tween = $Head/Recoil
 
 onready var smg_frenzy = preload("res://src/weapons/smg_frenzy/smg_Frenzy.tscn")
 onready var p_rabidity = preload("res://src/weapons/p_rabidity/p_Rabidity.tscn")
@@ -63,6 +67,10 @@ func _physics_process(delta):
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta)
+	if direction != Vector3.ZERO:
+		head_bobbing(true)
+	else:
+		head_bobbing(false)
 
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
@@ -189,6 +197,8 @@ func calculate_velocity(delta):
 func aim(delta):
 	match aim_mode:
 		HIPFIRE:
+			bobbing_offset_v = 0.03
+			bobbing_offset_v = 0.02
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
@@ -203,6 +213,8 @@ func aim(delta):
 				l_weapon.align_sights(HIPFIRE)
 			
 		ADS:
+			bobbing_offset_v = 0.01
+			bobbing_offset_h = 0.005
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
@@ -213,12 +225,12 @@ func aim(delta):
 			
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)
 			if l_weapon:			
-				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)				
+				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				l_weapon.rotation.z = lerp_angle(l_weapon.rotation.z, deg2rad(-l_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				l_weapon.sway(delta, ADS)
 				l_weapon.align_sights(ADS)
 	
-	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 0.2:
+	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
 		right_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 		left_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
 	
@@ -272,3 +284,20 @@ func cycle_w(updown):
 	current_w += updown
 	current_w = clamp(current_w, 0, w.size() - 1)
 	get_weapon(w[current_w])
+
+
+func head_bobbing(moving):
+	if head_tween.is_active():
+		return
+	else:
+		bobbing_dir *= -1
+		if moving:
+			head_tween.remove_all()
+			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset_v * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "translation:x", camera.translation.x, bobbing_offset_h * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.start()
+		else:
+			head_tween.remove_all()
+			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset_v * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "translation:x", camera.translation.x, bobbing_offset_h * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.start()

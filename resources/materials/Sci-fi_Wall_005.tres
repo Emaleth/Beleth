@@ -7,7 +7,7 @@
 [ext_resource path="res://assets/textures/Sci-fi_Wall_005/Sci-fi_Wall_005_roughness.jpg" type="Texture" id=5]
 
 [resource]
-flags_world_triplanar = true
+albedo_color = Color( 0, 0, 0, 1 )
 albedo_texture = ExtResource( 2 )
 metallic = 0.5
 metallic_texture = ExtResource( 3 )
