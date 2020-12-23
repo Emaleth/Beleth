@@ -48,6 +48,7 @@ material/2 = null
 [node name="SightPivot" type="Spatial" parent="."]
 
 [node name="Holo" type="MeshInstance" parent="SightPivot"]
+layers = 4
 cast_shadow = 0
 mesh = SubResource( 1 )
 material/0 = SubResource( 3 )
@@ -56,6 +57,7 @@ material/0 = SubResource( 3 )
 
 [node name="Dot" type="MeshInstance" parent="Laser"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001 )
+layers = 4
 cast_shadow = 0
 mesh = SubResource( 4 )
 material/0 = null

@@ -11,6 +11,10 @@ var hipfire_cam_fov = 70
 var ads_cam_fov = 40
 var hipfire_mouse_sensitivity = 0.2
 var ads_mouse_sensitivity = 0.1
+var h_bob_hip = 0.03
+var h_bob_ads = 0.003
+var h_rot_hip = 0.1
+var h_rot_ads = 0.01
 
 var speed = 7
 var jump = 9
@@ -19,8 +23,8 @@ var acceleration = 6
 var air_acceleration = 1
 var ground_acceleration = 6
 var full_contact = false
-var bobbing_offset_v = 0.03
-var bobbing_offset_h = 0.02
+var bobbing_offset = 0.03
+var bobbing_rotation = 0.02
 var bobbing_dir = 1
 
 var r_weapon = null 
@@ -197,8 +201,8 @@ func calculate_velocity(delta):
 func aim(delta):
 	match aim_mode:
 		HIPFIRE:
-			bobbing_offset_v = 0.03
-			bobbing_offset_v = 0.02
+			bobbing_offset = h_bob_hip
+			bobbing_rotation = h_rot_hip
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
@@ -213,8 +217,8 @@ func aim(delta):
 				l_weapon.align_sights(HIPFIRE)
 			
 		ADS:
-			bobbing_offset_v = 0.01
-			bobbing_offset_h = 0.005
+			bobbing_offset = h_bob_ads
+			bobbing_rotation = h_rot_ads
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
@@ -293,11 +297,11 @@ func head_bobbing(moving):
 		bobbing_dir *= -1
 		if moving:
 			head_tween.remove_all()
-			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset_v * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.interpolate_property(camera, "translation:x", camera.translation.x, bobbing_offset_h * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.start()
 		else:
 			head_tween.remove_all()
-			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset_v * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.interpolate_property(camera, "translation:x", camera.translation.x, bobbing_offset_h * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.start()
