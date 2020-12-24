@@ -16,7 +16,19 @@ var h_bob_ads = 0.003
 var h_rot_hip = 0.1
 var h_rot_ads = 0.01
 
-var speed = 7
+var speed
+var crouch_speed = 3
+var normal_speed = 7
+var sprint_speed = 15
+var crouch_switch_speed = 0.1
+
+var height 
+var c_height 
+var normal_height = 0.85
+var c_normal_height = 1.4
+var crouch_height = 0.5
+var c_crouch_height = 0.8
+
 var jump = 9
 var gravity = 20
 var acceleration = 6
@@ -38,6 +50,7 @@ onready var head = $Head
 onready var head_tween = $Head/HeadBobbing
 onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
+onready var ceiling_check = $CeilingCheck
 onready var anim = $Ybot/AnimationPlayer
 onready var camera = $Head/Camera
 onready var right_hand = $RHand
@@ -47,6 +60,7 @@ onready var left_hipfire_pos = $Head/Camera/LHipfire
 onready var right_ads_pos = $Head/Camera/RAds
 onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
+onready var c_shape = $CollisionShape
 
 onready var smg_frenzy = preload("res://src/weapons/smg_frenzy/smg_Frenzy.tscn")
 onready var p_rabidity = preload("res://src/weapons/p_rabidity/p_Rabidity.tscn")
@@ -67,6 +81,7 @@ func _ready():
 
 func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
+	get_input()
 	get_direction()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
@@ -291,6 +306,14 @@ func cycle_w(updown):
 
 
 func head_bobbing(moving):
+	if ceiling_check.is_colliding() && head.translation.y < height:
+		pass
+	else:
+		head.translation.y = lerp(head.translation.y, height, crouch_switch_speed)
+		c_shape.shape.height = lerp(c_shape.shape.height, c_height, crouch_switch_speed)
+		ceiling_check.translation.y = (c_height - 0.05)
+		ground_check.translation.y = - (c_height - 0.05)
+
 	if head_tween.is_active():
 		return
 	else:
@@ -305,3 +328,18 @@ func head_bobbing(moving):
 			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.start()
+
+func get_input():
+	if Input.is_action_pressed("crouch"):
+		speed = crouch_speed
+		height = crouch_height
+		c_height = c_crouch_height
+	elif Input.is_action_pressed("sprint"):
+		speed = sprint_speed
+		height = normal_height
+		c_height = c_normal_height
+	else:
+		speed = normal_speed
+		height = normal_height
+		c_height = c_normal_height
+		

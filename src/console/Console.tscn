@@ -69,4 +69,12 @@ size_flags_vertical = 3
 readonly = true
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="v_label" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -88.0
+margin_top = -14.0
 [connection signal="text_entered" from="ConsoleBlock/ConsoleBlockSplit/Cmd/Input" to="." method="_on_Input_text_entered"]

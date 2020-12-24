@@ -7,6 +7,7 @@ onready var monitor_field = $ConsoleBlock/ConsoleBlockSplit/Monitor
 
 onready var tween = $Tween
 onready var console_block = $ConsoleBlock
+onready var version_label = $v_label
 
 var player = null
 var target = null
@@ -71,6 +72,7 @@ func hide_console():
 	
 
 func initial_setup():
+	version_label.text = "Version: 0.0.1"
 	console_block.rect_size.x = rect_size.x
 	console_block.rect_size.y = rect_size.y / 3
 	console_block.rect_position.y = -console_block.rect_size.y
