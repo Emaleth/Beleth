@@ -8,6 +8,7 @@
 
 [resource]
 flags_world_triplanar = true
+albedo_color = Color( 0.976471, 0.937255, 0.0117647, 1 )
 albedo_texture = ExtResource( 4 )
 metallic = 1.0
 metallic_texture = ExtResource( 3 )
