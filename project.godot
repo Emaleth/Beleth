@@ -27,6 +27,13 @@ default_bus_layout="res://resources/audio/Audio.tres"
 
 Console="*res://src/console/Console.tscn"
 
+[importer_defaults]
+
+ogg_vorbis={
+"loop": false,
+"loop_offset": 0
+}
+
 [input]
 
 move_forward={

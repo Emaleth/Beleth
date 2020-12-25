@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/quaddamage_out.ogg-a950421fb0c51c2902047abf6b315234.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/shoot/quaddamage_out.ogg"
+dest_files=[ "res://.import/quaddamage_out.ogg-a950421fb0c51c2902047abf6b315234.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

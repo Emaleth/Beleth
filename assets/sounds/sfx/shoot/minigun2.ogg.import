@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/minigun2.ogg-17ae0ade9c5df99415b43df988908019.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/shoot/minigun2.ogg"
+dest_files=[ "res://.import/minigun2.ogg-17ae0ade9c5df99415b43df988908019.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

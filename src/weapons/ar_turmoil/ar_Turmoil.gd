@@ -3,7 +3,7 @@ extends "res://src/weapons/_weapon/_Weapon.gd"
 
 func _ready():
 	sight_mat = preload("res://resources/materials/sights/circle_ring_sight.tres")
-	sfx = preload("res://assets/sounds/sfx/bang_04.wav")
+	sfx = preload("res://assets/sounds/sfx/shoot/minigun.ogg")
 	fire_rate = 10 # 50 bullets per second is maximum
 	damage = 1
 	permited_modes = [fire_mode.AUTO, fire_mode.BURST, fire_mode.SEMI]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bfh1_metal_falling_03.ogg-90490fb317365a1657c73ec1a852869e.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/breake_fall_hit/bfh1_metal_falling_03.ogg"
+dest_files=[ "res://.import/bfh1_metal_falling_03.ogg-90490fb317365a1657c73ec1a852869e.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

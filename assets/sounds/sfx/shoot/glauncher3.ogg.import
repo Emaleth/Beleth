@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/glauncher3.ogg-dc2cb36882a63c9563bd89464c5218ba.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/shoot/glauncher3.ogg"
+dest_files=[ "res://.import/glauncher3.ogg-dc2cb36882a63c9563bd89464c5218ba.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

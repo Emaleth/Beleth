@@ -75,7 +75,6 @@ func fire(shot_num):
 				clip_size -= 1
 				audio.play()
 
-				holder.view_recoil(recoil_force)
 				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
 				muzzle_flash.visible = true
 				
@@ -86,6 +85,7 @@ func fire(shot_num):
 				yield(tween,"tween_all_completed")
 				
 				shoot_bullet()
+				holder.view_recoil(recoil_force)
 					
 				muzzle_flash.visible = false
 				tween.remove_all()

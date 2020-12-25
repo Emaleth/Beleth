@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bfh1_glass_breaking_04.ogg-88961d009f3a7d8652ba36be849009cf.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/breake_fall_hit/bfh1_glass_breaking_04.ogg"
+dest_files=[ "res://.import/bfh1_glass_breaking_04.ogg-88961d009f3a7d8652ba36be849009cf.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

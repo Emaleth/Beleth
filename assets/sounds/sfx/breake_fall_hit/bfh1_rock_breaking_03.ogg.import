@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bfh1_rock_breaking_03.ogg-786808b968a648ccc0882ac22b508fa8.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/breake_fall_hit/bfh1_rock_breaking_03.ogg"
+dest_files=[ "res://.import/bfh1_rock_breaking_03.ogg-786808b968a648ccc0882ac22b508fa8.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bfh1_hit_08.ogg-149c91dff4964c87fceab345383588bc.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/sfx/breake_fall_hit/bfh1_hit_08.ogg"
+dest_files=[ "res://.import/bfh1_hit_08.ogg-149c91dff4964c87fceab345383588bc.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
