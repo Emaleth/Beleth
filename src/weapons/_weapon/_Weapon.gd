@@ -148,7 +148,7 @@ func shoot_bullet():
 		bullet.force_raycast_update()
 		bullet.rotation = Vector3(0, 0, 0)
 		if bullet.is_colliding():
-			var target = bullet.get_collider()
+			var target = bullet.get_collider().owner
 			var b = bullet_decal.instance()
 			target.add_child(b)
 			b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)

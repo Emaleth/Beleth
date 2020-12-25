@@ -51,7 +51,6 @@ onready var head_tween = $Head/HeadBobbing
 onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
 onready var ceiling_check = $CeilingCheck
-onready var anim = $Ybot/AnimationPlayer
 onready var camera = $Head/Camera
 onready var right_hand = $RHand
 onready var left_hand = $LHand
@@ -75,7 +74,6 @@ func _ready():
 	get_weapon(p_rabidity)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-#	anim.play("Breathing Idle-loop")
 	Console.player = self
 
 

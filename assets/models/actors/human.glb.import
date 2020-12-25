@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Ybot.gltf-f370d810fed79cad9fff3ed07ac52ddd.scn"
+path="res://.import/human.glb-99a6e154c45ad087659ed8af0a379fbd.scn"
 
 [deps]
 
-source_file="res://assets/models/actors/Ybot.gltf"
-dest_files=[ "res://.import/Ybot.gltf-f370d810fed79cad9fff3ed07ac52ddd.scn" ]
+source_file="res://assets/models/actors/human.glb"
+dest_files=[ "res://.import/human.glb-99a6e154c45ad087659ed8af0a379fbd.scn" ]
 
 [params]
 
@@ -17,7 +17,7 @@ nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
 materials/location=1
-materials/storage=0
+materials/storage=1
 materials/keep_on_reimport=true
 meshes/compress=true
 meshes/ensure_tangents=true
