@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/human.glb" type="PackedScene" id=2]
+[ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
@@ -34,12 +35,12 @@ cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
 [node name="RHipfire" type="Position3D" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.14, -0.4 )
 
 [node name="RAds" type="Position3D" parent="Head/Camera"]
 
 [node name="LHipfire" type="Position3D" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.14, -0.4 )
 
 [node name="LAds" type="Position3D" parent="Head/Camera"]
 
@@ -60,3 +61,5 @@ cast_to = Vector3( 0, 0.1, 0 )
 [node name="RHand" type="Spatial" parent="."]
 
 [node name="LHand" type="Spatial" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource( 3 )]

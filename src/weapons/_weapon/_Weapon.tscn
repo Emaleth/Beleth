@@ -1,16 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.gd" type="Script" id=1]
-[ext_resource path="res://resources/materials/sights/laser_dot.tres" type="Material" id=3]
 [ext_resource path="res://resources/materials/vfx/muzzle_flash.tres" type="Material" id=5]
 [ext_resource path="res://assets/models/vfx/muzzleflash.obj" type="ArrayMesh" id=6]
-
-[sub_resource type="QuadMesh" id=3]
-size = Vector2( 0.015, 0.015 )
-
-[sub_resource type="QuadMesh" id=2]
-material = ExtResource( 3 )
-size = Vector2( 0.02, 0.02 )
 
 [node name="BaseWeapon" type="Spatial"]
 script = ExtResource( 1 )
@@ -35,24 +27,6 @@ mesh = ExtResource( 6 )
 material/0 = null
 material/1 = null
 material/2 = null
-
-[node name="SightPivot" type="Spatial" parent="."]
-
-[node name="Holo" type="MeshInstance" parent="SightPivot"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-layers = 4
-cast_shadow = 0
-mesh = SubResource( 3 )
-material/0 = null
-
-[node name="Laser" type="Spatial" parent="."]
-
-[node name="Dot" type="MeshInstance" parent="Laser"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.001 )
-layers = 4
-cast_shadow = 0
-mesh = SubResource( 2 )
-material/0 = null
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0

@@ -7,18 +7,13 @@
 
 ##### Sources:
 **3D Models:**  
-&emsp;◈ Emaleth  
+&emsp;◈ https://free3d.com/3d-model/pack-of-15-modern-weapons-6-attachments-734779.html (Weapons)  
 
 **Sound:**  
 &emsp;◈ https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx  
 &emsp;◈ https://opengameart.org/content/q009s-weapon-sounds  
 
-**Fonts:**  
-&emsp;◈ KenneyNL  
-
 **Textures:**  
-&emsp;◈ https://opengameart.org/content/lens-flares-and-particles  
-&emsp;◈ https://opengameart.org/content/splatter-pack  
 &emsp;◈ https://cc0textures.com  
 &emsp;◈ https://texturehaven.com  
 &emsp;◈ https://opengameart.org  

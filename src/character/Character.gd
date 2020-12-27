@@ -45,6 +45,7 @@ var direction = Vector3()
 var velocity = Vector3()
 var linear_velocity = Vector3()
 var gravity_vec = Vector3()
+var current_w = 0
 
 onready var head = $Head
 onready var head_tween = $Head/HeadBobbing
@@ -61,21 +62,13 @@ onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
-onready var smg_frenzy = preload("res://src/weapons/smg_frenzy/smg_Frenzy.tscn")
-onready var p_rabidity = preload("res://src/weapons/p_rabidity/p_Rabidity.tscn")
-onready var sr_nightfall = preload("res://src/weapons/sr_nightfall/sr_Nightfall.tscn")
-onready var ar_turmoil = preload("res://src/weapons/ar_turmoil/ar_Turmoil.tscn")
-onready var shotgun_pumpflu = preload("res://src/weapons/shotgun_pumpflu/shotgun_Pumpflu.tscn")
-
-var current_w = 0
-
 
 func _ready():
-	get_weapon(p_rabidity)
+	get_weapon(Armoury.ak47)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
-
+	
 
 func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
@@ -83,7 +76,7 @@ func _physics_process(delta):
 	get_direction()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
-	aim(delta)
+	aim(delta) 
 	if direction != Vector3.ZERO:
 		head_bobbing(true)
 	else:
@@ -96,12 +89,6 @@ func _physics_process(delta):
 func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
-			if r_weapon:
-				r_weapon.mm_v = event.relative.normalized()
-			if l_weapon:
-				l_weapon.mm_v = event.relative.normalized()
-			if event.relative.y != 0:
-				tween.stop_all() # THIS WORKS. IT WORKS TOO WELL IN FACT. NEED TO ADD MOUSE MOTION TO THE TWEEN.
 			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
 			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
@@ -119,23 +106,23 @@ func _input(event):
 		
 	#
 	if Input.is_action_just_pressed("semi"):
-		if r_weapon.fire_mode.SEMI in r_weapon.permited_modes:
-			r_weapon.f_mode = r_weapon.fire_mode.SEMI
+		if r_weapon.SEMI in r_weapon.permited_modes:
+			r_weapon.fire_mode = r_weapon.SEMI
 		if l_weapon:
-			if l_weapon.fire_mode.SEMI in l_weapon.permited_modes:
-				l_weapon.f_mode = l_weapon.fire_mode.SEMI
+			if l_weapon.SEMI in l_weapon.permited_modes:
+				l_weapon.fire_mode = l_weapon.SEMI
 	if Input.is_action_just_pressed("burst"):
-		if r_weapon.fire_mode.BURST in r_weapon.permited_modes:
-			r_weapon.f_mode = r_weapon.fire_mode.BURST
+		if r_weapon.BURST in r_weapon.permited_modes:
+			r_weapon.fire_mode = r_weapon.BURST
 		if l_weapon:
-			if l_weapon.fire_mode.BURST in l_weapon.permited_modes:
-				l_weapon.f_mode = l_weapon.fire_mode.BURST
+			if l_weapon.BURST in l_weapon.permited_modes:
+				l_weapon.fire_mode = l_weapon.BURST
 	if Input.is_action_just_pressed("auto"):
-		if r_weapon.fire_mode.AUTO in r_weapon.permited_modes:
-			r_weapon.f_mode = r_weapon.fire_mode.AUTO
+		if r_weapon.AUTO in r_weapon.permited_modes:
+			r_weapon.fire_mode = r_weapon.AUTO
 		if l_weapon:
-			if l_weapon.fire_mode.AUTO in l_weapon.permited_modes:
-				l_weapon.f_mode = l_weapon.fire_mode.AUTO
+			if l_weapon.AUTO in l_weapon.permited_modes:
+				l_weapon.fire_mode = l_weapon.AUTO
 		
 		
 		
@@ -147,29 +134,29 @@ func _input(event):
 	
 func _process(_delta):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		match r_weapon.f_mode:
-			r_weapon.fire_mode.SEMI:
+		match r_weapon.fire_mode:
+			r_weapon.SEMI:
 				if Input.is_action_just_pressed("fire"):
 					if r_weapon:
 						r_weapon.fire(1)
 					if l_weapon:
 						l_weapon.fire(1)
 					
-			r_weapon.fire_mode.AUTO:
+			r_weapon.AUTO:
 				if Input.is_action_pressed("fire"):
 					if r_weapon:
 						r_weapon.fire(1)
 					if l_weapon:
 						l_weapon.fire(1)
 		
-			r_weapon.fire_mode.BURST:
+			r_weapon.BURST:
 				if Input.is_action_just_pressed("fire"):
 					if r_weapon:
 						r_weapon.fire(3)
 					if l_weapon:
 						l_weapon.fire(3)
 					
-					
+		$HUD.ammo_label.text = "Ammo: " + str(r_weapon.clip_size)
 func get_direction():
 	direction = Vector3()
 	
@@ -177,16 +164,6 @@ func get_direction():
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
 	
 	direction = direction.normalized()
-	if r_weapon:
-		r_weapon.mm_v += Vector2(
-			(Input.get_action_strength("move_right") - Input.get_action_strength("move_left")),
-			(Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) 
-			).normalized()
-	if l_weapon:
-		l_weapon.mm_v += Vector2(
-			(Input.get_action_strength("move_right") - Input.get_action_strength("move_left")),
-			(Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward"))
-			).normalized()
 	
 	
 func calculate_gravity(delta):
@@ -214,38 +191,36 @@ func calculate_velocity(delta):
 func aim(delta):
 	match aim_mode:
 		HIPFIRE:
+			$HUD/Crosshair.visible = true
 			bobbing_offset = h_bob_hip
 			bobbing_rotation = h_rot_hip
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
-			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_hipfire_pos.global_transform.origin, ads_speed * delta)
-			if r_weapon:
-				r_weapon.sway(delta, HIPFIRE)
-				r_weapon.align_sights(HIPFIRE)
-			
+			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_hipfire_pos.global_transform.origin, ads_speed * delta)		
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_hipfire_pos.global_transform.origin, ads_speed * delta)
+		
+			if r_weapon:
+				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
 			if l_weapon:
-				l_weapon.sway(delta, HIPFIRE)
-				l_weapon.align_sights(HIPFIRE)
-			
+				l_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
+				
 		ADS:
+			$HUD/Crosshair.visible = false
 			bobbing_offset = h_bob_ads
 			bobbing_rotation = h_rot_ads
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
 			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
-			if r_weapon:
-				r_weapon.sway(delta, ADS)
-				r_weapon.align_sights(ADS)
-			
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)
-			if l_weapon:			
+			
+			if r_weapon:
+				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
+			if l_weapon:
 				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)
 				l_weapon.rotation.z = lerp_angle(l_weapon.rotation.z, deg2rad(-l_weapon.ads_akimbo_z_rot), ads_speed * delta)
-				l_weapon.sway(delta, ADS)
-				l_weapon.align_sights(ADS)
+
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
 		right_hand.look_at(camera_ray.get_collision_point(), Vector3.UP)
@@ -259,21 +234,12 @@ func aim(delta):
 	left_hand.rotation_degrees.x = clamp(left_hand.rotation_degrees.x, -70, 70)
 	left_hand.rotation_degrees.y = clamp(left_hand.rotation_degrees.y, -70, 70)
 	left_hand.rotation_degrees.z = clamp(left_hand.rotation_degrees.z, 0, 0)
-	
+
 		
 func view_recoil(force):
-	tween.stop_all()
-
 	tween.remove_all()
 	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x + deg2rad(force.y), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.interpolate_property(camera, "rotation:y", camera.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	tween.start()
-
-	yield(tween, "tween_all_completed")
-
-	tween.remove_all()
-	tween.interpolate_property(head, "rotation:x", head.rotation.x, head.rotation.x - deg2rad(force.y), 0.4 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	tween.interpolate_property(camera, "rotation:y", camera.rotation.y, 0, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()
 
 
@@ -281,23 +247,23 @@ func get_weapon(wpn):
 	for w in right_hand.get_children():
 		w.queue_free()
 	for w in left_hand.get_children():
-			w.queue_free()
+		w.queue_free()
 			
 	r_weapon = wpn.instance()
 	right_hand.add_child(r_weapon)
 	r_weapon.holder = self
-	right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin
+	right_ads_pos.transform.origin = Vector3(0, 0, 0)
 	
 	if r_weapon.akimbo == true:
 		l_weapon = wpn.instance()
 		left_hand.add_child(l_weapon)
 		l_weapon.holder = self
-		left_ads_pos.transform.origin = -l_weapon.sight_pivot.transform.origin - l_weapon.akimbo_offset
-		right_ads_pos.transform.origin = -r_weapon.sight_pivot.transform.origin + r_weapon.akimbo_offset
-	
+		left_ads_pos.transform.origin = - l_weapon.akimbo_offset
+		right_ads_pos.transform.origin = + r_weapon.akimbo_offset
+
 
 func cycle_w(updown):
-	var w = [p_rabidity, smg_frenzy, ar_turmoil, shotgun_pumpflu, sr_nightfall]
+	var w = [Armoury.ak47]
 	current_w += updown
 	current_w = clamp(current_w, 0, w.size() - 1)
 	get_weapon(w[current_w])
@@ -326,6 +292,7 @@ func head_bobbing(moving):
 			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			head_tween.start()
+
 
 func get_input():
 	if Input.is_action_pressed("crouch"):
