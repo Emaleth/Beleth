@@ -8,4 +8,7 @@ func hit(amount):
 	health -= amount
 	health = max(health, 0)
 	if health == 0:
+		visible = false
+		$Circle/StaticBody/CollisionShape.disabled = true
+		yield($AudioStreamPlayer3D,"finished")
 		queue_free()

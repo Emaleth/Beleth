@@ -10,13 +10,13 @@
 script = ExtResource( 5 )
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.900909 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.04456 )
 
 [node name="SightPivot" parent="." index="2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0503374, 0 )
 
 [node name="Holo" parent="SightPivot" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000885934, -0.146217 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.000885934, -0.345262 )
 
 [node name="Nightfall" parent="." index="6" instance=ExtResource( 4 )]
 
