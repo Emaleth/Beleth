@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://resources/materials/Metal025.tres" type="Material" id=1]
+[ext_resource path="res://resources/materials/rusted_metal.tres" type="Material" id=1]
+
 
 [node name="Island" type="CSGPolygon"]
 use_collision = true

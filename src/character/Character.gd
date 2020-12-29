@@ -66,7 +66,7 @@ onready var c_shape = $CollisionShape
 
 
 func _ready():
-	get_weapon(Armoury.ak47)
+	get_weapon(Armoury.usp)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
@@ -78,7 +78,6 @@ func _physics_process(delta):
 	get_direction()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
-	rotation_helper()
 	aim(delta) 
 	if direction != Vector3.ZERO:
 		head_bobbing(true)
@@ -116,6 +115,7 @@ func _input(event):
 
 	
 func _process(_delta):
+	rotation_helper()
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if Input.is_action_pressed("fire"):
 			if r_weapon:
@@ -232,6 +232,7 @@ func view_recoil(force):
 	new_head = clamp(new_head, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 	tween.interpolate_property(head, "rotation:x", head.rotation.x, new_head, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.interpolate_property(head, "rotation:y", head.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	
 	tween.start()
 
 
@@ -244,18 +245,18 @@ func get_weapon(wpn):
 	r_weapon = wpn.instance()
 	right_hand.add_child(r_weapon)
 	r_weapon.holder = self
-	right_ads_pos.transform.origin = Vector3(0, 0, 0)
+	right_ads_pos.transform.origin = Vector3(0, 0, r_weapon.akimbo_offset.z)
 	
 	if r_weapon.akimbo == true:
 		l_weapon = wpn.instance()
 		left_hand.add_child(l_weapon)
 		l_weapon.holder = self
-		left_ads_pos.transform.origin = - l_weapon.akimbo_offset
-		right_ads_pos.transform.origin = + r_weapon.akimbo_offset
+		right_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
+		left_ads_pos.transform.origin = Vector3((l_weapon.akimbo_offset.x * -1), (l_weapon.akimbo_offset.y * -1), l_weapon.akimbo_offset.z)
 
 
 func cycle_w(updown):
-	var w = [Armoury.ak47, Armoury.mosberg_shotgun]
+	var w = [Armoury.usp, Armoury.ak47, Armoury.mosberg_shotgun]
 	current_w += updown
 	current_w = clamp(current_w, 0, w.size() - 1)
 	get_weapon(w[current_w])

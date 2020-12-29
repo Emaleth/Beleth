@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/models/objects/target.glb" type="PackedScene" id=1]
 [ext_resource path="res://src/target/Target.gd" type="Script" id=2]
-[ext_resource path="res://resources/materials/PaintedMetal013.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/wood.tres" type="Material" id=3]
 [ext_resource path="res://assets/sounds/sfx/breake_fall_hit/bfh1_metal_hit_03.ogg" type="AudioStream" id=4]
 
 [sub_resource type="ConcavePolygonShape" id=1]

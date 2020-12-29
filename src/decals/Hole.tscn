@@ -5,7 +5,7 @@
 
 [sub_resource type="QuadMesh" id=1]
 material = ExtResource( 2 )
-size = Vector2( 0.2, 0.2 )
+size = Vector2( 0.1, 0.1 )
 
 [node name="Hole" instance=ExtResource( 1 )]
 
