@@ -131,4 +131,4 @@ reload={
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_environment="res://resources/environment/environment.tres"
+environment/default_environment="res://resources/environment/Environment.tres"

@@ -50,10 +50,17 @@ func load_data():
 	
 	
 func reload():
+	if clip_size == max_clip_size:
+		return
 	if reloading == false:
 		reloading = true
 		if tween.is_active():
 			yield(tween,"tween_all_completed")
+		tween.remove_all()
+#		tween.interpolate_property(self, "transform:origin:z", transform.origin.y, -0.1, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.interpolate_property(self, "rotation_degrees:x", rotation_degrees.x, 15, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
 		if magazine:
 			audio_mag_out.play()
 			tween.remove_all()
@@ -67,6 +74,11 @@ func reload():
 			tween.start()
 			yield(tween,"tween_all_completed")
 			audio_mag_in.play()
+		tween.remove_all()
+#		tween.interpolate_property(self, "transform:origin:z", transform.origin.y, 0, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.interpolate_property(self, "rotation_degrees:x", rotation_degrees.x, 0, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
 		if slider:
 			tween.remove_all()
 			tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
