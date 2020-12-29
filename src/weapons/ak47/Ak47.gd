@@ -9,7 +9,7 @@ func _ready():
 	permited_modes = [AUTO, BURST, SEMI]
 	recoil_force = Vector3(0.01, 0.5, 0.05)
 	spread = 0.2
-	akimbo = true
+#	akimbo = true
 	slider_mov_dist = 0.1
 	mag_reload_rot = 45
 	load_data()

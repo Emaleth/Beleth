@@ -9,10 +9,13 @@
 **3D Models:**  
 &emsp;◈ https://free3d.com/3d-model/pack-of-15-modern-weapons-6-attachments-734779.html (Weapons)  
 &emsp;◈ https://mixamo.com (Actor & Animations???)  
+&emsp;◈ Emaleth  
 
 **Sound:**  
-&emsp;◈ https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx  
+&emsp;◈ https://opengameart.org/content/2-high-quality-explosions  
 &emsp;◈ https://opengameart.org/content/q009s-weapon-sounds  
+&emsp;◈ https://opengameart.org/content/chaingun-pistol-rifle-shotgun-shots  
+&emsp;◈ KenneyNL  
 
 **Textures:**  
 &emsp;◈ https://cc0textures.com  

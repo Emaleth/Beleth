@@ -92,7 +92,6 @@ func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			actor_rotation += deg2rad(-event.relative.x * mouse_sensitivity)
-#			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
 			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 			
@@ -126,6 +125,7 @@ func _process(_delta):
 		if Input.is_action_just_pressed("reload"):
 			if r_weapon:
 				r_weapon.reload()
+			yield(r_weapon, "reloaded")
 			if l_weapon:
 				l_weapon.reload()
 		
@@ -187,6 +187,8 @@ func aim(delta):
 				l_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
 				
 		ADS:
+			if (r_weapon && r_weapon.reloading) || (l_weapon && l_weapon.reloading):
+				aim_mode = HIPFIRE
 			$HUD/Crosshair.visible = false
 			bobbing_offset = h_bob_ads
 			bobbing_rotation = h_rot_ads
@@ -243,16 +245,17 @@ func get_weapon(wpn):
 		w.queue_free()
 			
 	r_weapon = wpn.instance()
-	right_hand.add_child(r_weapon)
 	r_weapon.holder = self
+	right_hand.add_child(r_weapon)
 	right_ads_pos.transform.origin = Vector3(0, 0, r_weapon.akimbo_offset.z)
 	
 	if r_weapon.akimbo == true:
 		l_weapon = wpn.instance()
-		left_hand.add_child(l_weapon)
+		l_weapon.side = -1
 		l_weapon.holder = self
+		left_hand.add_child(l_weapon)
 		right_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
-		left_ads_pos.transform.origin = Vector3((l_weapon.akimbo_offset.x * -1), (l_weapon.akimbo_offset.y * -1), l_weapon.akimbo_offset.z)
+		left_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
 
 
 func cycle_w(updown):

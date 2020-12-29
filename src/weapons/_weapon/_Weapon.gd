@@ -30,6 +30,9 @@ var holder = null
 var can_shoot = true
 var clip_size = 0
 var reloading = false
+var side = 1
+
+export var model_path : NodePath
 
 onready var tween  = $Tween
 onready var bullet = $BulletRay
@@ -40,13 +43,17 @@ onready var audio_empty_mag = $AudioEmpty
 onready var audio_slider = $AudioSlide
 onready var audio_mag_out = $AudioMagOut
 onready var audio_mag_in = $AudioMagIn
+onready var model = get_node(model_path)
 
+signal reloaded
 
 func load_data():
 	clip_size = max_clip_size
 	fire_mode = permited_modes[0]
 	slider = find_node("Slider")
 	magazine = find_node("Magazine")
+	akimbo_offset.x *= side
+	akimbo_offset.y *= side
 	
 	
 func reload():
@@ -56,11 +63,12 @@ func reload():
 		reloading = true
 		if tween.is_active():
 			yield(tween,"tween_all_completed")
-		tween.remove_all()
-#		tween.interpolate_property(self, "transform:origin:z", transform.origin.y, -0.1, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.interpolate_property(self, "rotation_degrees:x", rotation_degrees.x, 15, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		if model:
+			tween.remove_all()
+			tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, -30 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+			tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 30, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween,"tween_all_completed")
 		if magazine:
 			audio_mag_out.play()
 			tween.remove_all()
@@ -74,11 +82,12 @@ func reload():
 			tween.start()
 			yield(tween,"tween_all_completed")
 			audio_mag_in.play()
-		tween.remove_all()
-#		tween.interpolate_property(self, "transform:origin:z", transform.origin.y, 0, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.interpolate_property(self, "rotation_degrees:x", rotation_degrees.x, 0, 0.2 ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		if model:
+			tween.remove_all()
+			tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+			tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween,"tween_all_completed")
 		if slider:
 			tween.remove_all()
 			tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
@@ -91,6 +100,7 @@ func reload():
 			yield(tween,"tween_all_completed")
 		clip_size = max_clip_size
 		reloading = false
+		emit_signal("reloaded")
 		
 		
 func fire():
@@ -113,7 +123,7 @@ func fire():
 				
 			
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				if slider:
 					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
@@ -124,7 +134,7 @@ func fire():
 					
 				muzzle_flash.visible = false
 				tween.remove_all()
-				tween.interpolate_property(self, "transform:origin:z", transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				if slider:
 					if clip_size > 0:
 						tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
