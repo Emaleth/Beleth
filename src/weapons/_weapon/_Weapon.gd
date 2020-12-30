@@ -31,8 +31,7 @@ var can_shoot = true
 var clip_size = 0
 var reloading = false
 var side = 1
-
-export var model_path : NodePath
+var model = null
 
 onready var tween  = $Tween
 onready var bullet = $BulletRay
@@ -43,15 +42,16 @@ onready var audio_empty_mag = $AudioEmpty
 onready var audio_slider = $AudioSlide
 onready var audio_mag_out = $AudioMagOut
 onready var audio_mag_in = $AudioMagIn
-onready var model = get_node(model_path)
 
-signal reloaded
+signal free_hand
+
 
 func load_data():
 	clip_size = max_clip_size
 	fire_mode = permited_modes[0]
 	slider = find_node("Slider")
 	magazine = find_node("Magazine")
+	model = slider.get_parent()
 	akimbo_offset.x *= side
 	akimbo_offset.y *= side
 	
@@ -63,44 +63,78 @@ func reload():
 		reloading = true
 		if tween.is_active():
 			yield(tween,"tween_all_completed")
-		if model:
-			tween.remove_all()
-			tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, -30 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-			tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 30, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-			tween.start()
-			yield(tween,"tween_all_completed")
-		if magazine:
-			audio_mag_out.play()
-			tween.remove_all()
-			tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.3 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-			tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, mag_reload_rot, 0.3 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-			tween.start()
-			yield(tween,"tween_all_completed")
-			tween.remove_all()
-			tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, 0.0, 0.5 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-			tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, 0.0, 0.5 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-			tween.start()
-			yield(tween,"tween_all_completed")
-			audio_mag_in.play()
-		if model:
-			tween.remove_all()
-			tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-			tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-			tween.start()
-			yield(tween,"tween_all_completed")
-		if slider:
-			tween.remove_all()
-			tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
-			tween.start()
-			yield(tween,"tween_all_completed")
-			audio_slider.play()
-			tween.remove_all()
-			tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-			tween.start()
-			yield(tween,"tween_all_completed")
+		
+		# MOVE GUN UP
+		tween.remove_all()
+		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.05, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -2, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		# SHAKE GUN DOWN
+		tween.remove_all()
+		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 5, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		 # MAGAZINE OUT
+		audio_mag_out.play()
+		tween.remove_all()
+		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.0, 0.1 ,Tween.TRANS_BOUNCE,Tween.EASE_OUT)
+		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.3 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
+		tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, mag_reload_rot, 0.3 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		magazine.visible = false
+		if self == holder.l_weapon:
+			yield(holder.r_weapon, "free_hand")
+		
+		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
+		tween.remove_all()
+		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, -30 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 30, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		magazine.visible = true
+		
+		 # MAGAZINE IN
+		tween.remove_all()
+		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		audio_mag_in.play()
+		
+		 # ROTATE MODEL FOR SLIDER PULL
+		tween.remove_all()
+		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 80 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		 # PULL SLIDER
+		tween.remove_all()
+		tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+		
+		emit_signal("free_hand")
+		
+		 # PUSH SLIDER # ROTATE MODEL NORMAL
+		audio_slider.play()
+		tween.remove_all()
+		tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.start()
+		yield(tween,"tween_all_completed")
+
 		clip_size = max_clip_size
 		reloading = false
-		emit_signal("reloaded")
 		
 		
 func fire():
@@ -124,22 +158,20 @@ func fire():
 			
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
-				if slider:
-					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 				tween.start()
 				yield(tween,"tween_all_completed")
 				
 				shoot_bullet()
 				holder.view_recoil(recoil_force)
-					
 				muzzle_flash.visible = false
+					
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-				if slider:
-					if clip_size > 0:
-						tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-					else:
-						tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist * 0.7, ((1.0 / fire_rate) - 0.02) * 0.7 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				if clip_size > 0:
+					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				else:
+					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist * 0.7, ((1.0 / fire_rate) - 0.02) * 0.7 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				tween.start()
 	
 			

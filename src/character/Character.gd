@@ -125,7 +125,6 @@ func _process(_delta):
 		if Input.is_action_just_pressed("reload"):
 			if r_weapon:
 				r_weapon.reload()
-			yield(r_weapon, "reloaded")
 			if l_weapon:
 				l_weapon.reload()
 		
