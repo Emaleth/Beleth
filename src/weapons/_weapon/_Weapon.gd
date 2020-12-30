@@ -66,7 +66,7 @@ func reload():
 		
 		# MOVE GUN UP
 		tween.remove_all()
-		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.05, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.1, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
 		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -2, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
@@ -154,7 +154,6 @@ func fire():
 
 				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
 				muzzle_flash.visible = true
-				
 			
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
@@ -196,3 +195,17 @@ func shoot_bullet():
 
 func _on_Timer_timeout():
 	can_shoot = true
+
+
+func draw_trail(start_pos, end_pos):
+	var bt = ImmediateGeometry.new()
+	bt.set_as_toplevel(true)
+	bt.set_color(Color(1, 1, 1, 1))
+	bt.begin(Mesh.PRIMITIVE_LINES)
+	bt.add_vertex(start_pos)
+	bt.add_vertex(end_pos)
+	bt.end()
+	add_child(bt)
+	
+	
+	 

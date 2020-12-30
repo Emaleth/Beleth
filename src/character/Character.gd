@@ -254,7 +254,7 @@ func get_weapon(wpn):
 		l_weapon.holder = self
 		left_hand.add_child(l_weapon)
 		right_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
-		left_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
+		left_ads_pos.transform.origin = Vector3(l_weapon.akimbo_offset.x, l_weapon.akimbo_offset.y, l_weapon.akimbo_offset.z)
 
 
 func cycle_w(updown):

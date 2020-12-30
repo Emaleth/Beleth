@@ -13,10 +13,9 @@
 
 [node name="USP" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-model_path = NodePath("USP")
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0309247, -0.551767 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0309247, -0.588953 )
 
 [node name="AudioFire" parent="Muzzle" index="0"]
 stream = ExtResource( 9 )
