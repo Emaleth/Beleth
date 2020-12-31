@@ -1,6 +1,7 @@
 extends Spatial
 
 export(int, "DECAL", "ROD") var mode = 0
+onready var audio_impact = $AudioImpact
 
 	
 func set_rot(c_point, c_normal, gun_pos):
@@ -28,7 +29,5 @@ func set_rot(c_point, c_normal, gun_pos):
 		translate(Vector3(0, 0, rand_range(0, 0.2)))
 
 	rotation.z = deg2rad(rand_range(0, 360))
+	audio_impact.play()
 
-
-func _on_Timer_timeout():
-	queue_free()

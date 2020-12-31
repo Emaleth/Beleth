@@ -11,4 +11,5 @@ func _ready():
 	slug_size = 10
 	akimbo = true
 	slider_mov_dist = 0.17
+	slide_pos = Vector2.DOWN
 	load_data()

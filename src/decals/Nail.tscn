@@ -7,7 +7,7 @@
 [node name="Nail" instance=ExtResource( 1 )]
 mode = 1
 
-[node name="Nail" parent="." index="1" instance=ExtResource( 3 )]
+[node name="Nail" parent="." index="0" instance=ExtResource( 3 )]
 
 [node name="Cone" parent="Nail" index="0"]
 material/0 = ExtResource( 2 )

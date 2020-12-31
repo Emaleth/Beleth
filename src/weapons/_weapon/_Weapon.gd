@@ -13,12 +13,13 @@ var max_clip_size = 1
 var recoil_force = Vector3(0, 0, 0)
 var spread = 0
 var slug_size = 1
-var bullet_decal = preload("res://src/decals/Hole.tscn")
 var akimbo = false
 var akimbo_offset = Vector3(0.05, -0.015, -0.1)
 var ads_akimbo_z_rot = 30
 var slider_mov_dist = 0
 var mag_reload_rot = 0
+var slide_pos = Vector2.RIGHT
+var mag_pos = Vector2.DOWN
 
 """ // END OF WEAPON DATA // """
 
@@ -32,6 +33,9 @@ var clip_size = 0
 var reloading = false
 var side = 1
 var model = null
+var slide_pull_rotation = 0
+var mag_insert_rotation = 0
+
 
 onready var tween  = $Tween
 onready var bullet = $BulletRay
@@ -54,6 +58,7 @@ func load_data():
 	model = slider.get_parent()
 	akimbo_offset.x *= side
 	akimbo_offset.y *= side
+	get_anim_data()
 	
 	
 func reload():
@@ -93,7 +98,7 @@ func reload():
 		
 		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
 		tween.remove_all()
-		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, -30 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, mag_insert_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 30, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
@@ -111,7 +116,7 @@ func reload():
 		
 		 # ROTATE MODEL FOR SLIDER PULL
 		tween.remove_all()
-		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 80 * side, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, slide_pull_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
@@ -185,9 +190,9 @@ func shoot_bullet():
 		bullet.rotation = Vector3(0, 0, 0)
 		if bullet.is_colliding():
 			var target = bullet.get_collider().owner
-			var b = bullet_decal.instance()
-			target.add_child(b)
-			b.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
+			var decal = ObjectPool.get_item("hole")
+			target.add_child(decal)
+			decal.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
 			if target.has_method("hit"):
 				target.hit(damage)
 				Console.target = target
@@ -197,15 +202,29 @@ func _on_Timer_timeout():
 	can_shoot = true
 
 
-func draw_trail(start_pos, end_pos):
-	var bt = ImmediateGeometry.new()
-	bt.set_as_toplevel(true)
-	bt.set_color(Color(1, 1, 1, 1))
-	bt.begin(Mesh.PRIMITIVE_LINES)
-	bt.add_vertex(start_pos)
-	bt.add_vertex(end_pos)
-	bt.end()
-	add_child(bt)
+func get_anim_data():
+	if slide_pos.x == side * -1:
+		pass
+	else:
+		match slide_pos:
+			Vector2.UP:
+				slide_pull_rotation = 40 * side
+			Vector2.DOWN:
+				slide_pull_rotation = -40 * side
+			Vector2.RIGHT:
+				slide_pull_rotation = 80 * side
+			Vector2.LEFT:
+				slide_pull_rotation = -80 * side
+
+	match mag_pos:
+		Vector2.UP:
+			mag_insert_rotation = 30 * side
+		Vector2.DOWN:
+			mag_insert_rotation = -30 * side
+		Vector2.RIGHT:
+			mag_insert_rotation = 30 * side
+		Vector2.LEFT:
+			mag_insert_rotation = -30 * side
 	
 	
 	 
