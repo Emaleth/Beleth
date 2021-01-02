@@ -22,6 +22,7 @@
 &emsp;◈ https://texturehaven.com  
 &emsp;◈ https://opengameart.org  
 &emsp;◈ https://3dtextures.me  
+controls: https://opengameart.org/content/onscreen-controls-8-styles
 
 
 

@@ -193,6 +193,9 @@ func shoot_bullet():
 			var decal = ObjectPool.get_item("hole")
 			target.add_child(decal)
 			decal.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
+			var trail = ObjectPool.get_item("trail")
+			target.add_child(trail)
+			trail.set_lenght(muzzle.global_transform.origin, bullet.get_collision_point())
 			if target.has_method("hit"):
 				target.hit(damage)
 				Console.target = target

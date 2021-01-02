@@ -5,7 +5,6 @@
 [ext_resource path="res://assets/textures/rusted_metal/Metal025_2K_Normal.png" type="Texture" id=3]
 [ext_resource path="res://assets/textures/rusted_metal/Metal025_2K_Color.png" type="Texture" id=4]
 
-
 [resource]
 flags_world_triplanar = true
 albedo_texture = ExtResource( 4 )

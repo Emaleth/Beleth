@@ -64,6 +64,8 @@ onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
+onready var audio_footstep = $AudioFootstep
+
 
 func _ready():
 	get_weapon(Armoury.usp)
@@ -276,6 +278,8 @@ func head_bobbing(moving):
 	if head_tween.is_active():
 		return
 	else:
+		if direction != Vector3.ZERO:
+			audio_footstep.play()
 		bobbing_dir *= -1
 		if moving:
 			head_tween.remove_all()

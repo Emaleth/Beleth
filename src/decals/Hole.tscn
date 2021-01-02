@@ -13,3 +13,6 @@ size = Vector2( 0.1, 0.1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.001 )
 mesh = SubResource( 1 )
 material/0 = null
+
+[node name="SurfaceProbe" type="RayCast" parent="MeshInstance" index="0"]
+cast_to = Vector3( 0, 0, 0.01 )

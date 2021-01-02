@@ -1,12 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/textures/crosshairs/crosshair010.png" type="Texture" id=1]
 [ext_resource path="res://src/HUD/HUD.gd" type="Script" id=2]
-
+[ext_resource path="res://src/HUD/TouchControls/TouchControls.tscn" type="PackedScene" id=3]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -31,3 +32,5 @@ __meta__ = {
 margin_right = 89.0
 margin_bottom = 14.0
 text = "sjldfhsjdhfjsdf"
+
+[node name="TouchControls" parent="." instance=ExtResource( 3 )]
