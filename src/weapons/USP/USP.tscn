@@ -37,16 +37,28 @@ stream = ExtResource( 10 )
 [node name="Magazine" parent="USP" index="0"]
 material/0 = ExtResource( 4 )
 
+[node name="MagPos" type="Position3D" parent="USP/Magazine" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.241276, -0.288249 )
+
 [node name="Cube002" parent="USP" index="1"]
 material/0 = ExtResource( 4 )
 
 [node name="Cube001" parent="USP" index="2"]
 material/0 = ExtResource( 4 )
 
+[node name="SecondaryGripPos" type="Position3D" parent="USP/Cube001" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0984333, -0.565605 )
+
 [node name="Slider" parent="USP" index="3"]
 material/0 = ExtResource( 4 )
 
+[node name="SliderPos" type="Position3D" parent="USP/Slider" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.289105 )
+
 [node name="grip" parent="USP" index="4"]
 material/0 = ExtResource( 7 )
+
+[node name="GripPos" type="Position3D" parent="USP/grip" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.190396, -0.299532 )
 
 [editable path="USP"]

@@ -9,6 +9,7 @@ onready var tween = $Tween
 onready var console_block = $ConsoleBlock
 onready var version_label = $v_label
 
+var ready = false
 var player = null
 var target = null
 
@@ -17,6 +18,7 @@ var on_screen = false
 
 func _ready():
 	initial_setup()
+	ready = true
 	
 
 func _process(_delta):
@@ -45,10 +47,10 @@ func _on_Input_text_entered(new_text):
 func monitor_player():
 	if player:
 		monitor_field.text = ""
-#		monitor_field.text += "Direction: " + str(player.direction) + "\n"
-#		monitor_field.text += "Linear Vel: " + str(player.linear_velocity) + "\n"
-#		monitor_field.text += "Gravity Vec: " + str(player.gravity_vec) + "\n"
-#		monitor_field.text += "Final Vel: " + str(player.velocity) + "\n"
+		monitor_field.text += "Direction: " + str(player.direction) + "\n"
+		monitor_field.text += "Linear Vel: " + str(player.linear_velocity) + "\n"
+		monitor_field.text += "Gravity Vec: " + str(player.gravity_vec) + "\n"
+		monitor_field.text += "Final Vel: " + str(player.velocity) + "\n"
 		if player.r_weapon:
 			monitor_field.text += "R_hand: " + str(player.r_weapon.name) + "\n"
 		if player.l_weapon:
@@ -76,3 +78,12 @@ func initial_setup():
 	console_block.rect_size.x = rect_size.x
 	console_block.rect_size.y = rect_size.y / 3
 	console_block.rect_position.y = -console_block.rect_size.y
+
+
+func _on_Console_resized():
+	if ready:
+		initial_setup()
+		if on_screen == false:
+			show_console()
+		elif on_screen == true:
+			hide_console()

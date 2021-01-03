@@ -36,6 +36,12 @@ var model = null
 var slide_pull_rotation = 0
 var mag_insert_rotation = 0
 
+var h_grip_pos = null
+var h_secondary_grip_pos = null
+var h_slider_pos = null
+var h_mag_pos = null
+var main_hand = null
+var off_hand = null
 
 onready var tween  = $Tween
 onready var bullet = $BulletRay
@@ -46,6 +52,7 @@ onready var audio_empty_mag = $AudioEmpty
 onready var audio_slider = $AudioSlide
 onready var audio_mag_out = $AudioMagOut
 onready var audio_mag_in = $AudioMagIn
+
 
 signal free_hand
 
@@ -58,6 +65,14 @@ func load_data():
 	model = slider.get_parent()
 	akimbo_offset.x *= side
 	akimbo_offset.y *= side
+	
+	h_grip_pos = find_node("GripPos")
+	h_secondary_grip_pos = find_node("SecondaryGripPos")
+	h_slider_pos = find_node("SliderPos")
+	h_mag_pos = find_node("MagPos")
+	
+	get_hands()
+
 	get_anim_data()
 	
 	
@@ -96,6 +111,9 @@ func reload():
 		if self == holder.l_weapon:
 			yield(holder.r_weapon, "free_hand")
 		
+		# MOVE HAND TO MAGAZINE
+		holder.hand_motion(off_hand, h_mag_pos)
+		
 		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
 		tween.remove_all()
 		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, mag_insert_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
@@ -114,6 +132,9 @@ func reload():
 		
 		audio_mag_in.play()
 		
+		# MOVE HAND TO REST POSITION
+		holder.hand_motion(off_hand, holder)
+		
 		 # ROTATE MODEL FOR SLIDER PULL
 		tween.remove_all()
 		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, slide_pull_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
@@ -121,13 +142,18 @@ func reload():
 		tween.start()
 		yield(tween,"tween_all_completed")
 		
+		# MOVE HAND TO SLIDER AND WAIT FOR IT
+		holder.hand_motion(off_hand, h_slider_pos)
+		yield(off_hand.get_node("Tween"), "tween_all_completed")
+		
 		 # PULL SLIDER
 		tween.remove_all()
 		tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
 		
-		emit_signal("free_hand")
+		# MOVE HAND TO REST POSITION
+		holder.hand_motion(off_hand, holder)
 		
 		 # PUSH SLIDER # ROTATE MODEL NORMAL
 		audio_slider.play()
@@ -137,9 +163,21 @@ func reload():
 		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
-
+		
 		clip_size = max_clip_size
 		reloading = false
+
+		# MOVE HAND TO DEFAULT POSITION
+		if akimbo == false: 
+			holder.hand_motion(off_hand, h_secondary_grip_pos)
+		else:
+			if side == 1:
+				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos)
+			else:
+				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos)
+		yield(off_hand.get_node("Tween"), "tween_all_completed")
+		
+		emit_signal("free_hand")
 		
 		
 func fire():
@@ -231,3 +269,15 @@ func get_anim_data():
 	
 	
 	 
+func get_hands():
+	match side:
+		1:
+			main_hand = holder.rhd_mesh
+			off_hand = holder.lhd_mesh
+		-1:
+			main_hand = holder.lhd_mesh
+			off_hand = holder.rhd_mesh
+			
+	holder.hand_motion(main_hand, h_grip_pos)
+	if akimbo == false:
+		holder.hand_motion(off_hand, h_secondary_grip_pos)

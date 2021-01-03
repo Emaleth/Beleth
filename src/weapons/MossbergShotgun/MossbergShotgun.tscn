@@ -13,7 +13,6 @@
 
 [node name="MossbergShotgun" instance=ExtResource( 1 )]
 script = ExtResource( 5 )
-model_path = NodePath("MossbergShotgun")
 
 [node name="Muzzle" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0468996, -1.39871 )
@@ -38,14 +37,26 @@ stream = ExtResource( 10 )
 [node name="Cube005" parent="MossbergShotgun" index="0"]
 material/0 = ExtResource( 3 )
 
+[node name="GripPos" type="Position3D" parent="MossbergShotgun/Cube005" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125207, -0.0566466 )
+
 [node name="Magazine" parent="MossbergShotgun" index="1"]
 material/0 = ExtResource( 4 )
+
+[node name="MagPos" type="Position3D" parent="MossbergShotgun/Magazine" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.195027, -0.354956 )
 
 [node name="Cube003" parent="MossbergShotgun" index="2"]
 material/0 = ExtResource( 4 )
 
 [node name="Slider" parent="MossbergShotgun" index="3"]
 material/0 = ExtResource( 3 )
+
+[node name="SliderPos" type="Position3D" parent="MossbergShotgun/Slider" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.156584, -0.916255 )
+
+[node name="SecondaryGripPos" type="Position3D" parent="MossbergShotgun/Slider" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.156603, -0.915091 )
 
 [node name="Cube001" parent="MossbergShotgun" index="4"]
 material/0 = ExtResource( 3 )

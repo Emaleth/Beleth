@@ -28,9 +28,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ammo" type="Label" parent="HBoxContainer"]
+[node name="LAmmo" type="Label" parent="HBoxContainer"]
 margin_right = 89.0
 margin_bottom = 14.0
 text = "sjldfhsjdhfjsdf"
 
+[node name="RAmmo" type="Label" parent="HBoxContainer"]
+margin_left = 93.0
+margin_right = 182.0
+margin_bottom = 14.0
+text = "sjldfhsjdhfjsdf"
+
 [node name="TouchControls" parent="." instance=ExtResource( 3 )]
+[connection signal="resized" from="." to="." method="_on_HUD_resized"]

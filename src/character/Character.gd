@@ -42,6 +42,8 @@ var rotation_damping = 0.5
 
 var r_weapon = null 
 var l_weapon = null 
+var lh_target = null
+var rh_target = null
 var direction = Vector3()
 var velocity = Vector3()
 var linear_velocity = Vector3()
@@ -64,6 +66,11 @@ onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
+onready var rhd_mesh = $RHDebug
+onready var rhd_tween = $RHDebug/Tween
+onready var lhd_mesh = $LHDebug
+onready var lhd_tween = $LHDebug/Tween
+
 onready var audio_footstep = $AudioFootstep
 
 
@@ -85,7 +92,7 @@ func _physics_process(delta):
 		head_bobbing(true)
 	else:
 		head_bobbing(false)
-
+		
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
 
@@ -116,6 +123,7 @@ func _input(event):
 
 	
 func _process(_delta):
+	hand_follow()
 	rotation_helper()
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if Input.is_action_pressed("fire"):
@@ -129,10 +137,16 @@ func _process(_delta):
 				r_weapon.reload()
 			if l_weapon:
 				l_weapon.reload()
-		
-					
-		$HUD.ammo_label.text = "Ammo: " + str(r_weapon.clip_size)
-		
+		if r_weapon:
+			$HUD.r_ammo_label.text = "Right Ammo: " + str(r_weapon.clip_size)
+		else:
+			$HUD.r_ammo_label.text = "No Right Weapon"
+			
+		if l_weapon:
+			$HUD.l_ammo_label.text = "Left Ammo: " + str(l_weapon.clip_size)
+		else:
+			$HUD.l_ammo_label.text = "No Left Weapon"
+			
 		
 func rotation_helper():
 	rotation.y = lerp_angle(rotation.y, actor_rotation, rotation_damping)
@@ -307,3 +321,24 @@ func get_input():
 		height = normal_height
 		c_height = c_normal_height
 		
+
+func hand_motion(hand, target):
+	match hand:
+		rhd_mesh:
+			rh_target = target
+		lhd_mesh:
+			lh_target = target
+	hand.get_node("Tween").reset_all()
+	hand.get_node("Tween").interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+	hand.get_node("Tween").start()
+
+
+func hand_follow():
+	if not rhd_mesh.get_node("Tween").is_active():
+		if rh_target:
+			rhd_mesh.global_transform = rh_target.global_transform
+
+	if not lhd_mesh.get_node("Tween").is_active():
+		if lh_target:
+			lhd_mesh.global_transform = lh_target.global_transform
+
