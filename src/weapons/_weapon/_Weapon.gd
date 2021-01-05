@@ -228,12 +228,15 @@ func shoot_bullet():
 		bullet.rotation = Vector3(0, 0, 0)
 		if bullet.is_colliding():
 			var target = bullet.get_collider().owner
-			var decal = ObjectPool.get_item("hole")
-			target.add_child(decal)
-			decal.set_rot(bullet.get_collision_point(), bullet.get_collision_normal(), muzzle.global_transform.origin)
+			var smoke  = ObjectPool.get_item("smoke")
+			target.add_child(smoke)
+			smoke.conf(muzzle.global_transform)
 			var trail = ObjectPool.get_item("trail")
 			target.add_child(trail)
-			trail.set_lenght(muzzle.global_transform.origin, bullet.get_collision_point())
+			trail.conf(muzzle.global_transform.origin, bullet.get_collision_point())
+			var decal = ObjectPool.get_item("hole")
+			target.add_child(decal)
+			decal.conf(bullet.get_collision_point(), bullet.get_collision_normal())
 			if target.has_method("hit"):
 				target.hit(damage)
 				Console.target = target

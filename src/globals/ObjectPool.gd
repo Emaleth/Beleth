@@ -2,12 +2,17 @@ extends Node
 
 var items = {
 	"hole" : {
-		"scene" : preload("res://src/decals/_decal/_Decal.tscn"),
+		"scene" : preload("res://src/fx/bullet_hit_fx/BulletHitFx.tscn"),
 		"max_q" : 1000,
 		"pool" : []
 	},
 	"trail" : {
-		"scene" : preload("res://src/btrail/BulletTrail.tscn"),
+		"scene" : preload("res://src/fx/bullet_trail_fx/BulletTrailFx.tscn"),
+		"max_q" : 1000,
+		"pool" : []
+	},
+	"smoke" : {
+		"scene" : preload("res://src/fx/gunfire_smoke_fx/GunfireSmokeFx.tscn"),
 		"max_q" : 1000,
 		"pool" : []
 	}
