@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/human.glb-99a6e154c45ad087659ed8af0a379fbd.scn"
+path="res://.import/Synth.glb-eee976943ee3197c9e6381bbd2909ef6.scn"
 
 [deps]
 
-source_file="res://assets/models/actors/human.glb"
-dest_files=[ "res://.import/human.glb-99a6e154c45ad087659ed8af0a379fbd.scn" ]
+source_file="res://assets/models/actors/Synth.glb"
+dest_files=[ "res://.import/Synth.glb-eee976943ee3197c9e6381bbd2909ef6.scn" ]
 
 [params]
 
