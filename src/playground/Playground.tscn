@@ -173,7 +173,7 @@ transform = Transform( 0.905339, 0, 0.424689, 0, 1, 0, -0.424689, 0, 0.905339, -
 [node name="Actors" type="Node" parent="."]
 
 [node name="Character" parent="Actors" instance=ExtResource( 1 )]
-transform = Transform( -0.0599163, 0, -0.998203, 0, 1, 0, 0.998203, 0, -0.0599163, -7.22003, 2.24584, -9.36882 )
+transform = Transform( -0.0599163, 0, -0.998203, 0, 1, 0, 0.998203, 0, -0.0599163, -7.22003, 0.860672, -9.36882 )
 
 [node name="Target" parent="Actors" instance=ExtResource( 6 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 27.9057, 0.991864, -11.4138 )
@@ -247,6 +247,12 @@ spot_range = 100.0
 
 [node name="SpotLight2" type="SpotLight" parent="."]
 transform = Transform( -0.00688527, -0.429856, -0.902871, -0.32418, -0.853171, 0.408665, -0.94597, 0.295506, -0.133476, 0, 5.11392, -13.4401 )
+light_energy = 3.0
+light_specular = 1.0
+spot_range = 100.0
+
+[node name="SpotLight3" type="SpotLight" parent="."]
+transform = Transform( 0.161031, 0.785432, 0.597633, 0.281441, 0.543849, -0.790581, -0.94597, 0.295507, -0.133476, -16.6485, -7.21899, -29.6684 )
 light_energy = 3.0
 light_specular = 1.0
 spot_range = 100.0

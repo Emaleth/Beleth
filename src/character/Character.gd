@@ -66,21 +66,25 @@ onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
-onready var rhd_mesh = $RHDebug
-onready var rhd_tween = $RHDebug/Tween
-onready var lhd_mesh = $LHDebug
-onready var lhd_tween = $LHDebug/Tween
+onready var rhd_tween = $RHT/Tween
+onready var lhd_tween = $LHT/Tween
+onready var rhd_mesh = $RHT
+onready var lhd_mesh = $LHT
+onready var lhik = $Synth/Armature/Skeleton/LHIK
+onready var rhik = $Synth/Armature/Skeleton/RHIK
 
 onready var audio_footstep = $AudioFootstep
 
 
 func _ready():
-	get_weapon(Armoury.usp)
+	get_weapon(Armoury.ak47)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
+	lhik.start()
+	rhik.start()
 	
-
+	
 func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
 	get_input()
@@ -88,6 +92,7 @@ func _physics_process(delta):
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta) 
+	hand_follow()
 	if direction != Vector3.ZERO:
 		head_bobbing(true)
 	else:
@@ -123,7 +128,6 @@ func _input(event):
 
 	
 func _process(_delta):
-	hand_follow()
 	rotation_helper()
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if Input.is_action_pressed("fire"):
@@ -323,22 +327,27 @@ func get_input():
 		
 
 func hand_motion(hand, target):
+	var t = null
+	
 	match hand:
 		rhd_mesh:
 			rh_target = target
+			t = rhd_tween
 		lhd_mesh:
 			lh_target = target
-	hand.get_node("Tween").reset_all()
-	hand.get_node("Tween").interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-	hand.get_node("Tween").start()
+			t = lhd_tween
+			
+	t.reset_all()
+	t.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, 0.3 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+	t.start()
 
 
 func hand_follow():
-	if not rhd_mesh.get_node("Tween").is_active():
+	if not rhd_tween.is_active():
 		if rh_target:
 			rhd_mesh.global_transform = rh_target.global_transform
 
-	if not lhd_mesh.get_node("Tween").is_active():
+	if not lhd_tween.is_active():
 		if lh_target:
 			lhd_mesh.global_transform = lh_target.global_transform
 
