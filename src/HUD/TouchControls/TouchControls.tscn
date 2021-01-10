@@ -49,3 +49,25 @@ position = Vector2( 96, 440 )
 normal = ExtResource( 6 )
 
 [node name="Tween" type="Tween" parent="joypos"]
+
+[node name="Touchy" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NonTouchy" type="Control" parent="Touchy"]
+margin_right = 510.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VeryTouchy" type="Control" parent="Touchy"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+[connection signal="gui_input" from="Touchy/VeryTouchy" to="." method="_on_VeryTouchy_gui_input"]

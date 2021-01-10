@@ -6,9 +6,9 @@ onready var tween = $joypos/Tween
 
 
 
-func _ready():
-	check_platform()
-#
+#func _ready():
+#	check_platform()
+
 
 func check_platform():
 	self.hide()
@@ -23,10 +23,19 @@ func _input(event):
 			tween.stop_all()
 		if event is InputEventScreenDrag:
 			joystick.position += event.relative
-			joystick.position.x = clamp(joystick.position.x, -32, 32)
-			joystick.position.y = clamp(joystick.position.y, -32, 32)
+			joystick.position = joystick.position.clamped(32.0)
+
 			
 	else:
 		tween.reset_all()
 		tween.interpolate_property(joystick, "position", joystick.position, Vector2.ZERO, 0.1, Tween.TRANS_LINEAR,Tween.EASE_IN)
+
+
+func _process(_delta):
+	get_parent().direction = joystick.position
+
+
+func _on_VeryTouchy_gui_input(event):
+	if event is InputEventScreenDrag:
+		get_parent().cam_dir = event.relative
 

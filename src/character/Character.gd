@@ -66,12 +66,13 @@ onready var left_ads_pos = $Head/Camera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
-onready var rhd_tween = $RHT/Tween
-onready var lhd_tween = $LHT/Tween
 onready var rhd_mesh = $RHT
-onready var lhd_mesh = $LHT
-onready var lhik = $Synth/Armature/Skeleton/LHIK
+onready var rhd_tween = $RHT/Tween
 onready var rhik = $Synth/Armature/Skeleton/RHIK
+
+onready var lhd_mesh = $LHT
+onready var lhd_tween = $LHT/Tween
+onready var lhik = $Synth/Armature/Skeleton/LHIK
 
 onready var audio_footstep = $AudioFootstep
 
@@ -81,6 +82,7 @@ func _ready():
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
+
 	lhik.start()
 	rhik.start()
 	
@@ -89,6 +91,7 @@ func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
 	get_input()
 	get_direction()
+	touch_cam_dir()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta) 
@@ -159,10 +162,11 @@ func rotation_helper():
 		
 func get_direction():
 	direction = Vector3()
-	
+	direction += $HUD.direction.y * transform.basis.z
+	direction += $HUD.direction.x * transform.basis.x
 	direction += (Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) * transform.basis.z
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
-	
+#
 	direction = direction.normalized()
 	
 	
@@ -351,3 +355,10 @@ func hand_follow():
 		if lh_target:
 			lhd_mesh.global_transform = lh_target.global_transform
 
+func touch_cam_dir():
+	var evrel = $HUD.cam_dir.normalized()
+	if evrel != Vector2.ZERO:
+		actor_rotation += deg2rad(-evrel.x * 2)
+		head.rotate_x(deg2rad(-evrel.y * 2))
+		head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+		$HUD.cam_dir = Vector2.ZERO

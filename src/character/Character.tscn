@@ -68,12 +68,12 @@ stream = ExtResource( 4 )
 bus = "SFX"
 
 [node name="RHT" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.426645, -0.651798 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.426645, -0.512206 )
 
 [node name="Tween" type="Tween" parent="RHT"]
 
 [node name="LHT" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.426645, -0.415412 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427, -0.558 )
 
 [node name="Tween" type="Tween" parent="LHT"]
 
@@ -85,7 +85,7 @@ root_bone = "shoulderright"
 tip_bone = "fingersright"
 override_tip_basis = false
 use_magnet = true
-magnet = Vector3( 5, 0, 5 )
+magnet = Vector3( 1, 0.7, 0.5 )
 target_node = NodePath("../../../../RHT")
 
 [node name="LHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
@@ -94,7 +94,7 @@ root_bone = "shoulderleft"
 tip_bone = "fingersleft"
 override_tip_basis = false
 use_magnet = true
-magnet = Vector3( -5, 0, 5 )
+magnet = Vector3( -1, 0.7, 0.5 )
 target_node = NodePath("../../../../LHT")
 
 [editable path="Synth"]
