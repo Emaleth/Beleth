@@ -17,7 +17,6 @@ var akimbo = false
 var akimbo_offset = Vector3(0.05, -0.015, -0.1)
 var ads_akimbo_z_rot = 30
 var slider_mov_dist = 0
-var mag_reload_rot = 0
 var slide_pos = Vector2.RIGHT
 var mag_pos = Vector2.DOWN
 
@@ -101,9 +100,7 @@ func reload():
 		 # MAGAZINE OUT
 		audio_mag_out.play()
 		tween.remove_all()
-		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.0, 0.1 ,Tween.TRANS_BOUNCE,Tween.EASE_OUT)
-		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.3 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
-		tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, mag_reload_rot, 0.3 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
+		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
 		tween.start()
 		yield(tween,"tween_all_completed")
 		
@@ -117,7 +114,7 @@ func reload():
 		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
 		tween.remove_all()
 		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, mag_insert_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 30, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
 		tween.start()
 		yield(tween,"tween_all_completed")
 		
@@ -169,12 +166,12 @@ func reload():
 
 		# MOVE HAND TO DEFAULT POSITION
 		if akimbo == false: 
-			holder.hand_motion(off_hand, h_secondary_grip_pos)
+			holder.hand_motion(off_hand, h_secondary_grip_pos, 0.5)
 		else:
 			if side == 1:
-				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos)
+				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos, 0.5)
 			else:
-				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos)
+				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos, 0.5)
 		yield(off_hand.get_node("Tween"), "tween_all_completed")
 		
 		emit_signal("free_hand")

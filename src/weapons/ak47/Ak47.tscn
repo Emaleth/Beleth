@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/weapons/ak47/Ak47.gd" type="Script" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://assets/sounds/sfx/out_of_ammo.ogg" type="AudioStream" id=4]
 [ext_resource path="res://assets/sounds/sfx/mag_out.wav" type="AudioStream" id=5]
 [ext_resource path="res://assets/sounds/sfx/mag_in.wav" type="AudioStream" id=6]
-[ext_resource path="res://resources/materials/wood.tres" type="Material" id=7]
-[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=8]
 [ext_resource path="res://assets/sounds/sfx/shot.ogg" type="AudioStream" id=9]
 [ext_resource path="res://assets/sounds/sfx/slide.wav" type="AudioStream" id=10]
 
@@ -15,7 +13,7 @@
 script = ExtResource( 2 )
 
 [node name="Muzzle" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0634277, -0.831721 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0468285, -0.598514 )
 
 [node name="AudioFire" parent="Muzzle" index="0"]
 stream = ExtResource( 9 )
@@ -24,42 +22,30 @@ stream = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.103571, -0.107843 )
 stream = ExtResource( 4 )
 
-[node name="model" parent="." index="5" instance=ExtResource( 3 )]
-
-[node name="Magazine" parent="model" index="0"]
-material/0 = ExtResource( 8 )
-
-[node name="MagPos" type="Position3D" parent="model/Magazine" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.195053, -0.252477 )
-
-[node name="Cube002" parent="model" index="1"]
-material/0 = ExtResource( 7 )
-
-[node name="GripPos" type="Position3D" parent="model/Cube002" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.235944, 0.000399441 )
-
-[node name="Slider" parent="model" index="2"]
-material/0 = ExtResource( 8 )
-
-[node name="SliderPos" type="Position3D" parent="model/Slider" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0378051, -0.0518942, -0.29247 )
-
-[node name="Cube" parent="model" index="3"]
-material/0 = ExtResource( 8 )
-
-[node name="SecondaryGripPos" type="Position3D" parent="model/Cube" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.107517, -0.418398 )
-
-[node name="AudioMagOut" parent="." index="6"]
+[node name="AudioMagOut" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.123787, -0.222745 )
 stream = ExtResource( 5 )
 
-[node name="AudioMagIn" parent="." index="7"]
+[node name="AudioMagIn" parent="." index="6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.123787, -0.222745 )
 stream = ExtResource( 6 )
 
-[node name="AudioSlide" parent="." index="8"]
+[node name="AudioSlide" parent="." index="7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872276, -0.218534 )
 stream = ExtResource( 10 )
 
-[editable path="model"]
+[node name="AK47" parent="." index="8" instance=ExtResource( 3 )]
+
+[node name="MagPos" type="Position3D" parent="AK47/Magazine" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.154966, -0.183969 )
+
+[node name="GripPos" type="Position3D" parent="AK47/Cube002" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.142824, 0 )
+
+[node name="SliderPos" type="Position3D" parent="AK47/Slider" index="0"]
+transform = Transform( 0.143078, 0.989711, 0, -0.989711, 0.143078, 0, 0, 0, 1, 0.0212179, -0.045322, -0.218679 )
+
+[node name="SecondaryGripPos" type="Position3D" parent="AK47/Cube" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0154363, -0.0951545, -0.281464 )
+
+[editable path="AK47"]

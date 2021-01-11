@@ -6,8 +6,8 @@ onready var tween = $joypos/Tween
 
 
 
-#func _ready():
-#	check_platform()
+func _ready():
+	check_platform()
 
 
 func check_platform():

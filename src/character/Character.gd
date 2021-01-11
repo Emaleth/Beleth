@@ -31,9 +31,9 @@ var c_crouch_height = 0.8
 
 var jump = 9
 var gravity = 20
-var acceleration = 6
+var acceleration = null
 var air_acceleration = 1
-var ground_acceleration = 6
+var ground_acceleration = 15
 var full_contact = false
 var bobbing_offset = 0.03
 var bobbing_rotation = 0.02
@@ -55,7 +55,6 @@ onready var head = $Head
 onready var head_tween = $Head/HeadBobbing
 onready var camera_ray = $Head/Camera/CameraRay
 onready var ground_check = $GroundCheck
-onready var ceiling_check = $CeilingCheck
 onready var camera = $Head/Camera
 onready var right_hand = $RHand
 onready var left_hand = $LHand
@@ -289,12 +288,11 @@ func cycle_w(updown):
 
 
 func head_bobbing(moving):
-	if ceiling_check.is_colliding() && head.translation.y < height:
+	if is_on_ceiling() && head.translation.y < height:
 		pass
 	else:
 		head.translation.y = lerp(head.translation.y, height, crouch_switch_speed)
 		c_shape.shape.height = lerp(c_shape.shape.height, c_height, crouch_switch_speed)
-		ceiling_check.translation.y = (c_height - 0.05)
 		ground_check.translation.y = - (c_height - 0.05)
 
 	if head_tween.is_active():
@@ -330,7 +328,7 @@ func get_input():
 		c_height = c_normal_height
 		
 
-func hand_motion(hand, target):
+func hand_motion(hand, target, time = 0.3):
 	var t = null
 	
 	match hand:
@@ -342,7 +340,7 @@ func hand_motion(hand, target):
 			t = lhd_tween
 			
 	t.reset_all()
-	t.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, 0.3 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+	t.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
 	t.start()
 
 

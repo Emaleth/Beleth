@@ -34,14 +34,16 @@ cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
 [node name="RHipfire" type="Position3D" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.14, -0.4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.14, -0.2 )
 
 [node name="RAds" type="Position3D" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 
 [node name="LHipfire" type="Position3D" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.14, -0.4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.14, -0.2 )
 
 [node name="LAds" type="Position3D" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 
 [node name="Recoil" type="Tween" parent="Head"]
 
@@ -51,11 +53,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.14, -0.4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
 enabled = true
 cast_to = Vector3( 0, -0.1, 0 )
-
-[node name="CeilingCheck" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0 )
-enabled = true
-cast_to = Vector3( 0, 0.1, 0 )
 
 [node name="RHand" type="Spatial" parent="."]
 
@@ -68,7 +65,7 @@ stream = ExtResource( 4 )
 bus = "SFX"
 
 [node name="RHT" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.426645, -0.512206 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.645, -0.2 )
 
 [node name="Tween" type="Tween" parent="RHT"]
 
@@ -81,20 +78,20 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427, -0.558 )
 
 [node name="RHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
 process_priority = 1
-root_bone = "shoulderright"
-tip_bone = "fingersright"
+root_bone = "ktf_r"
+tip_bone = "hand_r"
 override_tip_basis = false
 use_magnet = true
-magnet = Vector3( 1, 0.7, 0.5 )
+magnet = Vector3( 100, 0, 0 )
 target_node = NodePath("../../../../RHT")
 
 [node name="LHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
 process_priority = 1
-root_bone = "shoulderleft"
-tip_bone = "fingersleft"
+root_bone = "ktf_l"
+tip_bone = "hand_l"
 override_tip_basis = false
 use_magnet = true
-magnet = Vector3( -1, 0.7, 0.5 )
+magnet = Vector3( -100, 0, 0 )
 target_node = NodePath("../../../../LHT")
 
 [editable path="Synth"]
