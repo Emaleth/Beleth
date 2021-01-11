@@ -132,27 +132,27 @@ func _input(event):
 	
 func _process(_delta):
 	rotation_helper()
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		if Input.is_action_pressed("fire"):
-			if r_weapon:
-				r_weapon.fire()
-			if l_weapon:
-				l_weapon.fire()
-				
-		if Input.is_action_just_pressed("reload"):
-			if r_weapon:
-				r_weapon.reload()
-			if l_weapon:
-				l_weapon.reload()
+#	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if Input.is_action_pressed("fire"):
 		if r_weapon:
-			$HUD.r_ammo_label.text = "Right Ammo: " + str(r_weapon.clip_size)
-		else:
-			$HUD.r_ammo_label.text = "No Right Weapon"
-			
+			r_weapon.fire()
 		if l_weapon:
-			$HUD.l_ammo_label.text = "Left Ammo: " + str(l_weapon.clip_size)
-		else:
-			$HUD.l_ammo_label.text = "No Left Weapon"
+			l_weapon.fire()
+			
+	if Input.is_action_just_pressed("reload"):
+		if r_weapon:
+			r_weapon.reload()
+		if l_weapon:
+			l_weapon.reload()
+	if r_weapon:
+		$HUD.r_ammo_label.text = "Right Ammo: " + str(r_weapon.clip_size)
+	else:
+		$HUD.r_ammo_label.text = "No Right Weapon"
+		
+	if l_weapon:
+		$HUD.l_ammo_label.text = "Left Ammo: " + str(l_weapon.clip_size)
+	else:
+		$HUD.l_ammo_label.text = "No Left Weapon"
 			
 		
 func rotation_helper():
@@ -358,7 +358,7 @@ func hand_follow():
 func touch_cam_dir():
 	var evrel = $HUD.cam_dir.normalized()
 	if evrel != Vector2.ZERO:
-		actor_rotation += deg2rad(-evrel.x * 2)
-		head.rotate_x(deg2rad(-evrel.y * 2))
+		actor_rotation += deg2rad(-evrel.x * 4)
+		head.rotate_x(deg2rad(-evrel.y * 4))
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 		$HUD.cam_dir = Vector2.ZERO

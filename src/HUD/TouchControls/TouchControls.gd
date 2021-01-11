@@ -22,8 +22,9 @@ func _input(event):
 		if tween.is_active():
 			tween.stop_all()
 		if event is InputEventScreenDrag:
-			joystick.position += event.relative
-			joystick.position = joystick.position.clamped(32.0)
+			if event.position.x <= rect_size.x / 2:
+				joystick.position += event.relative
+				joystick.position = joystick.position.clamped(32.0)
 
 			
 	else:

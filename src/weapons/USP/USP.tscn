@@ -47,7 +47,7 @@ material/0 = ExtResource( 4 )
 material/0 = ExtResource( 4 )
 
 [node name="SecondaryGripPos" type="Position3D" parent="USP/Cube001" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0984333, -0.565605 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.182655, -0.469334 )
 
 [node name="Slider" parent="USP" index="3"]
 material/0 = ExtResource( 4 )
@@ -59,6 +59,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.289105 )
 material/0 = ExtResource( 7 )
 
 [node name="GripPos" type="Position3D" parent="USP/grip" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.190396, -0.299532 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.160794, -0.343107 )
 
 [editable path="USP"]
