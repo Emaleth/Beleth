@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/models/weapons/USP.glb" type="PackedScene" id=2]
 [ext_resource path="res://src/weapons/USP/USP.gd" type="Script" id=3]
+[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=4]
 [ext_resource path="res://assets/sounds/sfx/out_of_ammo.ogg" type="AudioStream" id=5]
 [ext_resource path="res://assets/sounds/sfx/mag_out.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/sounds/sfx/mag_in.wav" type="AudioStream" id=8]
@@ -32,14 +33,29 @@ stream = ExtResource( 10 )
 
 [node name="USP" parent="." index="8" instance=ExtResource( 2 )]
 
+[node name="Magazine" parent="USP" index="0"]
+material/0 = ExtResource( 4 )
+
 [node name="MagPos" type="Position3D" parent="USP/Magazine" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.106376, -0.115897 )
+
+[node name="Cube002" parent="USP" index="1"]
+material/0 = ExtResource( 4 )
+
+[node name="Cube001" parent="USP" index="2"]
+material/0 = ExtResource( 4 )
 
 [node name="SecondaryGripPos" type="Position3D" parent="USP/Cube001" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0530108, -0.19062 )
 
+[node name="Slider" parent="USP" index="3"]
+material/0 = ExtResource( 4 )
+
 [node name="SliderPos" type="Position3D" parent="USP/Slider" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.110112 )
+
+[node name="grip" parent="USP" index="4"]
+material/0 = ExtResource( 4 )
 
 [node name="GripPos" type="Position3D" parent="USP/grip" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0729998, -0.119428 )

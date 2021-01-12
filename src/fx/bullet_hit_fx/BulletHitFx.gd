@@ -18,9 +18,10 @@ func conf(c_point, c_normal):
 		rotation.x = deg2rad(90)
 	elif c_normal == Vector3.DOWN:
 		rotation.x = deg2rad(-90)
-	
+
 	else:
 		look_at(c_point + c_normal, Vector3.UP)
+
 			
 
 	rotation.z = deg2rad(rand_range(0, 360))

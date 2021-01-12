@@ -21,29 +21,51 @@ shape = SubResource( 1 )
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766007, -0.0315004 )
 
-[node name="Camera" type="Camera" parent="Head"]
+[node name="WorldCamera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.86265e-09 )
-cull_mask = 7
+cull_mask = 1
 current = true
 near = 0.01
 far = 150.0
 
-[node name="CameraRay" type="RayCast" parent="Head/Camera"]
+[node name="CameraRay" type="RayCast" parent="Head/WorldCamera"]
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="RHipfire" type="Position3D" parent="Head/Camera"]
+[node name="RHipfire" type="Position3D" parent="Head/WorldCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.14, -0.2 )
 
-[node name="RAds" type="Position3D" parent="Head/Camera"]
+[node name="RAds" type="Position3D" parent="Head/WorldCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 
-[node name="LHipfire" type="Position3D" parent="Head/Camera"]
+[node name="LHipfire" type="Position3D" parent="Head/WorldCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.14, -0.2 )
 
-[node name="LAds" type="Position3D" parent="Head/Camera"]
+[node name="LAds" type="Position3D" parent="Head/WorldCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+
+[node name="CharacterViewportRender" type="ViewportContainer" parent="Head/WorldCamera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CharacterCameraViewport" type="Viewport" parent="Head/WorldCamera/CharacterViewportRender"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+
+[node name="CharacterCamera" type="Camera" parent="Head/WorldCamera/CharacterViewportRender/CharacterCameraViewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766007, -0.0315004 )
+cull_mask = 2
+
+[node name="RemoteTransform" type="RemoteTransform" parent="Head/WorldCamera"]
+remote_path = NodePath("../CharacterViewportRender/CharacterCameraViewport/CharacterCamera")
 
 [node name="Recoil" type="Tween" parent="Head"]
 
@@ -75,6 +97,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427, -0.558 )
 [node name="Tween" type="Tween" parent="LHT"]
 
 [node name="Synth" parent="." instance=ExtResource( 2 )]
+
+[node name="Cube" parent="Synth/Armature/Skeleton" index="0"]
+layers = 2
 
 [node name="RHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
 process_priority = 1

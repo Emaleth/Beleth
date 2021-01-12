@@ -53,15 +53,15 @@ var actor_rotation = 0
 
 onready var head = $Head
 onready var head_tween = $Head/HeadBobbing
-onready var camera_ray = $Head/Camera/CameraRay
+onready var camera_ray = $Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
-onready var camera = $Head/Camera
+onready var camera = $Head/WorldCamera
 onready var right_hand = $RHand
 onready var left_hand = $LHand
-onready var right_hipfire_pos = $Head/Camera/RHipfire
-onready var left_hipfire_pos = $Head/Camera/LHipfire
-onready var right_ads_pos = $Head/Camera/RAds
-onready var left_ads_pos = $Head/Camera/LAds
+onready var right_hipfire_pos = $Head/WorldCamera/RHipfire
+onready var left_hipfire_pos = $Head/WorldCamera/LHipfire
+onready var right_ads_pos = $Head/WorldCamera/RAds
+onready var left_ads_pos = $Head/WorldCamera/LAds
 onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 

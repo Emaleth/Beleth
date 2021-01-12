@@ -104,6 +104,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.9333, 0, -13.9065 )
 [node name="MetalWall" parent="Props" instance=ExtResource( 7 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4, 1.86704, 12 )
 
+[node name="MetalWall18" parent="Props" instance=ExtResource( 7 )]
+transform = Transform( 0.0975085, 0.986185, -0.133907, 0.482252, -0.164517, -0.860447, -0.870589, 0.0193237, -0.491631, 0.0563221, 1.86704, 32.5297 )
+
+[node name="MetalWall19" parent="Props" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 4.37114e-08, 1, 0, -1, 4.37114e-08, 1.06814, 5.0077, 24.6528 )
+
 [node name="MetalWall5" parent="Props" instance=ExtResource( 7 )]
 transform = Transform( 6.41732e-07, 3.41996e-14, 10, -1.28346e-06, 3, -8.0864e-20, -8.5, -4.52987e-07, 7.54979e-07, -50, 5, 0 )
 

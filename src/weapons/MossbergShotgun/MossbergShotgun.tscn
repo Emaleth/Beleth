@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/models/weapons/MossbergShotgun.glb" type="PackedScene" id=2]
+[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=3]
 [ext_resource path="res://src/weapons/MossbergShotgun/MossbergShotgun.gd" type="Script" id=5]
 [ext_resource path="res://assets/sounds/sfx/out_of_ammo.ogg" type="AudioStream" id=6]
 [ext_resource path="res://assets/sounds/sfx/mag_out.wav" type="AudioStream" id=7]
@@ -32,16 +33,34 @@ stream = ExtResource( 10 )
 
 [node name="MossbergShotgun" parent="." index="8" instance=ExtResource( 2 )]
 
+[node name="Cube005" parent="MossbergShotgun" index="0"]
+material/0 = ExtResource( 3 )
+
 [node name="GripPos" type="Position3D" parent="MossbergShotgun/Cube005" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.058625, 0 )
 
+[node name="Magazine" parent="MossbergShotgun" index="1"]
+material/0 = ExtResource( 3 )
+
 [node name="MagPos" type="Position3D" parent="MossbergShotgun/Magazine" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0817247, -0.136283 )
+
+[node name="Cube003" parent="MossbergShotgun" index="2"]
+material/0 = ExtResource( 3 )
+
+[node name="Slider" parent="MossbergShotgun" index="3"]
+material/0 = ExtResource( 3 )
 
 [node name="SliderPos" type="Position3D" parent="MossbergShotgun/Slider" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0592969, -0.343003 )
 
 [node name="SecondaryGripPos" type="Position3D" parent="MossbergShotgun/Slider" index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.063165, -0.330006 )
+
+[node name="Cube001" parent="MossbergShotgun" index="4"]
+material/0 = ExtResource( 3 )
+
+[node name="Cube" parent="MossbergShotgun" index="5"]
+material/0 = ExtResource( 3 )
 
 [editable path="MossbergShotgun"]
