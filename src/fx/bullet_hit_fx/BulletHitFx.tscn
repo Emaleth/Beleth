@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/fx/bullet_hit_fx/BulletHitFx.gd" type="Script" id=1]
-[ext_resource path="res://resources/materials/decals/bullet_decal.tres" type="Material" id=2]
+[ext_resource path="res://resources/materials/vfx/bullet_hole.tres" type="Material" id=2]
+
+
 
 [sub_resource type="QuadMesh" id=1]
 material = ExtResource( 2 )

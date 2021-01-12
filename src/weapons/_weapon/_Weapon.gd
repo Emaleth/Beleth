@@ -45,7 +45,6 @@ var off_hand = null
 onready var tween  = $Tween
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
-onready var muzzle_flash = $Muzzle/MuzzleFlash
 onready var audio_fire = $Muzzle/AudioFire
 onready var audio_empty_mag = $AudioEmpty
 onready var audio_slider = $AudioSlide
@@ -191,9 +190,11 @@ func fire():
 				$Timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox. 15ms 
 				clip_size -= 1
 				audio_fire.play()
+				
+				var muzzle_flash = ObjectPool.get_item("muzzle_flash")
+				muzzle.add_child(muzzle_flash)
+				muzzle_flash.conf(muzzle.global_transform)
 
-				muzzle_flash.rotation.z = deg2rad(rand_range(0, 360))
-				muzzle_flash.visible = true
 			
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
@@ -203,7 +204,6 @@ func fire():
 				
 				shoot_bullet()
 				holder.view_recoil(recoil_force)
-				muzzle_flash.visible = false
 					
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
@@ -225,13 +225,13 @@ func shoot_bullet():
 		bullet.rotation = Vector3(0, 0, 0)
 		if bullet.is_colliding():
 			var target = bullet.get_collider().owner
-			var smoke  = ObjectPool.get_item("smoke")
+			var smoke  = ObjectPool.get_item("gunfire_smoke")
 			target.add_child(smoke)
 			smoke.conf(muzzle.global_transform)
-			var trail = ObjectPool.get_item("trail")
+			var trail = ObjectPool.get_item("bullet_trail")
 			target.add_child(trail)
 			trail.conf(muzzle.global_transform.origin, bullet.get_collision_point())
-			var decal = ObjectPool.get_item("hole")
+			var decal = ObjectPool.get_item("bullet_hole")
 			target.add_child(decal)
 			decal.conf(bullet.get_collision_point(), bullet.get_collision_normal())
 			if target.has_method("hit"):

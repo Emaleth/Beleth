@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/bullet_trace.png-10b085586b262fd9dfaa3c10b01ad0bf.s3tc.stex"
-path.etc="res://.import/bullet_trace.png-10b085586b262fd9dfaa3c10b01ad0bf.etc.stex"
+path.s3tc="res://.import/smoke_02.png-90dad3530653bad2aa5a9ec6ad0aef36.s3tc.stex"
+path.etc="res://.import/smoke_02.png-90dad3530653bad2aa5a9ec6ad0aef36.etc.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/trace/bullet_trace.png"
-dest_files=[ "res://.import/bullet_trace.png-10b085586b262fd9dfaa3c10b01ad0bf.s3tc.stex", "res://.import/bullet_trace.png-10b085586b262fd9dfaa3c10b01ad0bf.etc.stex" ]
+source_file="res://assets/textures/vfx/smoke/smoke_02.png"
+dest_files=[ "res://.import/smoke_02.png-90dad3530653bad2aa5a9ec6ad0aef36.s3tc.stex", "res://.import/smoke_02.png-90dad3530653bad2aa5a9ec6ad0aef36.etc.stex" ]
 
 [params]
 

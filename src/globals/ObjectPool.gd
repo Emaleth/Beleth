@@ -1,19 +1,24 @@
 extends Node
 
 var items = {
-	"hole" : {
+	"bullet_hole" : {
 		"scene" : preload("res://src/fx/bullet_hit_fx/BulletHitFx.tscn"),
 		"max_q" : 1000,
 		"pool" : []
 	},
-	"trail" : {
+	"bullet_trail" : {
 		"scene" : preload("res://src/fx/bullet_trail_fx/BulletTrailFx.tscn"),
 		"max_q" : 1000,
 		"pool" : []
 	},
-	"smoke" : {
+	"gunfire_smoke" : {
 		"scene" : preload("res://src/fx/gunfire_smoke_fx/GunfireSmokeFx.tscn"),
 		"max_q" : 1000,
+		"pool" : []
+	},
+	"muzzle_flash" : {
+		"scene" : preload("res://src/fx/muzzle_flash_fx/MuzzleFlashFx.tscn"),
+		"max_q" : 100,
 		"pool" : []
 	}
 }

@@ -10,6 +10,6 @@ func _ready():
 	spread = 0.2
 	slug_size = 1
 #	akimbo = true
-	slider_mov_dist = 0.1
+	slider_mov_dist = 0.02
 	slide_pos = Vector2.UP
 	load_data()
