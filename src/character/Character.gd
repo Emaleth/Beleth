@@ -52,7 +52,8 @@ var current_w = 0
 var actor_rotation = 0
 
 onready var head = $Head
-onready var head_tween = $Head/HeadBobbing
+onready var bobbing_tween = $Head/Bobbing
+onready var recoil_tween = $Head/Recoil
 onready var camera_ray = $Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
 onready var camera = $Head/WorldCamera
@@ -62,7 +63,6 @@ onready var right_hipfire_pos = $Head/WorldCamera/RHipfire
 onready var left_hipfire_pos = $Head/WorldCamera/LHipfire
 onready var right_ads_pos = $Head/WorldCamera/RAds
 onready var left_ads_pos = $Head/WorldCamera/LAds
-onready var tween = $Head/Recoil
 onready var c_shape = $CollisionShape
 
 onready var rhd_mesh = $RHT
@@ -90,7 +90,7 @@ func _physics_process(delta):
 	full_contact = ground_check.is_colliding()
 	get_input()
 	get_direction()
-	touch_cam_dir()
+#	touch_cam_dir()
 	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta) 
@@ -161,8 +161,8 @@ func rotation_helper():
 		
 func get_direction():
 	direction = Vector3()
-	direction += $HUD.direction.y * transform.basis.z
-	direction += $HUD.direction.x * transform.basis.x
+#	direction += $HUD.direction.y * transform.basis.z
+#	direction += $HUD.direction.x * transform.basis.x
 	direction += (Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) * transform.basis.z
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
 #
@@ -251,13 +251,13 @@ func aim(delta):
 
 		
 func view_recoil(force):
-	tween.remove_all()
 	var new_head = head.rotation.x + deg2rad(force.y)
 	new_head = clamp(new_head, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
-	tween.interpolate_property(head, "rotation:x", head.rotation.x, new_head, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	tween.interpolate_property(head, "rotation:y", head.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	
-	tween.start()
+	recoil_tween.remove_all()
+	recoil_tween.interpolate_property(head, "rotation:x", head.rotation.x, new_head, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.interpolate_property(head, "rotation:y", head.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.start()
 
 
 func get_weapon(wpn):
@@ -295,22 +295,22 @@ func head_bobbing(moving):
 		c_shape.shape.height = lerp(c_shape.shape.height, c_height, crouch_switch_speed)
 		ground_check.translation.y = - (c_height - 0.05)
 
-	if head_tween.is_active():
+	if bobbing_tween.is_active():
 		return
 	else:
 		if direction != Vector3.ZERO:
 			audio_footstep.play()
 		bobbing_dir *= -1
 		if moving:
-			head_tween.remove_all()
-			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.start()
+			bobbing_tween.remove_all()
+			bobbing_tween.interpolate_property(head, "translation:y", head.translation.y, height +bobbing_offset * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			bobbing_tween.interpolate_property(head, "rotation_degrees:y", head.rotation_degrees.y, bobbing_rotation * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			bobbing_tween.start()
 		else:
-			head_tween.remove_all()
-			head_tween.interpolate_property(camera, "translation:y", camera.translation.y, bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.interpolate_property(camera, "rotation_degrees:y", camera.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			head_tween.start()
+			bobbing_tween.remove_all()
+			bobbing_tween.interpolate_property(head, "translation:y", head.translation.y, height+bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			bobbing_tween.interpolate_property(head, "rotation_degrees:y", head.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+			bobbing_tween.start()
 
 
 func get_input():
@@ -329,19 +329,19 @@ func get_input():
 		
 
 func hand_motion(hand, target, time = 0.3):
-	var t = null
+	var tween = null
 	
 	match hand:
 		rhd_mesh:
 			rh_target = target
-			t = rhd_tween
+			tween = rhd_tween
 		lhd_mesh:
 			lh_target = target
-			t = lhd_tween
+			tween = lhd_tween
 			
-	t.reset_all()
-	t.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
-	t.start()
+	tween.reset_all()
+	tween.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
+	tween.start()
 
 
 func hand_follow():
@@ -352,11 +352,18 @@ func hand_follow():
 	if not lhd_tween.is_active():
 		if lh_target:
 			lhd_mesh.global_transform = lh_target.global_transform
+			
 
-func touch_cam_dir():
-	var evrel = $HUD.cam_dir.normalized()
-	if evrel != Vector2.ZERO:
-		actor_rotation += deg2rad(-evrel.x * 4)
-		head.rotate_x(deg2rad(-evrel.y * 4))
-		head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
-		$HUD.cam_dir = Vector2.ZERO
+#func touch_cam_dir():
+#	var evrel = $HUD.cam_dir.normalized()
+#	if evrel != Vector2.ZERO:
+#		actor_rotation += deg2rad(-evrel.x * 4)
+#		head.rotate_x(deg2rad(-evrel.y * 4))
+#		head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+#		$HUD.cam_dir = Vector2.ZERO
+
+
+func weapon_sway():
+	pass
+	
+	

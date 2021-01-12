@@ -19,6 +19,7 @@ var ads_akimbo_z_rot = 30
 var slider_mov_dist = 0
 var slide_pos = Vector2.RIGHT
 var mag_pos = Vector2.DOWN
+var projectile = false
 
 """ // END OF WEAPON DATA // """
 
@@ -75,8 +76,8 @@ func load_data():
 	
 	
 func reload():
-	if clip_size == max_clip_size:
-		return
+#	if clip_size == max_clip_size:
+#		return
 	if reloading == false:
 		reloading = true
 		if tween.is_active():
@@ -216,28 +217,36 @@ func fire():
 			
 func shoot_bullet():
 	for shot in slug_size:
-		var bs = Vector2(rand_range(-1, 1), rand_range(-1, 1))
-		if bs.length() > 1:
-			bs = bs.normalized()
-		bullet.rotate_x(deg2rad(bs.y * spread))
-		bullet.rotate_y(deg2rad(bs.x * spread))
-		bullet.force_raycast_update()
-		bullet.rotation = Vector3(0, 0, 0)
-		if bullet.is_colliding():
-			var target = bullet.get_collider().owner
+		if projectile == false:
+			var bs = Vector2(rand_range(-1, 1), rand_range(-1, 1))
+			if bs.length() > 1:
+				bs = bs.normalized()
+			bullet.rotate_x(deg2rad(bs.y * spread))
+			bullet.rotate_y(deg2rad(bs.x * spread))
+			bullet.force_raycast_update()
+			bullet.rotation = Vector3(0, 0, 0)
+			if bullet.is_colliding():
+				var target = bullet.get_collider().owner
+				var smoke  = ObjectPool.get_item("gunfire_smoke")
+				get_tree().get_root().add_child(smoke)
+				smoke.conf(muzzle.global_transform)
+				var trail = ObjectPool.get_item("bullet_trail")
+				get_tree().get_root().add_child(trail)
+				trail.conf(muzzle.global_transform.origin, bullet.get_collision_point())
+				var hole = ObjectPool.get_item("bullet_hole")
+				target.add_child(hole)
+				hole.conf(bullet.get_collision_point(), bullet.get_collision_normal())
+				if target.has_method("hit"):
+					target.hit(damage)
+					Console.target = target
+		else:
 			var smoke  = ObjectPool.get_item("gunfire_smoke")
-			target.add_child(smoke)
+			get_tree().get_root().add_child(smoke)
 			smoke.conf(muzzle.global_transform)
-			var trail = ObjectPool.get_item("bullet_trail")
-			target.add_child(trail)
-			trail.conf(muzzle.global_transform.origin, bullet.get_collision_point())
-			var decal = ObjectPool.get_item("bullet_hole")
-			target.add_child(decal)
-			decal.conf(bullet.get_collision_point(), bullet.get_collision_normal())
-			if target.has_method("hit"):
-				target.hit(damage)
-				Console.target = target
-
+			var frag = ObjectPool.get_item("granade")
+			get_tree().get_root().add_child(frag)
+			frag.conf(muzzle.global_transform)
+			
 
 func _on_Timer_timeout():
 	can_shoot = true
@@ -281,3 +290,4 @@ func get_hands():
 	holder.hand_motion(main_hand, h_grip_pos)
 	if akimbo == false:
 		holder.hand_motion(off_hand, h_secondary_grip_pos)
+

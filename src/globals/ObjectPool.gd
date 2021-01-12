@@ -20,6 +20,11 @@ var items = {
 		"scene" : preload("res://src/fx/muzzle_flash_fx/MuzzleFlashFx.tscn"),
 		"max_q" : 100,
 		"pool" : []
+	},
+	"granade" : {
+		"scene" : preload("res://src/projectiles/Projectile.tscn"),
+		"max_q" : 100,
+		"pool" : []
 	}
 }
 
