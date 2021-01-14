@@ -11,5 +11,5 @@ func _ready():
 	spread = 0.2
 #	akimbo = true
 	slider_mov_dist = 0.07
-	projectile = true
+#	projectile = true
 	load_data()

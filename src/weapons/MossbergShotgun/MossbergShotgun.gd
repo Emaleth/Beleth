@@ -12,4 +12,5 @@ func _ready():
 #	akimbo = true
 	slider_mov_dist = 0.07
 	slide_pos = Vector2.DOWN
+	projectile = true
 	load_data()

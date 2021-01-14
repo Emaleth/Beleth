@@ -179,7 +179,7 @@ transform = Transform( 0.905339, 0, 0.424689, 0, 1, 0, -0.424689, 0, 0.905339, -
 [node name="Actors" type="Node" parent="."]
 
 [node name="Character" parent="Actors" instance=ExtResource( 1 )]
-transform = Transform( -0.0599163, 0, -0.998203, 0, 1, 0, 0.998203, 0, -0.0599163, -7.22003, 0.860672, -9.36882 )
+transform = Transform( -0.0599163, 0, -0.998203, 0, 1, 0, 0.998203, 0, -0.0599163, 22.7866, 0.860672, -11.1722 )
 
 [node name="Target" parent="Actors" instance=ExtResource( 6 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 27.9057, 0.991864, -11.4138 )

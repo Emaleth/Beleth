@@ -57,12 +57,13 @@ onready var recoil_tween = $Head/Recoil
 onready var camera_ray = $Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
 onready var camera = $Head/WorldCamera
+onready var camera2 = $Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var right_hand = $RHand
 onready var left_hand = $LHand
-onready var right_hipfire_pos = $Head/WorldCamera/RHipfire
-onready var left_hipfire_pos = $Head/WorldCamera/LHipfire
-onready var right_ads_pos = $Head/WorldCamera/RAds
-onready var left_ads_pos = $Head/WorldCamera/LAds
+onready var right_hipfire_pos = $Head/RHipfire
+onready var left_hipfire_pos = $Head/LHipfire
+onready var right_ads_pos = $Head/RAds
+onready var left_ads_pos = $Head/LAds
 onready var c_shape = $CollisionShape
 
 onready var rhd_mesh = $RHT
@@ -199,6 +200,7 @@ func aim(delta):
 			bobbing_rotation = h_rot_hip
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
+			camera2.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
 			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_hipfire_pos.global_transform.origin, ads_speed * delta)		
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_hipfire_pos.global_transform.origin, ads_speed * delta)
@@ -216,6 +218,7 @@ func aim(delta):
 			bobbing_rotation = h_rot_ads
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
+			camera2.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
 			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
 			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)

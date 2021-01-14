@@ -1,4 +1,4 @@
-extends Spatial
+extends StaticBody
 
 var health = 10
 
@@ -9,6 +9,6 @@ func hit(amount):
 	health = max(health, 0)
 	if health == 0:
 		visible = false
-		$Circle/StaticBody/CollisionShape.disabled = true
+		$CollisionShape.disabled = true
 		yield($AudioStreamPlayer3D,"finished")
 		queue_free()

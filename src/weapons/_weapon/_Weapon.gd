@@ -226,7 +226,7 @@ func shoot_bullet():
 			bullet.force_raycast_update()
 			bullet.rotation = Vector3(0, 0, 0)
 			if bullet.is_colliding():
-				var target = bullet.get_collider().owner
+				var target = bullet.get_collider()
 				var smoke  = ObjectPool.get_item("gunfire_smoke")
 				get_tree().get_root().add_child(smoke)
 				smoke.conf(muzzle.global_transform)
@@ -246,7 +246,7 @@ func shoot_bullet():
 			var frag = ObjectPool.get_item("granade")
 			get_tree().get_root().add_child(frag)
 			frag.conf(muzzle.global_transform)
-			
+
 
 func _on_Timer_timeout():
 	can_shoot = true

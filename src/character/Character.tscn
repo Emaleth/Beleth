@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/Synth.glb" type="PackedScene" id=2]
 [ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/sounds/sfx/footstep.ogg" type="AudioStream" id=4]
+[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
@@ -33,19 +34,23 @@ enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="RHipfire" type="Position3D" parent="Head/WorldCamera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.14, -0.2 )
+[node name="Recoil" type="Tween" parent="Head"]
 
-[node name="RAds" type="Position3D" parent="Head/WorldCamera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+[node name="Bobbing" type="Tween" parent="Head"]
 
-[node name="LHipfire" type="Position3D" parent="Head/WorldCamera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.14, -0.2 )
+[node name="RHipfire" type="Position3D" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
 
-[node name="LAds" type="Position3D" parent="Head/WorldCamera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+[node name="RAds" type="Position3D" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
 
-[node name="CharacterViewportRender" type="ViewportContainer" parent="Head/WorldCamera"]
+[node name="LHipfire" type="Position3D" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
+
+[node name="LAds" type="Position3D" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+
+[node name="CharacterViewportRender" type="ViewportContainer" parent="Head"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -55,22 +60,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CharacterCameraViewport" type="Viewport" parent="Head/WorldCamera/CharacterViewportRender"]
+[node name="CharacterCameraViewport" type="Viewport" parent="Head/CharacterViewportRender"]
 size = Vector2( 1024, 600 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="CharacterCamera" type="Camera" parent="Head/WorldCamera/CharacterViewportRender/CharacterCameraViewport"]
+[node name="CharacterCamera" type="Camera" parent="Head/CharacterViewportRender/CharacterCameraViewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766007, -0.0315004 )
 cull_mask = 2
+near = 0.01
+far = 10.0
 
-[node name="RemoteTransform" type="RemoteTransform" parent="Head/WorldCamera"]
+[node name="RemoteTransform" type="RemoteTransform" parent="Head"]
 remote_path = NodePath("../CharacterViewportRender/CharacterCameraViewport/CharacterCamera")
-
-[node name="Recoil" type="Tween" parent="Head"]
-
-[node name="Bobbing" type="Tween" parent="Head"]
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
@@ -92,30 +95,34 @@ bus = "SFX"
 [node name="Tween" type="Tween" parent="RHT"]
 
 [node name="LHT" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.290035, 0.438965, -0.498434 )
 
 [node name="Tween" type="Tween" parent="LHT"]
 
 [node name="Synth" parent="." instance=ExtResource( 2 )]
 
-[node name="Cube" parent="Synth/Armature/Skeleton" index="0"]
+[node name="Alpha_Joints" parent="Synth/Armature/Skeleton" index="0"]
 layers = 2
+material/0 = ExtResource( 5 )
 
 [node name="RHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
 process_priority = 1
-root_bone = "ktf_r"
-tip_bone = "hand_r"
+root_bone = "mixamorig_right_arm"
+tip_bone = "mixamorig_right_hand"
 override_tip_basis = false
-use_magnet = true
-magnet = Vector3( 100, -100, 0 )
 target_node = NodePath("../../../../RHT")
+min_distance = 0.001
 
 [node name="LHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
 process_priority = 1
-root_bone = "ktf_l"
-tip_bone = "hand_l"
+root_bone = "mixamorig_left_arm"
+tip_bone = "mixamorig_left_hand"
 override_tip_basis = false
-use_magnet = true
-magnet = Vector3( -100, -100, 0 )
 target_node = NodePath("../../../../LHT")
+min_distance = 0.001
+
+[node name="Alpha_Surface" parent="Synth/Armature/Skeleton" index="3"]
+layers = 2
+material/0 = ExtResource( 5 )
 
 [editable path="Synth"]
