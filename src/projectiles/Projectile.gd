@@ -22,7 +22,8 @@ func _on_Timer_timeout():
 	$MeshInstance.hide()
 	explosion_fx.explode(damage)
 	yield(get_tree().create_timer(0.5), "timeout")
-	get_parent().remove_child(self)
+	if get_parent():
+		get_parent().remove_child(self)
 
 
 

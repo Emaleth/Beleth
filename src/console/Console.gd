@@ -51,13 +51,14 @@ func monitor_player():
 		monitor_field.text += "Linear Vel: " + str(player.linear_velocity) + "\n"
 		monitor_field.text += "Gravity Vec: " + str(player.gravity_vec) + "\n"
 		monitor_field.text += "Final Vel: " + str(player.velocity) + "\n"
-		if player.r_weapon:
-			monitor_field.text += "R_hand: " + str(player.r_weapon.name) + "\n"
-		if player.l_weapon:
-			monitor_field.text += "L_hand: " + str(player.l_weapon.name) + "\n"
+		if player.right_hand.weapon:
+			monitor_field.text += "R_hand: " + str(player.right_hand.weapon.name) + "\n"
+		if player.left_hand.weapon:
+			monitor_field.text += "L_hand: " + str(player.left_hand.weapon.name) + "\n"
 		if target:
-			if target.health > 0:
-				monitor_field.text += "Target: " + str(target.name) + " : " + str(target.health) + "hp" + "\n"
+			if target.get("health"):
+				if target.health > 0:
+					monitor_field.text += "Target: " + str(target.name) + " : " + str(target.health) + "hp" + "\n"
 		
 func show_console():
 	tween.remove_all()

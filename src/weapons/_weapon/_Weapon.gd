@@ -105,8 +105,8 @@ func reload():
 		yield(tween,"tween_all_completed")
 		
 		magazine.visible = false
-		if self == holder.l_weapon:
-			yield(holder.r_weapon, "free_hand")
+		if self == holder.left_hand.weapon:
+			yield(holder.right_hand.weapon, "free_hand")
 		
 		# MOVE HAND TO MAGAZINE
 		holder.hand_motion(off_hand, h_mag_pos)
@@ -141,7 +141,7 @@ func reload():
 		
 		# MOVE HAND TO SLIDER AND WAIT FOR IT
 		holder.hand_motion(off_hand, h_slider_pos)
-		yield(off_hand.get_node("Tween"), "tween_all_completed")
+		yield(off_hand.tween, "tween_all_completed")
 		
 		 # PULL SLIDER
 		tween.remove_all()
@@ -172,7 +172,7 @@ func reload():
 				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos, 0.5)
 			else:
 				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos, 0.5)
-		yield(off_hand.get_node("Tween"), "tween_all_completed")
+		yield(off_hand.tween, "tween_all_completed")
 		
 		emit_signal("free_hand")
 		
@@ -196,6 +196,7 @@ func fire():
 				muzzle.add_child(muzzle_flash)
 				muzzle_flash.conf(muzzle.global_transform)
 
+				holder.view_recoil(recoil_force)
 			
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
@@ -204,7 +205,6 @@ func fire():
 				yield(tween,"tween_all_completed")
 				
 				shoot_bullet()
-				holder.view_recoil(recoil_force)
 					
 				tween.remove_all()
 				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
@@ -281,11 +281,11 @@ func get_anim_data():
 func get_hands():
 	match side:
 		1:
-			main_hand = holder.rhd_mesh
-			off_hand = holder.lhd_mesh
+			main_hand = holder.right_hand
+			off_hand = holder.left_hand
 		-1:
-			main_hand = holder.lhd_mesh
-			off_hand = holder.rhd_mesh
+			main_hand = holder.left_hand
+			off_hand = holder.right_hand
 			
 	holder.hand_motion(main_hand, h_grip_pos)
 	if akimbo == false:

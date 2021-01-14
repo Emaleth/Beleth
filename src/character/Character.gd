@@ -13,8 +13,8 @@ var hipfire_mouse_sensitivity = 0.2
 var ads_mouse_sensitivity = 0.1
 var h_bob_hip = 0.03
 var h_bob_ads = 0.003
-var h_rot_hip = 0.1
-var h_rot_ads = 0.01
+var h_rot_hip = 0.5
+var h_rot_ads = 0.05
 
 var speed
 var crouch_speed = 3
@@ -40,39 +40,46 @@ var bobbing_rotation = 0.02
 var bobbing_dir = 1
 var rotation_damping = 0.5
 
-var r_weapon = null 
-var l_weapon = null 
-var lh_target = null
-var rh_target = null
 var direction = Vector3()
 var velocity = Vector3()
 var linear_velocity = Vector3()
 var gravity_vec = Vector3()
 var current_w = 0
-var actor_rotation = 0
 
-onready var head = $Head
-onready var bobbing_tween = $Head/Bobbing
-onready var recoil_tween = $Head/Recoil
-onready var camera_ray = $Head/WorldCamera/CameraRay
+onready var head = $UpperBody/Head
+onready var upper_body = $UpperBody
+onready var bobbing_tween = $UpperBody/Head/Bobbing
+onready var recoil_tween = $Recoil
+onready var camera_ray = $UpperBody/Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
-onready var camera = $Head/WorldCamera
-onready var camera2 = $Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
-onready var right_hand = $RHand
-onready var left_hand = $LHand
-onready var right_hipfire_pos = $Head/RHipfire
-onready var left_hipfire_pos = $Head/LHipfire
-onready var right_ads_pos = $Head/RAds
-onready var left_ads_pos = $Head/LAds
+onready var camera = $UpperBody/Head/WorldCamera
+onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
+ 
+onready var right_hand = {
+	"ik_target" : $UpperBody/Hands/Right/IKTarget,
+	"hand" : $UpperBody/Hands/Right/Hand,
+	"tween" : $UpperBody/Hands/Right/Tween,
+	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
+	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
+	"ik" : $Synth/Armature/Skeleton/RightHandIK,
+	"weapon" : null,
+	"hand_pos" : null
+	}
+	
+onready var left_hand = {
+	"ik_target" : $UpperBody/Hands/Left/IKTarget,
+	"hand" : $UpperBody/Hands/Left/Hand,
+	"tween" : $UpperBody/Hands/Left/Tween,
+	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
+	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
+	"ik" : $Synth/Armature/Skeleton/LeftHandIK,
+	"weapon" : null,
+	"hand_pos" : null
+	}
 
-onready var rhd_mesh = $RHT
-onready var rhd_tween = $RHT/Tween
-onready var rhik = $Synth/Armature/Skeleton/RHIK
 
-onready var lhd_mesh = $LHT
-onready var lhd_tween = $LHT/Tween
-onready var lhik = $Synth/Armature/Skeleton/LHIK
+onready var spine_ik = $Synth/Armature/Skeleton/SpineIK
 
 onready var audio_footstep = $AudioFootstep
 
@@ -82,9 +89,13 @@ func _ready():
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
-
-	lhik.start()
-	rhik.start()
+	start_ik_chains()
+	
+	
+func start_ik_chains():
+	left_hand.ik.start()
+	right_hand.ik.start()
+	spine_ik.start()
 	
 	
 func _physics_process(delta):
@@ -108,9 +119,9 @@ func _physics_process(delta):
 func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
-			actor_rotation += deg2rad(-event.relative.x * mouse_sensitivity)
-			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
-			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
+			upper_body.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
+			upper_body.rotation.x = clamp(upper_body.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 			
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -131,33 +142,26 @@ func _input(event):
 
 	
 func _process(_delta):
-	rotation_helper()
-#	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 	if Input.is_action_pressed("fire"):
-		if r_weapon:
-			r_weapon.fire()
-		if l_weapon:
-			l_weapon.fire()
+		if right_hand.weapon:
+			right_hand.weapon.fire()
+		if left_hand.weapon:
+			left_hand.weapon.fire()
 			
 	if Input.is_action_just_pressed("reload"):
-		if r_weapon:
-			r_weapon.reload()
-		if l_weapon:
-			l_weapon.reload()
-	if r_weapon:
-		$HUD.r_ammo_label.text = "Right Ammo: " + str(r_weapon.clip_size)
+		if right_hand.weapon:
+			right_hand.weapon.reload()
+		if left_hand.weapon:
+			left_hand.weapon.reload()
+	if right_hand.weapon:
+		$HUD.r_ammo_label.text = "Right Ammo: " + str(right_hand.weapon.clip_size)
 	else:
 		$HUD.r_ammo_label.text = "No Right Weapon"
 		
-	if l_weapon:
-		$HUD.l_ammo_label.text = "Left Ammo: " + str(l_weapon.clip_size)
+	if left_hand.weapon:
+		$HUD.l_ammo_label.text = "Left Ammo: " + str(left_hand.weapon.clip_size)
 	else:
 		$HUD.l_ammo_label.text = "No Left Weapon"
-			
-		
-func rotation_helper():
-	rotation.y = lerp_angle(rotation.y, actor_rotation, rotation_damping)
-	head.rotation.y = lerp_angle(head.rotation.y, 0, rotation_damping)
 		
 		
 func get_direction():
@@ -202,16 +206,16 @@ func aim(delta):
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
-			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_hipfire_pos.global_transform.origin, ads_speed * delta)		
-			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_hipfire_pos.global_transform.origin, ads_speed * delta)
+			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.hipfire_pos.global_transform.origin, ads_speed * delta)		
+			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.hipfire_pos.global_transform.origin, ads_speed * delta)
 		
-			if r_weapon:
-				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
-			if l_weapon:
-				l_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
+			if right_hand.weapon:
+				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
+			if left_hand.weapon:
+				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
 				
 		ADS:
-			if (r_weapon && r_weapon.reloading) || (l_weapon && l_weapon.reloading):
+			if (right_hand.weapon && right_hand.weapon.reloading) || (left_hand.weapon && left_hand.weapon.reloading):
 				aim_mode = HIPFIRE
 			$HUD/Crosshair.visible = false
 			bobbing_offset = h_bob_ads
@@ -220,67 +224,70 @@ func aim(delta):
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
-			right_hand.global_transform.origin = right_hand.global_transform.origin.linear_interpolate(right_ads_pos.global_transform.origin, ads_speed * delta)
-			left_hand.global_transform.origin = left_hand.global_transform.origin.linear_interpolate(left_ads_pos.global_transform.origin, ads_speed * delta)
+			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.ads_pos.global_transform.origin, ads_speed * delta)
+			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.ads_pos.global_transform.origin, ads_speed * delta)
 			
-			if r_weapon:
-				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(0), ads_speed * delta)
-			if l_weapon:
-				r_weapon.rotation.z = lerp_angle(r_weapon.rotation.z, deg2rad(r_weapon.ads_akimbo_z_rot), ads_speed * delta)
-				l_weapon.rotation.z = lerp_angle(l_weapon.rotation.z, deg2rad(-l_weapon.ads_akimbo_z_rot), ads_speed * delta)
+			if right_hand.weapon:
+				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
+			if left_hand.weapon:
+				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(right_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
+				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(-left_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
 
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
 		
-		var rh_basis = (right_hand.global_transform.basis).get_rotation_quat()
-		var rh_final_basis = (right_hand.global_transform.looking_at(camera_ray.get_collision_point(), Vector3.UP).basis).get_rotation_quat()
+		var rh_basis = (right_hand.hand.global_transform.basis).get_rotation_quat()
+		var rh_final_basis = (right_hand.hand.global_transform.looking_at(camera_ray.get_collision_point(), Vector3.UP).basis).get_rotation_quat()
 		var rh_rot = rh_basis.slerp(rh_final_basis, rotation_damping)
-		right_hand.global_transform.basis = Basis(rh_rot)
+		right_hand.hand.global_transform.basis = Basis(rh_rot)
 		
-		var lh_basis = (left_hand.global_transform.basis).get_rotation_quat()
-		var lh_final_basis = (left_hand.global_transform.looking_at(camera_ray.get_collision_point(), Vector3.UP).basis).get_rotation_quat()
+		var lh_basis = (left_hand.hand.global_transform.basis).get_rotation_quat()
+		var lh_final_basis = (left_hand.hand.global_transform.looking_at(camera_ray.get_collision_point(), Vector3.UP).basis).get_rotation_quat()
 		var lh_rot = lh_basis.slerp(lh_final_basis, rotation_damping)
-		left_hand.global_transform.basis = Basis(lh_rot)
+		left_hand.hand.global_transform.basis = Basis(lh_rot)
 
 	
 	# RIGHT HAND
-	right_hand.rotation_degrees.x = clamp(right_hand.rotation_degrees.x, -70, 70)
-	right_hand.rotation_degrees.y = clamp(right_hand.rotation_degrees.y, -70, 70)
-	right_hand.rotation_degrees.z = clamp(right_hand.rotation_degrees.z, 0, 0)
+	right_hand.hand.rotation_degrees.x = clamp(right_hand.hand.rotation_degrees.x, -70, 70)
+	right_hand.hand.rotation_degrees.y = clamp(right_hand.hand.rotation_degrees.y, -70, 70)
+	right_hand.hand.rotation_degrees.z = clamp(right_hand.hand.rotation_degrees.z, 0, 0)
 	# LEFT HAND
-	left_hand.rotation_degrees.x = clamp(left_hand.rotation_degrees.x, -70, 70)
-	left_hand.rotation_degrees.y = clamp(left_hand.rotation_degrees.y, -70, 70)
-	left_hand.rotation_degrees.z = clamp(left_hand.rotation_degrees.z, 0, 0)
+	left_hand.hand.rotation_degrees.x = clamp(left_hand.hand.rotation_degrees.x, -70, 70)
+	left_hand.hand.rotation_degrees.y = clamp(left_hand.hand.rotation_degrees.y, -70, 70)
+	left_hand.hand.rotation_degrees.z = clamp(left_hand.hand.rotation_degrees.z, 0, 0)
 
 		
 func view_recoil(force):
-	var new_head = head.rotation.x + deg2rad(force.y)
-	new_head = clamp(new_head, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+	var head_recoil_y = head.rotation.x + deg2rad(force.y)
+	head_recoil_y = clamp(head_recoil_y, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 	
+	var possible_head_recoil_x = [-force.x, force.x]
+	var head_recoil_x = deg2rad(possible_head_recoil_x[randi() % 2]) 
+
 	recoil_tween.remove_all()
-	recoil_tween.interpolate_property(head, "rotation:x", head.rotation.x, new_head, 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	recoil_tween.interpolate_property(head, "rotation:y", head.rotation.y, head.rotation.y + deg2rad(rand_range(-force.x, force.x)), 0.01 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.interpolate_property(head, "rotation:x", head.rotation.x, head_recoil_y, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.interpolate_property(self, "rotation:y", rotation.y, rotation.y + head_recoil_x, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	recoil_tween.start()
 
 
 func get_weapon(wpn):
-	for w in right_hand.get_children():
+	for w in right_hand.hand.get_children():
 		w.queue_free()
-	for w in left_hand.get_children():
+	for w in left_hand.hand.get_children():
 		w.queue_free()
 			
-	r_weapon = wpn.instance()
-	r_weapon.holder = self
-	right_hand.add_child(r_weapon)
-	right_ads_pos.transform.origin = Vector3(0, 0, r_weapon.akimbo_offset.z)
+	right_hand.weapon = wpn.instance()
+	right_hand.weapon.holder = self
+	right_hand.hand.add_child(right_hand.weapon)
+	right_hand.ads_pos.transform.origin = Vector3(0, 0, right_hand.weapon.akimbo_offset.z)
 	
-	if r_weapon.akimbo == true:
-		l_weapon = wpn.instance()
-		l_weapon.side = -1
-		l_weapon.holder = self
-		left_hand.add_child(l_weapon)
-		right_ads_pos.transform.origin = Vector3(r_weapon.akimbo_offset.x, r_weapon.akimbo_offset.y, r_weapon.akimbo_offset.z)
-		left_ads_pos.transform.origin = Vector3(l_weapon.akimbo_offset.x, l_weapon.akimbo_offset.y, l_weapon.akimbo_offset.z)
+	if right_hand.weapon.akimbo == true:
+		left_hand.weapon = wpn.instance()
+		left_hand.weapon.side = -1
+		left_hand.weapon.holder = self
+		left_hand.hand.add_child(left_hand.weapon)
+		right_hand.ads_pos.transform.origin = Vector3(right_hand.weapon.akimbo_offset.x, right_hand.weapon.akimbo_offset.y, right_hand.weapon.akimbo_offset.z)
+		left_hand.ads_pos.transform.origin = Vector3(left_hand.weapon.akimbo_offset.x, left_hand.weapon.akimbo_offset.y, left_hand.weapon.akimbo_offset.z)
 
 
 func cycle_w(updown):
@@ -334,27 +341,27 @@ func get_input():
 func hand_motion(hand, target, time = 0.3):
 	var tween = null
 	
-	match hand:
-		rhd_mesh:
-			rh_target = target
-			tween = rhd_tween
-		lhd_mesh:
-			lh_target = target
-			tween = lhd_tween
+	match hand.ik_target:
+		right_hand.ik_target:
+			right_hand.hand_pos = target
+			tween = right_hand.tween
+		left_hand.ik_target:
+			left_hand.hand_pos = target
+			tween = left_hand.tween
 			
 	tween.reset_all()
-	tween.interpolate_property(hand, "global_transform", hand.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
+	tween.interpolate_property(hand.ik_target, "global_transform", hand.ik_target.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
 	tween.start()
 
 
 func hand_follow():
-	if not rhd_tween.is_active():
-		if rh_target:
-			rhd_mesh.global_transform = rh_target.global_transform
+	if not right_hand.tween.is_active():
+		if right_hand.hand_pos:
+			right_hand.ik_target.global_transform = right_hand.hand_pos.global_transform
 
-	if not lhd_tween.is_active():
-		if lh_target:
-			lhd_mesh.global_transform = lh_target.global_transform
+	if not left_hand.tween.is_active():
+		if left_hand.hand_pos:
+			left_hand.ik_target.global_transform = left_hand.hand_pos.global_transform
 			
 
 #func touch_cam_dir():

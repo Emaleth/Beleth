@@ -19,38 +19,27 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="Head" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766007, -0.0315004 )
+[node name="UpperBody" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
 
-[node name="WorldCamera" type="Camera" parent="Head"]
+[node name="Head" type="Spatial" parent="UpperBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
+
+[node name="WorldCamera" type="Camera" parent="UpperBody/Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.86265e-09 )
 cull_mask = 1
 current = true
 near = 0.01
 far = 150.0
 
-[node name="CameraRay" type="RayCast" parent="Head/WorldCamera"]
+[node name="CameraRay" type="RayCast" parent="UpperBody/Head/WorldCamera"]
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="Recoil" type="Tween" parent="Head"]
+[node name="Bobbing" type="Tween" parent="UpperBody/Head"]
 
-[node name="Bobbing" type="Tween" parent="Head"]
-
-[node name="RHipfire" type="Position3D" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
-
-[node name="RAds" type="Position3D" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
-
-[node name="LHipfire" type="Position3D" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
-
-[node name="LAds" type="Position3D" parent="Head"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
-
-[node name="CharacterViewportRender" type="ViewportContainer" parent="Head"]
+[node name="CharacterViewportRender" type="ViewportContainer" parent="UpperBody/Head"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -60,29 +49,63 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CharacterCameraViewport" type="Viewport" parent="Head/CharacterViewportRender"]
+[node name="CharacterCameraViewport" type="Viewport" parent="UpperBody/Head/CharacterViewportRender"]
 size = Vector2( 1024, 600 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="CharacterCamera" type="Camera" parent="Head/CharacterViewportRender/CharacterCameraViewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766007, -0.0315004 )
+[node name="CharacterCamera" type="Camera" parent="UpperBody/Head/CharacterViewportRender/CharacterCameraViewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 cull_mask = 2
 near = 0.01
 far = 10.0
 
-[node name="RemoteTransform" type="RemoteTransform" parent="Head"]
+[node name="CameraSync" type="RemoteTransform" parent="UpperBody/Head"]
 remote_path = NodePath("../CharacterViewportRender/CharacterCameraViewport/CharacterCamera")
+
+[node name="HandSync" type="RemoteTransform" parent="UpperBody/Head"]
+remote_path = NodePath("../../Hands")
+
+[node name="Hands" type="Spatial" parent="UpperBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
+
+[node name="Right" type="Spatial" parent="UpperBody/Hands"]
+
+[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -0.05, -0.15 )
+
+[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+
+[node name="Hand" type="Spatial" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Tween" type="Tween" parent="UpperBody/Hands/Right"]
+
+[node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
+
+[node name="Left" type="Spatial" parent="UpperBody/Hands"]
+
+[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+
+[node name="Hand" type="Spatial" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Tween" type="Tween" parent="UpperBody/Hands/Left"]
+
+[node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
+
+[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, -0.05, -0.15 )
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
 enabled = true
 cast_to = Vector3( 0, -0.1, 0 )
-
-[node name="RHand" type="Spatial" parent="."]
-
-[node name="LHand" type="Spatial" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource( 3 )]
 
@@ -90,39 +113,40 @@ cast_to = Vector3( 0, -0.1, 0 )
 stream = ExtResource( 4 )
 bus = "SFX"
 
-[node name="RHT" type="Position3D" parent="."]
-
-[node name="Tween" type="Tween" parent="RHT"]
-
-[node name="LHT" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.290035, 0.438965, -0.498434 )
-
-[node name="Tween" type="Tween" parent="LHT"]
-
 [node name="Synth" parent="." instance=ExtResource( 2 )]
 
 [node name="Alpha_Joints" parent="Synth/Armature/Skeleton" index="0"]
 layers = 2
 material/0 = ExtResource( 5 )
 
-[node name="RHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
+[node name="RightHandIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
 process_priority = 1
 root_bone = "mixamorig_right_arm"
 tip_bone = "mixamorig_right_hand"
 override_tip_basis = false
-target_node = NodePath("../../../../RHT")
+target_node = NodePath("../../../../UpperBody/Hands/Right/IKTarget")
 min_distance = 0.001
 
-[node name="LHIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
+[node name="LeftHandIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
 process_priority = 1
 root_bone = "mixamorig_left_arm"
 tip_bone = "mixamorig_left_hand"
 override_tip_basis = false
-target_node = NodePath("../../../../LHT")
+target_node = NodePath("../../../../UpperBody/Hands/Left/IKTarget")
 min_distance = 0.001
 
 [node name="Alpha_Surface" parent="Synth/Armature/Skeleton" index="3"]
 layers = 2
 material/0 = ExtResource( 5 )
+
+[node name="SpineIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="4"]
+process_priority = 1
+root_bone = "mixamorig_hips"
+tip_bone = "mixamorig_head"
+override_tip_basis = false
+magnet = Vector3( 0, 0, 1000 )
+target_node = NodePath("../../../../UpperBody/Head")
+
+[node name="Recoil" type="Tween" parent="."]
 
 [editable path="Synth"]
