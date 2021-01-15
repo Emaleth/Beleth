@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/actors/tentacles.glb" type="PackedScene" id=2]
 [ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/sounds/sfx/footstep.ogg" type="AudioStream" id=4]
+[ext_resource path="res://src/debug/DebugSphere.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
@@ -84,6 +85,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 [node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
 
+[node name="DebugSpehere" parent="UpperBody/Hands/Right/IKTarget" instance=ExtResource( 5 )]
+
+[node name="RestPos" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.2 )
+
 [node name="Left" type="Spatial" parent="UpperBody/Hands"]
 
 [node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
@@ -96,8 +102,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 [node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
 
+[node name="DebugSpehere" parent="UpperBody/Hands/Left/IKTarget" instance=ExtResource( 5 )]
+
 [node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )
+
+[node name="RestPos" type="Position3D" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.2 )
 
 [node name="tentacles" parent="UpperBody/Hands" instance=ExtResource( 2 )]
 
@@ -106,7 +117,6 @@ process_priority = 1
 root_bone = "root_l"
 tip_bone = "handtip_l"
 override_tip_basis = false
-use_magnet = true
 magnet = Vector3( -50, -100, 100 )
 target_node = NodePath("../../../../Left/IKTarget")
 
@@ -115,7 +125,6 @@ process_priority = 1
 root_bone = "root_r"
 tip_bone = "handtip_r"
 override_tip_basis = false
-use_magnet = true
 magnet = Vector3( 50, -100, 100 )
 target_node = NodePath("../../../../Right/IKTarget")
 

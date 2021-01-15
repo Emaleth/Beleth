@@ -58,8 +58,6 @@ func load_data():
 	slider = find_node("Slider")
 	magazine = find_node("Magazine")
 	model = slider.get_parent()
-#	akimbo_offset.x *= side
-#	akimbo_offset.y *= side
 	
 	h_grip_pos = find_node("GripPos")
 	h_secondary_grip_pos = find_node("SecondaryGripPos")
@@ -127,7 +125,7 @@ func reload():
 		audio_mag_in.play()
 		
 		# MOVE HAND TO REST POSITION
-		holder.hand_motion(off_hand, holder)
+		holder.hand_motion(off_hand, off_hand.rest_pos, 0.5)
 		
 		 # ROTATE MODEL FOR SLIDER PULL
 		tween.remove_all()
@@ -147,7 +145,7 @@ func reload():
 		yield(tween,"tween_all_completed")
 		
 		# MOVE HAND TO REST POSITION
-		holder.hand_motion(off_hand, holder)
+		holder.hand_motion(off_hand, off_hand.rest_pos, 0.5)
 		
 		 # PUSH SLIDER # ROTATE MODEL NORMAL
 		audio_slider.play()
@@ -162,15 +160,15 @@ func reload():
 		reloading = false
 
 		# MOVE HAND TO DEFAULT POSITION
-		if off_hand.weapon == false: 
+		if not off_hand.weapon: 
 			holder.hand_motion(off_hand, h_secondary_grip_pos, 0.5)
 
 		else:
 			if side == 1:
-				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos, 0.5)
+				holder.hand_motion(off_hand, holder.left_hand.weapon.h_grip_pos, 0.5)
 
 			else:
-				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos, 0.5)
+				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos, 0.5)
 
 		yield(off_hand.tween, "tween_all_completed")
 		
@@ -289,7 +287,7 @@ func get_hands():
 			off_hand = holder.right_hand
 			
 	holder.hand_motion(main_hand, h_grip_pos)
-	if off_hand.weapon == false:
+	if not off_hand.weapon:
 		holder.hand_motion(off_hand, h_secondary_grip_pos)
 
 	

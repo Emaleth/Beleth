@@ -62,9 +62,10 @@ onready var right_hand = {
 	"tween" : $UpperBody/Hands/Right/Tween,
 	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
-	"ik" : null,#$Synth/Armature/Skeleton/RightHandIK,
+	"ik" : null,
 	"weapon" : null,
-	"hand_pos" : null
+	"follow_pos" : null,
+	"rest_pos" : $UpperBody/Hands/Right/RestPos
 	}
 	
 onready var left_hand = {
@@ -73,9 +74,10 @@ onready var left_hand = {
 	"tween" : $UpperBody/Hands/Left/Tween,
 	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
-	"ik" : null,#$Synth/Armature/Skeleton/LeftHandIK,
+	"ik" : null,
 	"weapon" : null,
-	"hand_pos" : null
+	"follow_pos" : null,
+	"rest_pos" : $UpperBody/Hands/Left/RestPos
 	}
 
 
@@ -88,8 +90,8 @@ func _ready():
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
-	get_ik_nodes()
 	get_weapon(Armoury.ak47) 
+	get_ik_nodes()
 	start_ik_chains()
 	
 	
@@ -338,29 +340,21 @@ func get_input():
 		
 
 func hand_motion(hand, target, time = 0.3):
-	var tween = null
+	hand.follow_pos = target
 
-	match hand.ik_target:
-		right_hand.ik_target:
-			right_hand.hand_pos = target
-			tween = right_hand.tween
-		left_hand.ik_target:
-			left_hand.hand_pos = target
-			tween = left_hand.tween
-
-	tween.remove_all()
-	tween.interpolate_property(hand.ik_target, "global_transform", hand.ik_target.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
-	tween.start()
+	hand.tween.remove_all()
+	hand.tween.interpolate_property(hand.ik_target, "global_transform", hand.ik_target.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
+	hand.tween.start()
 
 
 func hand_follow():
 	if not right_hand.tween.is_active():
-		if right_hand.hand_pos:
-			right_hand.ik_target.global_transform = right_hand.hand_pos.global_transform
+		if right_hand.follow_pos:
+			right_hand.ik_target.global_transform = right_hand.follow_pos.global_transform
 
 	if not left_hand.tween.is_active():
-		if left_hand.hand_pos:
-			left_hand.ik_target.global_transform = left_hand.hand_pos.global_transform
+		if left_hand.follow_pos:
+			left_hand.ik_target.global_transform = left_hand.follow_pos.global_transform
 			
 
 #func touch_cam_dir():
