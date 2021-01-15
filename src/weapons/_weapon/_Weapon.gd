@@ -171,6 +171,7 @@ func reload():
 				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos, 0.5)
 
 		yield(off_hand.tween, "tween_all_completed")
+		holder.sk.clear_bones_global_pose_override()
 		
 		emit_signal("free_hand")
 		

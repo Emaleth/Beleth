@@ -343,9 +343,10 @@ func hand_motion(hand, target, time = 0.3):
 	hand.follow_pos = target
 
 	hand.tween.remove_all()
-	hand.tween.interpolate_property(hand.ik_target, "global_transform", hand.ik_target.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
+	hand.tween.interpolate_property(hand.ik_target, "transform", hand.ik_target.transform, target.transform, time ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	hand.tween.start()
-
+	yield(hand.tween, "tween_all_completed")
+	sk.clear_bones_global_pose_override()
 
 func hand_follow():
 	if not right_hand.tween.is_active():
