@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
-[ext_resource path="res://assets/models/actors/Synth.glb" type="PackedScene" id=2]
+[ext_resource path="res://assets/models/actors/tentacles.glb" type="PackedScene" id=2]
 [ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/sounds/sfx/footstep.ogg" type="AudioStream" id=4]
-[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
@@ -73,13 +72,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 [node name="Right" type="Spatial" parent="UpperBody/Hands"]
 
 [node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -0.05, -0.15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.05, -0.15 )
 
 [node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 
 [node name="Hand" type="Spatial" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Tween" type="Tween" parent="UpperBody/Hands/Right"]
 
@@ -89,10 +87,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
 [node name="Left" type="Spatial" parent="UpperBody/Hands"]
 
 [node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 
 [node name="Hand" type="Spatial" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Tween" type="Tween" parent="UpperBody/Hands/Left"]
 
@@ -100,7 +97,27 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
 
 [node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, -0.05, -0.15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )
+
+[node name="tentacles" parent="UpperBody/Hands" instance=ExtResource( 2 )]
+
+[node name="LeftHandIK" type="SkeletonIK" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="1"]
+process_priority = 1
+root_bone = "root_l"
+tip_bone = "handtip_l"
+override_tip_basis = false
+use_magnet = true
+magnet = Vector3( -50, -100, 100 )
+target_node = NodePath("../../../../Left/IKTarget")
+
+[node name="RightHandIK" type="SkeletonIK" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="2"]
+process_priority = 1
+root_bone = "root_r"
+tip_bone = "handtip_r"
+override_tip_basis = false
+use_magnet = true
+magnet = Vector3( 50, -100, 100 )
+target_node = NodePath("../../../../Right/IKTarget")
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
@@ -113,40 +130,11 @@ cast_to = Vector3( 0, -0.1, 0 )
 stream = ExtResource( 4 )
 bus = "SFX"
 
-[node name="Synth" parent="." instance=ExtResource( 2 )]
-
-[node name="Alpha_Joints" parent="Synth/Armature/Skeleton" index="0"]
-layers = 2
-material/0 = ExtResource( 5 )
-
-[node name="RightHandIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="1"]
-process_priority = 1
-root_bone = "mixamorig_right_arm"
-tip_bone = "mixamorig_right_hand"
-override_tip_basis = false
-target_node = NodePath("../../../../UpperBody/Hands/Right/IKTarget")
-min_distance = 0.001
-
-[node name="LeftHandIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="2"]
-process_priority = 1
-root_bone = "mixamorig_left_arm"
-tip_bone = "mixamorig_left_hand"
-override_tip_basis = false
-target_node = NodePath("../../../../UpperBody/Hands/Left/IKTarget")
-min_distance = 0.001
-
-[node name="Alpha_Surface" parent="Synth/Armature/Skeleton" index="3"]
-layers = 2
-material/0 = ExtResource( 5 )
-
-[node name="SpineIK" type="SkeletonIK" parent="Synth/Armature/Skeleton" index="4"]
-process_priority = 1
-root_bone = "mixamorig_hips"
-tip_bone = "mixamorig_head"
-override_tip_basis = false
-magnet = Vector3( 0, 0, 1000 )
-target_node = NodePath("../../../../UpperBody/Head")
-
 [node name="Recoil" type="Tween" parent="."]
 
-[editable path="Synth"]
+[node name="SpineIK" type="SkeletonIK" parent="."]
+process_priority = 1
+override_tip_basis = false
+magnet = Vector3( 0, 0, 1000 )
+
+[editable path="UpperBody/Hands/tentacles"]

@@ -41,4 +41,12 @@ bus = "SFX"
 [node name="MagPos" type="Position3D" parent="."]
 
 [node name="SliderPos" type="Position3D" parent="."]
+
+[node name="MainHand" type="Position3D" parent="."]
+
+[node name="Tween" type="Tween" parent="MainHand"]
+
+[node name="OffHand" type="Position3D" parent="."]
+
+[node name="Tween" type="Tween" parent="OffHand"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

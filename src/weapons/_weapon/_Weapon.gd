@@ -13,9 +13,6 @@ var max_clip_size = 1
 var recoil_force = Vector3(0, 0, 0)
 var spread = 0
 var slug_size = 1
-var akimbo = false
-var akimbo_offset = Vector3(0.05, -0.015, -0.1)
-var ads_akimbo_z_rot = 30
 var slider_mov_dist = 0
 var slide_pos = Vector2.RIGHT
 var mag_pos = Vector2.DOWN
@@ -52,7 +49,6 @@ onready var audio_slider = $AudioSlide
 onready var audio_mag_out = $AudioMagOut
 onready var audio_mag_in = $AudioMagIn
 
-
 signal free_hand
 
 
@@ -62,8 +58,8 @@ func load_data():
 	slider = find_node("Slider")
 	magazine = find_node("Magazine")
 	model = slider.get_parent()
-	akimbo_offset.x *= side
-	akimbo_offset.y *= side
+#	akimbo_offset.x *= side
+#	akimbo_offset.y *= side
 	
 	h_grip_pos = find_node("GripPos")
 	h_secondary_grip_pos = find_node("SecondaryGripPos")
@@ -73,6 +69,7 @@ func load_data():
 	get_hands()
 
 	get_anim_data()
+
 	
 	
 func reload():
@@ -165,13 +162,16 @@ func reload():
 		reloading = false
 
 		# MOVE HAND TO DEFAULT POSITION
-		if akimbo == false: 
+		if off_hand.weapon == false: 
 			holder.hand_motion(off_hand, h_secondary_grip_pos, 0.5)
+
 		else:
 			if side == 1:
 				holder.hand_motion(off_hand, holder.l_weapon.h_grip_pos, 0.5)
+
 			else:
 				holder.hand_motion(off_hand, holder.r_weapon.h_grip_pos, 0.5)
+
 		yield(off_hand.tween, "tween_all_completed")
 		
 		emit_signal("free_hand")
@@ -283,11 +283,13 @@ func get_hands():
 		1:
 			main_hand = holder.right_hand
 			off_hand = holder.left_hand
+
 		-1:
 			main_hand = holder.left_hand
 			off_hand = holder.right_hand
 			
 	holder.hand_motion(main_hand, h_grip_pos)
-	if akimbo == false:
+	if off_hand.weapon == false:
 		holder.hand_motion(off_hand, h_secondary_grip_pos)
 
+	

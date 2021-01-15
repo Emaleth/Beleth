@@ -55,14 +55,14 @@ onready var ground_check = $GroundCheck
 onready var camera = $UpperBody/Head/WorldCamera
 onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
- 
+onready var sk = $UpperBody/Hands/tentacles/Armature/Skeleton
 onready var right_hand = {
 	"ik_target" : $UpperBody/Hands/Right/IKTarget,
 	"hand" : $UpperBody/Hands/Right/Hand,
 	"tween" : $UpperBody/Hands/Right/Tween,
 	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
-	"ik" : $Synth/Armature/Skeleton/RightHandIK,
+	"ik" : null,#$Synth/Armature/Skeleton/RightHandIK,
 	"weapon" : null,
 	"hand_pos" : null
 	}
@@ -73,25 +73,32 @@ onready var left_hand = {
 	"tween" : $UpperBody/Hands/Left/Tween,
 	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
-	"ik" : $Synth/Armature/Skeleton/LeftHandIK,
+	"ik" : null,#$Synth/Armature/Skeleton/LeftHandIK,
 	"weapon" : null,
 	"hand_pos" : null
 	}
 
 
-onready var spine_ik = $Synth/Armature/Skeleton/SpineIK
+onready var spine_ik = null#$Synth/Armature/Skeleton/SpineIK
 
 onready var audio_footstep = $AudioFootstep
 
 
 func _ready():
-	get_weapon(Armoury.ak47)
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
+	get_ik_nodes()
+	get_weapon(Armoury.ak47) 
 	start_ik_chains()
 	
 	
+func get_ik_nodes():
+	spine_ik = find_node("SpineIK")
+	right_hand.ik = find_node("RightHandIK")
+	left_hand.ik = find_node("LeftHandIK")
+	
+
 func start_ik_chains():
 	left_hand.ik.start()
 	right_hand.ik.start()
@@ -209,10 +216,10 @@ func aim(delta):
 			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.hipfire_pos.global_transform.origin, ads_speed * delta)		
 			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.hipfire_pos.global_transform.origin, ads_speed * delta)
 		
-			if right_hand.weapon:
-				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
-			if left_hand.weapon:
-				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
+#			if right_hand.weapon:
+#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
+#			if left_hand.weapon:
+#				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
 				
 		ADS:
 			if (right_hand.weapon && right_hand.weapon.reloading) || (left_hand.weapon && left_hand.weapon.reloading):
@@ -227,11 +234,11 @@ func aim(delta):
 			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.ads_pos.global_transform.origin, ads_speed * delta)
 			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.ads_pos.global_transform.origin, ads_speed * delta)
 			
-			if right_hand.weapon:
-				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
-			if left_hand.weapon:
-				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(right_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
-				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(-left_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
+#			if right_hand.weapon:
+#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
+#			if left_hand.weapon:
+#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(right_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
+#				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(-left_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
 
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
@@ -258,14 +265,14 @@ func aim(delta):
 
 		
 func view_recoil(force):
-	var head_recoil_y = head.rotation.x + deg2rad(force.y)
+	var head_recoil_y = upper_body.rotation.x + deg2rad(force.y)
 	head_recoil_y = clamp(head_recoil_y, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 	
 	var possible_head_recoil_x = [-force.x, force.x]
 	var head_recoil_x = deg2rad(possible_head_recoil_x[randi() % 2]) 
 
 	recoil_tween.remove_all()
-	recoil_tween.interpolate_property(head, "rotation:x", head.rotation.x, head_recoil_y, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.interpolate_property(upper_body, "rotation:x", upper_body.rotation.x, head_recoil_y, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	recoil_tween.interpolate_property(self, "rotation:y", rotation.y, rotation.y + head_recoil_x, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	recoil_tween.start()
 
@@ -273,22 +280,14 @@ func view_recoil(force):
 func get_weapon(wpn):
 	for w in right_hand.hand.get_children():
 		w.queue_free()
-	for w in left_hand.hand.get_children():
-		w.queue_free()
+#	for w in left_hand.hand.get_children():
+#		w.queue_free()
 			
 	right_hand.weapon = wpn.instance()
 	right_hand.weapon.holder = self
 	right_hand.hand.add_child(right_hand.weapon)
-	right_hand.ads_pos.transform.origin = Vector3(0, 0, right_hand.weapon.akimbo_offset.z)
-	
-	if right_hand.weapon.akimbo == true:
-		left_hand.weapon = wpn.instance()
-		left_hand.weapon.side = -1
-		left_hand.weapon.holder = self
-		left_hand.hand.add_child(left_hand.weapon)
-		right_hand.ads_pos.transform.origin = Vector3(right_hand.weapon.akimbo_offset.x, right_hand.weapon.akimbo_offset.y, right_hand.weapon.akimbo_offset.z)
-		left_hand.ads_pos.transform.origin = Vector3(left_hand.weapon.akimbo_offset.x, left_hand.weapon.akimbo_offset.y, left_hand.weapon.akimbo_offset.z)
 
+	sk.clear_bones_global_pose_override()
 
 func cycle_w(updown):
 	var w = [Armoury.usp, Armoury.ak47, Armoury.mosberg_shotgun]
@@ -340,7 +339,7 @@ func get_input():
 
 func hand_motion(hand, target, time = 0.3):
 	var tween = null
-	
+
 	match hand.ik_target:
 		right_hand.ik_target:
 			right_hand.hand_pos = target
@@ -348,8 +347,8 @@ func hand_motion(hand, target, time = 0.3):
 		left_hand.ik_target:
 			left_hand.hand_pos = target
 			tween = left_hand.tween
-			
-	tween.reset_all()
+
+	tween.remove_all()
 	tween.interpolate_property(hand.ik_target, "global_transform", hand.ik_target.global_transform, target.global_transform, time ,Tween.TRANS_QUART,Tween.EASE_IN_OUT)
 	tween.start()
 

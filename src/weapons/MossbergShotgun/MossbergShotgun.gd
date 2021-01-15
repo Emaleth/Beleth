@@ -9,7 +9,6 @@ func _ready():
 	recoil_force = Vector3(0.5, 2.0, 0.1)
 	spread = 2
 	slug_size = 10
-#	akimbo = true
 	slider_mov_dist = 0.07
 	slide_pos = Vector2.DOWN
 	projectile = true

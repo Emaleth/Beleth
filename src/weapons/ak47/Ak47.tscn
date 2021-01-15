@@ -56,7 +56,7 @@ layers = 2
 material/0 = ExtResource( 7 )
 
 [node name="SliderPos" type="Position3D" parent="AK47/Slider" index="0"]
-transform = Transform( 0.143078, 0.989711, 0, -0.989711, 0.143078, 0, 0, 0, 1, 0.0212179, -0.045322, -0.218679 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0212179, -0.045322, -0.218679 )
 
 [node name="Cube" parent="AK47" index="3"]
 layers = 2

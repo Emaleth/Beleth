@@ -9,7 +9,6 @@ func _ready():
 	recoil_force = Vector3(0.01, 0.5, 0.02) # deg, deg, lenght
 	spread = 0.2
 	slug_size = 1
-#	akimbo = true
 	slider_mov_dist = 0.02
 	slide_pos = Vector2.UP
 	load_data()
