@@ -37,10 +37,13 @@ var h_grip_pos = null
 var h_secondary_grip_pos = null
 var h_slider_pos = null
 var h_mag_pos = null
+
 var main_hand = null
 var off_hand = null
 
-onready var tween  = $Tween
+onready var fire_tween = Utility.create_new_tween(self)
+onready var reload_tween = Utility.create_new_tween(self)
+
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var audio_fire = $Muzzle/AudioFire
@@ -75,29 +78,29 @@ func reload():
 #		return
 	if reloading == false:
 		reloading = true
-		if tween.is_active():
-			yield(tween,"tween_all_completed")
+		if fire_tween.is_active():
+			yield(fire_tween,"tween_all_completed")
 		
 		# MOVE GUN UP
-		tween.remove_all()
-		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.1, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -2, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.1, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+		reload_tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -2, 0.2 ,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		# SHAKE GUN DOWN
-		tween.remove_all()
-		tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 5, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(model, "transform:origin:y", model.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
+		reload_tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 5, 0.2 ,Tween.TRANS_BACK,Tween.EASE_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		 # MAGAZINE OUT
 		audio_mag_out.play()
-		tween.remove_all()
-		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, -0.7, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_IN)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		magazine.visible = false
 		if self == holder.left_hand.weapon:
@@ -107,68 +110,62 @@ func reload():
 		holder.hand_motion(off_hand, h_mag_pos)
 		
 		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
-		tween.remove_all()
-		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, mag_insert_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, mag_insert_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		magazine.visible = true
 		
 		 # MAGAZINE IN
-		tween.remove_all()
-		tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
-		tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(magazine, "transform:origin:y", magazine.transform.origin.y, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		reload_tween.interpolate_property(magazine, "rotation_degrees:x", magazine.rotation_degrees.x, 0.0, 0.2 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		audio_mag_in.play()
 		
-		# MOVE HAND TO REST POSITION
-		holder.hand_motion(off_hand, off_hand.rest_pos, 0.5)
-		
 		 # ROTATE MODEL FOR SLIDER PULL
-		tween.remove_all()
-		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, slide_pull_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, slide_pull_rotation, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, -15, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		# MOVE HAND TO SLIDER AND WAIT FOR IT
 		holder.hand_motion(off_hand, h_slider_pos)
 		yield(off_hand.tween, "tween_all_completed")
 		
 		 # PULL SLIDER
-		tween.remove_all()
-		tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
-		
-		# MOVE HAND TO REST POSITION
-		holder.hand_motion(off_hand, off_hand.rest_pos, 0.5)
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.1 ,Tween.TRANS_CUBIC,Tween.EASE_OUT)
+		reload_tween.start()
+		yield(reload_tween,"tween_all_completed")
 		
 		 # PUSH SLIDER # ROTATE MODEL NORMAL
 		audio_slider.play()
-		tween.remove_all()
-		tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-		tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween,"tween_all_completed")
+		reload_tween.remove_all()
+		reload_tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+		reload_tween.interpolate_property(model, "rotation_degrees:z", model.rotation_degrees.z, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.interpolate_property(model, "rotation_degrees:x", model.rotation_degrees.x, 0, 0.5 ,Tween.TRANS_BACK,Tween.EASE_IN_OUT)
+		reload_tween.start()
+		yield(reload_tween, "tween_all_completed")
 		
 		clip_size = max_clip_size
 		reloading = false
 
 		# MOVE HAND TO DEFAULT POSITION
 		if not off_hand.weapon: 
-			holder.hand_motion(off_hand, h_secondary_grip_pos, 0.5)
+			holder.hand_motion(off_hand, h_secondary_grip_pos)
 
 		else:
 			if side == 1:
-				holder.hand_motion(off_hand, holder.left_hand.weapon.h_grip_pos, 0.5)
+				holder.hand_motion(off_hand, holder.left_hand.weapon.h_grip_pos)
 
 			else:
-				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos, 0.5)
+				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos)
 
 		yield(off_hand.tween, "tween_all_completed")
 		holder.sk.clear_bones_global_pose_override()
@@ -197,21 +194,21 @@ func fire():
 
 				holder.view_recoil(recoil_force)
 			
-				tween.remove_all()
-				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
-				tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
-				tween.start()
-				yield(tween,"tween_all_completed")
+				fire_tween.remove_all()
+				fire_tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, recoil_force.z, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				fire_tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist, 0.02 ,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+				fire_tween.start()
+				yield(fire_tween,"tween_all_completed")
 				
 				shoot_bullet()
 					
-				tween.remove_all()
-				tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				fire_tween.remove_all()
+				fire_tween.interpolate_property(model, "transform:origin:z", model.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				if clip_size > 0:
-					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+					fire_tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, 0, ((1.0 / fire_rate) - 0.02) ,Tween.TRANS_LINEAR,Tween.EASE_IN)
 				else:
-					tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist * 0.7, ((1.0 / fire_rate) - 0.02) * 0.7 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
-				tween.start()
+					fire_tween.interpolate_property(slider, "transform:origin:z", slider.transform.origin.z, slider_mov_dist * 0.7, ((1.0 / fire_rate) - 0.02) * 0.7 ,Tween.TRANS_LINEAR,Tween.EASE_IN)
+				fire_tween.start()
 	
 			
 func shoot_bullet():
@@ -275,7 +272,6 @@ func get_anim_data():
 		Vector2.LEFT:
 			mag_insert_rotation = -30 * side
 	
-	
 	 
 func get_hands():
 	match side:
@@ -288,7 +284,15 @@ func get_hands():
 			off_hand = holder.right_hand
 			
 	holder.hand_motion(main_hand, h_grip_pos)
+
 	if not off_hand.weapon:
 		holder.hand_motion(off_hand, h_secondary_grip_pos)
+	
+	holder.sk.clear_bones_global_pose_override()
 
 	
+func create_fire_animation():
+	pass
+	
+func create_reload_animation():
+	pass

@@ -19,23 +19,23 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0468285, -0.598514 )
 [node name="AudioFire" parent="Muzzle" index="0"]
 stream = ExtResource( 9 )
 
-[node name="AudioEmpty" parent="." index="4"]
+[node name="AudioEmpty" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.103571, -0.107843 )
 stream = ExtResource( 4 )
 
-[node name="AudioMagOut" parent="." index="5"]
+[node name="AudioMagOut" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.123787, -0.222745 )
 stream = ExtResource( 5 )
 
-[node name="AudioMagIn" parent="." index="6"]
+[node name="AudioMagIn" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.123787, -0.222745 )
 stream = ExtResource( 6 )
 
-[node name="AudioSlide" parent="." index="7"]
+[node name="AudioSlide" parent="." index="6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872276, -0.218534 )
 stream = ExtResource( 10 )
 
-[node name="AK47" parent="." index="8" instance=ExtResource( 3 )]
+[node name="AK47" parent="." index="7" instance=ExtResource( 3 )]
 
 [node name="Magazine" parent="AK47" index="0"]
 layers = 2

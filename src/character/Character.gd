@@ -48,41 +48,38 @@ var current_w = 0
 
 onready var head = $UpperBody/Head
 onready var upper_body = $UpperBody
-onready var bobbing_tween = $UpperBody/Head/Bobbing
-onready var recoil_tween = $Recoil
+onready var bobbing_tween = Utility.create_new_tween(self)
+onready var recoil_tween = Utility.create_new_tween(self)
 onready var camera_ray = $UpperBody/Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
 onready var camera = $UpperBody/Head/WorldCamera
 onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
 onready var sk = $UpperBody/Hands/tentacles/Armature/Skeleton
+
 onready var right_hand = {
 	"ik_target" : $UpperBody/Hands/Right/IKTarget,
 	"hand" : $UpperBody/Hands/Right/Hand,
-	"tween" : $UpperBody/Hands/Right/Tween,
+	"tween" : Utility.create_new_tween(self),
 	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
 	"ik" : null,
 	"weapon" : null,
-	"follow_pos" : null,
-	"rest_pos" : $UpperBody/Hands/Right/RestPos
+	"follow_pos" : null
 	}
 	
 onready var left_hand = {
 	"ik_target" : $UpperBody/Hands/Left/IKTarget,
 	"hand" : $UpperBody/Hands/Left/Hand,
-	"tween" : $UpperBody/Hands/Left/Tween,
+	"tween" : Utility.create_new_tween(self),
 	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
 	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
 	"ik" : null,
 	"weapon" : null,
-	"follow_pos" : null,
-	"rest_pos" : $UpperBody/Hands/Left/RestPos
+	"follow_pos" : null
 	}
 
-
-onready var spine_ik = null#$Synth/Armature/Skeleton/SpineIK
-
+onready var spine_ik = null
 onready var audio_footstep = $AudioFootstep
 
 
@@ -218,10 +215,6 @@ func aim(delta):
 			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.hipfire_pos.global_transform.origin, ads_speed * delta)		
 			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.hipfire_pos.global_transform.origin, ads_speed * delta)
 		
-#			if right_hand.weapon:
-#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
-#			if left_hand.weapon:
-#				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
 				
 		ADS:
 			if (right_hand.weapon && right_hand.weapon.reloading) || (left_hand.weapon && left_hand.weapon.reloading):
@@ -236,12 +229,6 @@ func aim(delta):
 			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.ads_pos.global_transform.origin, ads_speed * delta)
 			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.ads_pos.global_transform.origin, ads_speed * delta)
 			
-#			if right_hand.weapon:
-#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(0), ads_speed * delta)
-#			if left_hand.weapon:
-#				right_hand.weapon.rotation.z = lerp_angle(right_hand.weapon.rotation.z, deg2rad(right_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
-#				left_hand.weapon.rotation.z = lerp_angle(left_hand.weapon.rotation.z, deg2rad(-left_hand.weapon.ads_akimbo_z_rot), ads_speed * delta)
-
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
 		
@@ -339,23 +326,22 @@ func get_input():
 		c_height = c_normal_height
 		
 
-func hand_motion(hand, target, time = 0.3):
+func hand_motion(hand, target, time = 0.3): 
 	hand.follow_pos = target
 
 	hand.tween.remove_all()
-	hand.tween.interpolate_property(hand.ik_target, "transform", hand.ik_target.transform, target.transform, time ,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+	hand.tween.interpolate_property(hand.ik_target, "transform", hand.ik_target.transform, target.transform, time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	hand.tween.start()
-	yield(hand.tween, "tween_all_completed")
-	sk.clear_bones_global_pose_override()
+
+#	print("target: " + str(target.name) + "reached")
+
 
 func hand_follow():
-	if not right_hand.tween.is_active():
-		if right_hand.follow_pos:
-			right_hand.ik_target.global_transform = right_hand.follow_pos.global_transform
+	if not right_hand.tween.is_active() && right_hand.follow_pos:
+		right_hand.ik_target.global_transform = right_hand.follow_pos.global_transform
 
-	if not left_hand.tween.is_active():
-		if left_hand.follow_pos:
-			left_hand.ik_target.global_transform = left_hand.follow_pos.global_transform
+	if not left_hand.tween.is_active() && left_hand.follow_pos:
+		left_hand.ik_target.global_transform = left_hand.follow_pos.global_transform
 			
 
 #func touch_cam_dir():
@@ -369,5 +355,9 @@ func hand_follow():
 
 func weapon_sway():
 	pass
+	
+	
+	
+	
 	
 	

@@ -37,8 +37,6 @@ enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="Bobbing" type="Tween" parent="UpperBody/Head"]
-
 [node name="CharacterViewportRender" type="ViewportContainer" parent="UpperBody/Head"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -72,48 +70,39 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 
 [node name="Right" type="Spatial" parent="UpperBody/Hands"]
 
-[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.05, -0.15 )
-
-[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
-
 [node name="Hand" type="Spatial" parent="UpperBody/Hands/Right"]
-
-[node name="Tween" type="Tween" parent="UpperBody/Hands/Right"]
-playback_process_mode = 0
 
 [node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Right"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
 
 [node name="DebugSpehere" parent="UpperBody/Hands/Right/IKTarget" instance=ExtResource( 5 )]
 
-[node name="RestPos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.2 )
+[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+
+[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.05, -0.15 )
 
 [node name="Left" type="Spatial" parent="UpperBody/Hands"]
 
-[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
-
 [node name="Hand" type="Spatial" parent="UpperBody/Hands/Left"]
-
-[node name="Tween" type="Tween" parent="UpperBody/Hands/Left"]
-playback_process_mode = 0
 
 [node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
 
 [node name="DebugSpehere" parent="UpperBody/Hands/Left/IKTarget" instance=ExtResource( 5 )]
 
+[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+
 [node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )
 
-[node name="RestPos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.2 )
-
 [node name="tentacles" parent="UpperBody/Hands" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.282999 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0.7 )
+
+[node name="Cube" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="0"]
+visible = false
 
 [node name="LeftHandIK" type="SkeletonIK" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="1"]
 process_priority = 1
@@ -141,8 +130,6 @@ cast_to = Vector3( 0, -0.1, 0 )
 [node name="AudioFootstep" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 4 )
 bus = "SFX"
-
-[node name="Recoil" type="Tween" parent="."]
 
 [node name="SpineIK" type="SkeletonIK" parent="."]
 process_priority = 1
