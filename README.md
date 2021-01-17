@@ -16,6 +16,17 @@
 kenneynl (crosshair, particles)
 controls: https://opengameart.org/content/onscreen-controls-8-styles
 else is placeholder
+https://cc0textures.com - materials
 
 
+blender config:
+magazine mesh name: "Magazine"
+slider mesh named: "Slider"
+aligned hight on sight line
+aligned lenght on rear sight
+
+
+asset list:
+https://opengameart.org/content/lens-flares-and-particles
+https://opengameart.org/content/fps-arms-rigged-only
 

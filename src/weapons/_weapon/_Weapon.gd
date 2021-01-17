@@ -168,7 +168,7 @@ func reload():
 				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos)
 
 		yield(off_hand.tween, "tween_all_completed")
-		holder.sk.clear_bones_global_pose_override()
+#		holder.sk.clear_bones_global_pose_override()
 		
 		emit_signal("free_hand")
 		
@@ -288,7 +288,7 @@ func get_hands():
 	if not off_hand.weapon:
 		holder.hand_motion(off_hand, h_secondary_grip_pos)
 	
-	holder.sk.clear_bones_global_pose_override()
+#	holder.sk.clear_bones_global_pose_override()
 
 	
 func create_fire_animation():

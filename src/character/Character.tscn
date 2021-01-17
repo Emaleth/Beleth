@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/character/Character.gd" type="Script" id=1]
-[ext_resource path="res://assets/models/actors/tentacles.glb" type="PackedScene" id=2]
 [ext_resource path="res://src/HUD/HUD.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/sounds/sfx/footstep.ogg" type="AudioStream" id=4]
 [ext_resource path="res://src/debug/DebugSphere.tscn" type="PackedScene" id=5]
@@ -98,28 +97,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
 [node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )
 
-[node name="tentacles" parent="UpperBody/Hands" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0.7 )
-
-[node name="Cube" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="0"]
-visible = false
-
-[node name="LeftHandIK" type="SkeletonIK" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="1"]
-process_priority = 1
-root_bone = "root_l"
-tip_bone = "handtip_l"
-override_tip_basis = false
-magnet = Vector3( -50, -100, 100 )
-target_node = NodePath("../../../../Left/IKTarget")
-
-[node name="RightHandIK" type="SkeletonIK" parent="UpperBody/Hands/tentacles/Armature/Skeleton" index="2"]
-process_priority = 1
-root_bone = "root_r"
-tip_bone = "handtip_r"
-override_tip_basis = false
-magnet = Vector3( 50, -100, 100 )
-target_node = NodePath("../../../../Right/IKTarget")
-
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
 enabled = true
@@ -136,4 +113,18 @@ process_priority = 1
 override_tip_basis = false
 magnet = Vector3( 0, 0, 1000 )
 
-[editable path="UpperBody/Hands/tentacles"]
+[node name="LeftHandIK" type="SkeletonIK" parent="."]
+process_priority = 1
+root_bone = "root_l"
+tip_bone = "handtip_l"
+override_tip_basis = false
+magnet = Vector3( -50, -100, 100 )
+target_node = NodePath("../../../../Left/IKTarget")
+
+[node name="RightHandIK" type="SkeletonIK" parent="."]
+process_priority = 1
+root_bone = "root_r"
+tip_bone = "handtip_r"
+override_tip_basis = false
+magnet = Vector3( 50, -100, 100 )
+target_node = NodePath("../../../../Right/IKTarget")

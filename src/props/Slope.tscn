@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://resources/materials/rusted_metal.tres" type="Material" id=1]
-
+[ext_resource path="res://resources/materials/Concrete.tres" type="Material" id=1]
 
 [node name="Slope" type="CSGPolygon"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )

@@ -55,7 +55,7 @@ onready var ground_check = $GroundCheck
 onready var camera = $UpperBody/Head/WorldCamera
 onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
-onready var sk = $UpperBody/Hands/tentacles/Armature/Skeleton
+onready var sk = null
 
 onready var right_hand = {
 	"ik_target" : $UpperBody/Hands/Right/IKTarget,
@@ -276,7 +276,7 @@ func get_weapon(wpn):
 	right_hand.weapon.holder = self
 	right_hand.hand.add_child(right_hand.weapon)
 
-	sk.clear_bones_global_pose_override()
+#	sk.clear_bones_global_pose_override()
 
 func cycle_w(updown):
 	var w = [Armoury.usp, Armoury.ak47, Armoury.mosberg_shotgun]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/weapons/_weapon/_Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/models/weapons/MossbergShotgun.glb" type="PackedScene" id=2]
-[ext_resource path="res://resources/materials/gun_metal.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/Wood.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/Metal.tres" type="Material" id=4]
 [ext_resource path="res://src/weapons/MossbergShotgun/MossbergShotgun.gd" type="Script" id=5]
 [ext_resource path="res://assets/sounds/sfx/out_of_ammo.ogg" type="AudioStream" id=6]
 [ext_resource path="res://assets/sounds/sfx/mag_out.wav" type="AudioStream" id=7]
@@ -19,19 +20,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0172004, -0.559968 )
 [node name="AudioFire" parent="Muzzle" index="0"]
 stream = ExtResource( 9 )
 
-[node name="AudioEmpty" parent="." index="4"]
+[node name="AudioEmpty" parent="." index="3"]
 stream = ExtResource( 6 )
 
-[node name="AudioMagOut" parent="." index="5"]
+[node name="AudioMagOut" parent="." index="4"]
 stream = ExtResource( 7 )
 
-[node name="AudioMagIn" parent="." index="6"]
+[node name="AudioMagIn" parent="." index="5"]
 stream = ExtResource( 8 )
 
-[node name="AudioSlide" parent="." index="7"]
+[node name="AudioSlide" parent="." index="6"]
 stream = ExtResource( 10 )
 
-[node name="MossbergShotgun" parent="." index="8" instance=ExtResource( 2 )]
+[node name="MossbergShotgun" parent="." index="7" instance=ExtResource( 2 )]
 
 [node name="Cube005" parent="MossbergShotgun" index="0"]
 material/0 = ExtResource( 3 )
@@ -40,13 +41,13 @@ material/0 = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.058625, 0 )
 
 [node name="Magazine" parent="MossbergShotgun" index="1"]
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 4 )
 
 [node name="MagPos" type="Position3D" parent="MossbergShotgun/Magazine" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0817247, -0.136283 )
 
 [node name="Cube003" parent="MossbergShotgun" index="2"]
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 4 )
 
 [node name="Slider" parent="MossbergShotgun" index="3"]
 material/0 = ExtResource( 3 )
@@ -61,6 +62,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.063165, -0.330006 )
 material/0 = ExtResource( 3 )
 
 [node name="Cube" parent="MossbergShotgun" index="5"]
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 4 )
 
 [editable path="MossbergShotgun"]
