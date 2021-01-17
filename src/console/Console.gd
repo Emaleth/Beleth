@@ -17,6 +17,7 @@ var on_screen = false
 
 
 func _ready():
+	Utility.console = self
 	initial_setup()
 	ready = true
 	

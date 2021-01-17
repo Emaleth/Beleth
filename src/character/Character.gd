@@ -35,9 +35,6 @@ var acceleration = null
 var air_acceleration = 1
 var ground_acceleration = 15
 var full_contact = false
-var bobbing_offset = 0.03
-var bobbing_rotation = 0.02
-var bobbing_dir = 1
 var rotation_damping = 0.5
 
 var direction = Vector3()
@@ -48,14 +45,27 @@ var current_w = 0
 
 onready var head = $UpperBody/Head
 onready var upper_body = $UpperBody
-onready var bobbing_tween = Utility.create_new_tween(self)
-onready var recoil_tween = Utility.create_new_tween(self)
 onready var camera_ray = $UpperBody/Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
 onready var camera = $UpperBody/Head/WorldCamera
 onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
 onready var sk = null
+
+onready var recoil_tween = Utility.create_new_tween(self)
+
+var cosine_time = 0
+var cosine_waves = {
+	"vertical" : {
+		"amplitude" : -.05,
+		"frequency" : 3,
+		},
+		
+	"horizontal" : {
+		"amplitude" : .1,
+		"frequency" : 1.5,
+		}
+	}
 
 onready var right_hand = {
 	"ik_target" : $UpperBody/Hands/Right/IKTarget,
@@ -84,6 +94,7 @@ onready var audio_footstep = $AudioFootstep
 
 
 func _ready():
+	Utility.player = self
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
@@ -113,10 +124,8 @@ func _physics_process(delta):
 	calculate_velocity(delta)
 	aim(delta) 
 	hand_follow()
-	if direction != Vector3.ZERO:
-		head_bobbing(true)
-	else:
-		head_bobbing(false)
+	head_bobbing()
+
 		
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector3.UP)
@@ -126,8 +135,8 @@ func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
-			upper_body.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
-			upper_body.rotation.x = clamp(upper_body.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
+			head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
+			head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 			
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -147,7 +156,9 @@ func _input(event):
 		cycle_w(-1)
 
 	
-func _process(_delta):
+func _process(delta):
+	cosine_time += delta
+	breathing_animation()
 	if Input.is_action_pressed("fire"):
 		if right_hand.weapon:
 			right_hand.weapon.fire()
@@ -206,8 +217,8 @@ func aim(delta):
 	match aim_mode:
 		HIPFIRE:
 			$HUD/Crosshair.visible = true
-			bobbing_offset = h_bob_hip
-			bobbing_rotation = h_rot_hip
+#			bobbing_offset = h_bob_hip
+#			bobbing_rotation = h_rot_hip
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
@@ -220,8 +231,8 @@ func aim(delta):
 			if (right_hand.weapon && right_hand.weapon.reloading) || (left_hand.weapon && left_hand.weapon.reloading):
 				aim_mode = HIPFIRE
 			$HUD/Crosshair.visible = false
-			bobbing_offset = h_bob_ads
-			bobbing_rotation = h_rot_ads
+#			bobbing_offset = h_bob_ads
+#			bobbing_rotation = h_rot_ads
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
@@ -254,14 +265,14 @@ func aim(delta):
 
 		
 func view_recoil(force):
-	var head_recoil_y = upper_body.rotation.x + deg2rad(force.y)
+	var head_recoil_y = head.rotation.x + deg2rad(force.y)
 	head_recoil_y = clamp(head_recoil_y, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
 	
 	var possible_head_recoil_x = [-force.x, force.x]
 	var head_recoil_x = deg2rad(possible_head_recoil_x[randi() % 2]) 
 
 	recoil_tween.remove_all()
-	recoil_tween.interpolate_property(upper_body, "rotation:x", upper_body.rotation.x, head_recoil_y, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	recoil_tween.interpolate_property(head, "rotation:x", head.rotation.x, head_recoil_y, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	recoil_tween.interpolate_property(self, "rotation:y", rotation.y, rotation.y + head_recoil_x, 0.02 ,Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	recoil_tween.start()
 
@@ -285,30 +296,13 @@ func cycle_w(updown):
 	get_weapon(w[current_w])
 
 
-func head_bobbing(moving):
+func head_bobbing():
 	if is_on_ceiling() && head.translation.y < height:
 		pass
 	else:
 		head.translation.y = lerp(head.translation.y, height, crouch_switch_speed)
 		c_shape.shape.height = lerp(c_shape.shape.height, c_height, crouch_switch_speed)
 		ground_check.translation.y = - (c_height - 0.05)
-
-	if bobbing_tween.is_active():
-		return
-	else:
-		if direction != Vector3.ZERO:
-			audio_footstep.play()
-		bobbing_dir *= -1
-		if moving:
-			bobbing_tween.remove_all()
-			bobbing_tween.interpolate_property(head, "translation:y", head.translation.y, height +bobbing_offset * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			bobbing_tween.interpolate_property(head, "rotation_degrees:y", head.rotation_degrees.y, bobbing_rotation * bobbing_dir, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			bobbing_tween.start()
-		else:
-			bobbing_tween.remove_all()
-			bobbing_tween.interpolate_property(head, "translation:y", head.translation.y, height+bobbing_offset * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			bobbing_tween.interpolate_property(head, "rotation_degrees:y", head.rotation_degrees.y, bobbing_rotation * 0.5 * bobbing_dir, 1.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-			bobbing_tween.start()
 
 
 func get_input():
@@ -357,7 +351,6 @@ func weapon_sway():
 	pass
 	
 	
-	
-	
-	
+func breathing_animation():
+	head.transform.origin = Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), 0.6 + (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
 	

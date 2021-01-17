@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/textures/Metal/Metal_Metalness.png" type="Texture" id=4]
 
 [resource]
+albedo_color = Color( 0.309804, 0.309804, 0.309804, 1 )
 albedo_texture = ExtResource( 3 )
 metallic = 1.0
 metallic_texture = ExtResource( 4 )

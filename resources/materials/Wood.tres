@@ -5,6 +5,7 @@
 [ext_resource path="res://assets/textures/Wood/Wood_Color.png" type="Texture" id=3]
 
 [resource]
+albedo_color = Color( 0.486275, 0.486275, 0.486275, 1 )
 albedo_texture = ExtResource( 3 )
 roughness_texture = ExtResource( 2 )
 normal_enabled = true
