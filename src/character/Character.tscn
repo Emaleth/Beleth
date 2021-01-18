@@ -13,29 +13,22 @@ collision_layer = 2
 collision_mask = 3
 script = ExtResource( 1 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-shape = SubResource( 1 )
+[node name="Head" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 
-[node name="UpperBody" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
-
-[node name="Head" type="Spatial" parent="UpperBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
-
-[node name="WorldCamera" type="Camera" parent="UpperBody/Head"]
+[node name="WorldCamera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.86265e-09 )
 cull_mask = 1
 current = true
 near = 0.01
 far = 150.0
 
-[node name="CameraRay" type="RayCast" parent="UpperBody/Head/WorldCamera"]
+[node name="CameraRay" type="RayCast" parent="Head/WorldCamera"]
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 3
 
-[node name="CharacterViewportRender" type="ViewportContainer" parent="UpperBody/Head"]
+[node name="CharacterViewportRender" type="ViewportContainer" parent="Head"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -45,52 +38,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CharacterCameraViewport" type="Viewport" parent="UpperBody/Head/CharacterViewportRender"]
+[node name="CharacterCameraViewport" type="Viewport" parent="Head/CharacterViewportRender"]
 size = Vector2( 1024, 600 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="CharacterCamera" type="Camera" parent="UpperBody/Head/CharacterViewportRender/CharacterCameraViewport"]
+[node name="CharacterCamera" type="Camera" parent="Head/CharacterViewportRender/CharacterCameraViewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 cull_mask = 2
 near = 0.01
 far = 10.0
 
-[node name="CameraSync" type="RemoteTransform" parent="UpperBody/Head"]
+[node name="CameraSync" type="RemoteTransform" parent="Head"]
 remote_path = NodePath("../CharacterViewportRender/CharacterCameraViewport/CharacterCamera")
 
-[node name="HandSync" type="RemoteTransform" parent="UpperBody/Head"]
+[node name="HandSync" type="RemoteTransform" parent="Head"]
 remote_path = NodePath("../../Hands")
 
-[node name="Hands" type="Spatial" parent="UpperBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
-
-[node name="Right" type="Spatial" parent="UpperBody/Hands"]
-
-[node name="Hand" type="Spatial" parent="UpperBody/Hands/Right"]
-
-[node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
-
-[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
-
-[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Right"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.05, -0.15 )
-
-[node name="Left" type="Spatial" parent="UpperBody/Hands"]
-
-[node name="Hand" type="Spatial" parent="UpperBody/Hands/Left"]
-
-[node name="IKTarget" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
-
-[node name="AdsPos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
-
-[node name="HipfirePos" type="Position3D" parent="UpperBody/Hands/Left"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+shape = SubResource( 1 )
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0 )
@@ -123,3 +91,32 @@ tip_bone = "handtip_r"
 override_tip_basis = false
 magnet = Vector3( 50, -100, 100 )
 target_node = NodePath("../../../../Right/IKTarget")
+
+[node name="Hands" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
+
+[node name="Right" type="Spatial" parent="Hands"]
+
+[node name="Hand" type="Spatial" parent="Hands/Right"]
+
+[node name="IKTarget" type="Position3D" parent="Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3 )
+
+[node name="AdsPos" type="Position3D" parent="Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+
+[node name="HipfirePos" type="Position3D" parent="Hands/Right"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.05, -0.15 )
+
+[node name="Left" type="Spatial" parent="Hands"]
+
+[node name="Hand" type="Spatial" parent="Hands/Left"]
+
+[node name="IKTarget" type="Position3D" parent="Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3 )
+
+[node name="AdsPos" type="Position3D" parent="Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1 )
+
+[node name="HipfirePos" type="Position3D" parent="Hands/Left"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.05, -0.15 )

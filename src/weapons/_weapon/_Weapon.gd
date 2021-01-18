@@ -44,6 +44,10 @@ var off_hand = null
 onready var fire_tween = Utility.create_new_tween(self)
 onready var reload_tween = Utility.create_new_tween(self)
 
+onready var fire_timer = Utility.create_new_timer(self, "fire_timer_callback")
+onready var reload_timer = Utility.create_new_timer(self, "reload_timer_callback")
+
+
 onready var bullet = $BulletRay
 onready var muzzle = $Muzzle
 onready var audio_fire = $Muzzle/AudioFire
@@ -178,13 +182,13 @@ func fire():
 		if clip_size <= 0:
 			if can_shoot:
 				can_shoot = false
-				$Timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox. 15ms 
+				fire_timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox. 15ms 
 				audio_empty_mag.play()
 			
 		else:
 			if can_shoot:
 				can_shoot = false
-				$Timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox. 15ms 
+				fire_timer.start((1.0 / fire_rate) - 0.015) # this function lasts aprox. 15ms 
 				clip_size -= 1
 				audio_fire.play()
 				
@@ -247,7 +251,11 @@ func shoot_bullet():
 func _on_Timer_timeout():
 	can_shoot = true
 
+func fire_timer_callback():
+	can_shoot = true
 
+func reload_timer_callback():
+	pass
 func get_anim_data():
 	if slide_pos.x == side * -1:
 		pass

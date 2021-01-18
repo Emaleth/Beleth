@@ -43,47 +43,47 @@ var linear_velocity = Vector3()
 var gravity_vec = Vector3()
 var current_w = 0
 
-onready var head = $UpperBody/Head
-onready var upper_body = $UpperBody
-onready var camera_ray = $UpperBody/Head/WorldCamera/CameraRay
+onready var head = $Head
+onready var hands = $Hands
+onready var camera_ray = $Head/WorldCamera/CameraRay
 onready var ground_check = $GroundCheck
-onready var camera = $UpperBody/Head/WorldCamera
-onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
+onready var camera = $Head/WorldCamera
+onready var camera2 = $Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
 onready var sk = null
 
 onready var recoil_tween = Utility.create_new_tween(self)
 
 var cosine_time = 0
-var cosine_waves = {
+var cosine_waves : Dictionary = {
 	"vertical" : {
-		"amplitude" : -.05,
+		"amplitude" : -0.005,
 		"frequency" : 3,
 		},
 		
 	"horizontal" : {
-		"amplitude" : .1,
+		"amplitude" : 0.01,
 		"frequency" : 1.5,
 		}
 	}
 
-onready var right_hand = {
-	"ik_target" : $UpperBody/Hands/Right/IKTarget,
-	"hand" : $UpperBody/Hands/Right/Hand,
+onready var right_hand : Dictionary = {
+	"ik_target" : $Hands/Right/IKTarget,
+	"hand" : $Hands/Right/Hand,
 	"tween" : Utility.create_new_tween(self),
-	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
-	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
+	"hipfire_pos" : $Hands/Right/HipfirePos,
+	"ads_pos" : $Hands/Right/AdsPos,
 	"ik" : null,
 	"weapon" : null,
 	"follow_pos" : null
 	}
 	
-onready var left_hand = {
-	"ik_target" : $UpperBody/Hands/Left/IKTarget,
-	"hand" : $UpperBody/Hands/Left/Hand,
+onready var left_hand : Dictionary = {
+	"ik_target" : $Hands/Left/IKTarget,
+	"hand" : $Hands/Left/Hand,
 	"tween" : Utility.create_new_tween(self),
-	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
-	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
+	"hipfire_pos" : $Hands/Left/HipfirePos,
+	"ads_pos" : $Hands/Left/AdsPos,
 	"ik" : null,
 	"weapon" : null,
 	"follow_pos" : null
@@ -214,6 +214,7 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
+	var f =  Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
 	match aim_mode:
 		HIPFIRE:
 			$HUD/Crosshair.visible = true
@@ -223,8 +224,8 @@ func aim(delta):
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			
-			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.hipfire_pos.global_transform.origin, ads_speed * delta)		
-			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.hipfire_pos.global_transform.origin, ads_speed * delta)
+			right_hand.hand.transform.origin = right_hand.hand.transform.origin.linear_interpolate(right_hand.hipfire_pos.transform.origin + f, ads_speed * delta)		
+			left_hand.hand.transform.origin = left_hand.hand.transform.origin.linear_interpolate(left_hand.hipfire_pos.transform.origin + f, ads_speed * delta)
 		
 				
 		ADS:
@@ -237,8 +238,8 @@ func aim(delta):
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			
-			right_hand.hand.global_transform.origin = right_hand.hand.global_transform.origin.linear_interpolate(right_hand.ads_pos.global_transform.origin, ads_speed * delta)
-			left_hand.hand.global_transform.origin = left_hand.hand.global_transform.origin.linear_interpolate(left_hand.ads_pos.global_transform.origin, ads_speed * delta)
+			right_hand.hand.transform.origin = right_hand.hand.transform.origin.linear_interpolate(right_hand.ads_pos.transform.origin + f / 4, ads_speed * delta)
+			left_hand.hand.transform.origin = left_hand.hand.transform.origin.linear_interpolate(left_hand.ads_pos.transform.origin + f / 4, ads_speed * delta)
 			
 	
 	if camera_ray.global_transform.origin.distance_to(camera_ray.get_collision_point()) > 1.0:
@@ -352,5 +353,7 @@ func weapon_sway():
 	
 	
 func breathing_animation():
-	head.transform.origin = Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), 0.6 + (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
-	
+	pass
+#	hands.transform.origin = Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), 0.6 + (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
+#
+#	var f =  Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
