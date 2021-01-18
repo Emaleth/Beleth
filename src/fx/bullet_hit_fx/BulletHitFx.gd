@@ -12,15 +12,9 @@ var sounds = {
 func conf(c_point, c_normal):
 	set_disable_scale(true)
 	global_transform.origin = c_point
-
-
-	if c_normal == Vector3.UP:
-		rotation.x = deg2rad(90)
-	elif c_normal == Vector3.DOWN:
-		rotation.x = deg2rad(-90)
-
-	else:
-		look_at(c_point + c_normal, Vector3.UP)
+	
+	var up_vector = c_point.cross(c_point + c_normal)
+	look_at(c_point + c_normal, up_vector)
 
 			
 
