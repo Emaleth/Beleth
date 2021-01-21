@@ -36,13 +36,13 @@ static func create_new_timer(parent : Node, callback : String) -> Timer:
 	
 	
 ### WAVE FUNCTIONS ###
-static func calculate_cosine_wave(wave : Dictionary, time : float) -> float:
-	var cosine_wave : float = cos(time * wave.frequency) * wave.amplitude # not safe, can't set type per disctionary key as of Godot 3.2.2.stable
+static func calculate_cosine_wave(frequency : float, amplitude : float, time : float) -> float:
+	var cosine_wave : float = cos(time * frequency) * amplitude # not safe, can't set type per disctionary key as of Godot 3.2.2.stable
 	return cosine_wave
 
 
-static func calculate_sine_wave(wave : Dictionary, time : float) -> float:
-	var sine_wave : float = sin(PI/2 + time * wave.frequency) * wave.amplitude # not safe, can't set type per disctionary key as of Godot 3.2.2.stable
+static func calculate_sine_wave(frequency : float, amplitude : float, time : float) -> float:
+	var sine_wave : float = sin(PI/2 + time * frequency) * amplitude # not safe, can't set type per disctionary key as of Godot 3.2.2.stable
 	return sine_wave
 
 

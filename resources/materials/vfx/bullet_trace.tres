@@ -2,7 +2,6 @@
 
 [ext_resource path="res://assets/textures/vfx/trace/bullet_trace.png" type="Texture" id=1]
 
-
 [resource]
 flags_transparent = true
 flags_unshaded = true

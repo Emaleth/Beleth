@@ -214,7 +214,7 @@ func calculate_velocity(delta):
 
 
 func aim(delta):
-	var f =  Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
+	var f =  Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal.frequency, cosine_waves.horizontal.amplitude, cosine_time), (Utility.calculate_cosine_wave(cosine_waves.vertical.frequency, cosine_waves.vertical.amplitude, cosine_time)), 0)
 	match aim_mode:
 		HIPFIRE:
 			$HUD/Crosshair.visible = true

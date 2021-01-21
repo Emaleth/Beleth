@@ -2,9 +2,6 @@
 
 [ext_resource path="res://assets/textures/vfx/muzzle_flash/muzzle_flash_front.png" type="Texture" id=1]
 
-
-
-
 [resource]
 flags_transparent = true
 flags_unshaded = true

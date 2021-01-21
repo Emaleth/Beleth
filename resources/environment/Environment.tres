@@ -8,5 +8,3 @@ panorama = ExtResource( 1 )
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
-glow_intensity = 1.5
-glow_strength = 1.3

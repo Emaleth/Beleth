@@ -192,7 +192,7 @@ func fire():
 				clip_size -= 1
 				audio_fire.play()
 				
-				var muzzle_flash = ObjectPool.get_item("muzzle_flash")
+				var muzzle_flash = Dispatcher.request("muzzle_flash")
 				muzzle.add_child(muzzle_flash)
 				muzzle_flash.conf(muzzle.global_transform)
 
@@ -227,23 +227,23 @@ func shoot_bullet():
 			bullet.rotation = Vector3(0, 0, 0)
 			if bullet.is_colliding():
 				var target = bullet.get_collider()
-				var smoke  = ObjectPool.get_item("gunfire_smoke")
+				var smoke  = Dispatcher.request("gunfire_smoke")
 				get_tree().get_root().add_child(smoke)
 				smoke.conf(muzzle.global_transform)
-				var trail = ObjectPool.get_item("bullet_trail")
+				var trail = Dispatcher.request("bullet_trail")
 				get_tree().get_root().add_child(trail)
 				trail.conf(muzzle.global_transform.origin, bullet.get_collision_point())
-				var hole = ObjectPool.get_item("bullet_hole")
+				var hole = Dispatcher.request("bullet_hole")
 				target.add_child(hole)
 				hole.conf(bullet.get_collision_point(), bullet.get_collision_normal())
 				if target.has_method("hit"):
 					target.hit(damage)
 					Console.target = target
 		else:
-			var smoke  = ObjectPool.get_item("gunfire_smoke")
+			var smoke  = Dispatcher.request("gunfire_smoke")
 			get_tree().get_root().add_child(smoke)
 			smoke.conf(muzzle.global_transform)
-			var frag = ObjectPool.get_item("granade")
+			var frag = Dispatcher.request("granade")
 			get_tree().get_root().add_child(frag)
 			frag.conf(muzzle.global_transform)
 
