@@ -3,7 +3,7 @@ extends Spatial
 var lifetime = 0.05
 var lenght = 0
 
-onready var tween = Utility.create_new_tween(self)
+onready var tween = Creator.request_tween(self)
 onready var mesh = $trail
 
 	

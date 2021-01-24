@@ -1,0 +1,22 @@
+name: Push File
+
+on: push
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Push a file to another repository
+      uses: Emaleth-BSE/Automaton@master
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.AUTOMATON_TOKEN }}
+      with:
+        target_repo: 'Emaleth-BSE/Emaleth-BSE.github.io'
+        user_email: 'emaleth@protonmail.com'
+        user_name: 'Emaleth-BSE'
+        target_file_name: 'Beleth'
+        front_matter_permalink: /beleth/
+

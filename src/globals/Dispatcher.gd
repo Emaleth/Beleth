@@ -1,8 +1,12 @@
+"""
+Node Dispatcher Singletion
+call: 'Dispatche.request(arg)' where:
+'arg' is either a PackedScene or a String
+corresponding to one of entries in the item_list dictionary
+"""
+
 extends Node
-""" // Node Dispatcher Singletion
-		call: 'Dispatche.request(arg)' where:
-		'arg' is either a PackedScene or a String
-		corresponding to one of entries in the item_list dictionary // """
+
 
 var things : Dictionary = {
 	"bullet_hole" : {

@@ -41,11 +41,11 @@ var h_mag_pos = null
 var main_hand = null
 var off_hand = null
 
-onready var fire_tween = Utility.create_new_tween(self)
-onready var reload_tween = Utility.create_new_tween(self)
+onready var fire_tween = Creator.request_tween(self)
+onready var reload_tween = Creator.request_tween(self)
 
-onready var fire_timer = Utility.create_new_timer(self, "fire_timer_callback")
-onready var reload_timer = Utility.create_new_timer(self, "reload_timer_callback")
+onready var fire_timer = Creator.request_timer(self, "fire_timer_callback")
+onready var reload_timer = Creator.request_timer(self, "reload_timer_callback")
 
 
 onready var bullet = $BulletRay

@@ -16,6 +16,8 @@ var h_bob_ads = 0.003
 var h_rot_hip = 0.5
 var h_rot_ads = 0.05
 
+var snap_vec = Vector3.ZERO
+
 var speed
 var crouch_speed = 3
 var normal_speed = 7
@@ -31,10 +33,9 @@ var c_crouch_height = 0.8
 
 var jump = 9
 var gravity = 20
-var acceleration = null
 var air_acceleration = 1
 var ground_acceleration = 15
-var full_contact = false
+var acceleration = ground_acceleration
 var rotation_damping = 0.5
 
 var direction = Vector3()
@@ -46,13 +47,12 @@ var current_w = 0
 onready var head = $Head
 onready var hands = $Hands
 onready var camera_ray = $Head/WorldCamera/CameraRay
-onready var ground_check = $GroundCheck
 onready var camera = $Head/WorldCamera
 onready var camera2 = $Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
 onready var sk = null
 
-onready var recoil_tween = Utility.create_new_tween(self)
+onready var recoil_tween = Creator.request_tween(self)
 
 var cosine_time = 0
 var cosine_waves : Dictionary = {
@@ -70,7 +70,7 @@ var cosine_waves : Dictionary = {
 onready var right_hand : Dictionary = {
 	"ik_target" : $Hands/Right/IKTarget,
 	"hand" : $Hands/Right/Hand,
-	"tween" : Utility.create_new_tween(self),
+	"tween" : Creator.request_tween(self),
 	"hipfire_pos" : $Hands/Right/HipfirePos,
 	"ads_pos" : $Hands/Right/AdsPos,
 	"ik" : null,
@@ -81,7 +81,7 @@ onready var right_hand : Dictionary = {
 onready var left_hand : Dictionary = {
 	"ik_target" : $Hands/Left/IKTarget,
 	"hand" : $Hands/Left/Hand,
-	"tween" : Utility.create_new_tween(self),
+	"tween" : Creator.request_tween(self),
 	"hipfire_pos" : $Hands/Left/HipfirePos,
 	"ads_pos" : $Hands/Left/AdsPos,
 	"ik" : null,
@@ -94,7 +94,7 @@ onready var audio_footstep = $AudioFootstep
 
 
 func _ready():
-	Utility.player = self
+	Relay.player = self
 	aim_mode = HIPFIRE
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
@@ -116,11 +116,10 @@ func start_ik_chains():
 	
 	
 func _physics_process(delta):
-	full_contact = ground_check.is_colliding()
 	get_input()
 	get_direction()
 #	touch_cam_dir()
-	calculate_gravity(delta)
+#	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta) 
 	hand_follow()
@@ -128,7 +127,19 @@ func _physics_process(delta):
 
 		
 # warning-ignore:return_value_discarded
-	move_and_slide(velocity, Vector3.UP)
+#	move_and_slide(velocity, Vector3.UP)
+
+#Vector3 move_and_slide_with_snap(
+#	linear_velocity: Vector3, 
+#	snap: Vector3, 
+#	up_direction: Vector3 = Vector3( 0, 0, 0 ), 
+#	stop_on_slope: bool = false, 
+#	max_slides: int = 4, 
+#	floor_max_angle: float = 0.785398, 
+#	infinite_inertia: bool = true)
+
+
+	move_and_slide(velocity + gravity_vec, Vector3.UP, true, 4, deg2rad(45), false)
 
 
 func _input(event):
@@ -157,6 +168,8 @@ func _input(event):
 
 	
 func _process(delta):
+	calculate_gravity(delta)
+	
 	cosine_time += delta
 	breathing_animation()
 	if Input.is_action_pressed("fire"):
@@ -183,34 +196,34 @@ func _process(delta):
 		
 func get_direction():
 	direction = Vector3()
-#	direction += $HUD.direction.y * transform.basis.z
-#	direction += $HUD.direction.x * transform.basis.x
 	direction += (Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")) * transform.basis.z
 	direction += (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * transform.basis.x
 #
 	direction = direction.normalized()
 	
 	
+var floor_state = false
+
 func calculate_gravity(delta):
-	if not is_on_floor():
-		gravity_vec += Vector3.DOWN * gravity * delta
-		acceleration = air_acceleration
-	elif is_on_floor() and full_contact:
-		gravity_vec = -get_floor_normal() * gravity
-		acceleration = ground_acceleration
+	if is_on_floor():
+		floor_state = true
+		gravity_vec = gravity * get_floor_normal() * -1
 	else:
-		gravity_vec = -get_floor_normal()
-		acceleration = ground_acceleration
+		if floor_state:
+			if gravity_vec.y < 0:
+				gravity_vec = Vector3.ZERO
+			floor_state = false
+		else:
+			gravity_vec += Vector3.DOWN * gravity * delta
+#			
 		
-	if Input.is_action_just_pressed("jump") and (is_on_floor() or full_contact):
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		gravity_vec = Vector3.UP * jump
+
 		
 		
 func calculate_velocity(delta):
-	linear_velocity = linear_velocity.linear_interpolate(direction * speed, acceleration * delta)
-	velocity.z = linear_velocity.z + gravity_vec.z
-	velocity.x = linear_velocity.x + gravity_vec.x
-	velocity.y = gravity_vec.y
+	velocity = velocity.linear_interpolate(direction * speed, acceleration * delta)
 
 
 func aim(delta):
@@ -303,7 +316,6 @@ func head_bobbing():
 	else:
 		head.translation.y = lerp(head.translation.y, height, crouch_switch_speed)
 		c_shape.shape.height = lerp(c_shape.shape.height, c_height, crouch_switch_speed)
-		ground_check.translation.y = - (c_height - 0.05)
 
 
 func get_input():

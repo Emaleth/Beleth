@@ -8,7 +8,7 @@ var direction = Vector2()
 var cam_dir = Vector2()
 
 func _ready():
-	Utility.hud = self
+	Relay.hud = self
 	crosshair.position = rect_size / 2
 	ready = true
 

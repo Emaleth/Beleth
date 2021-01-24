@@ -29,6 +29,8 @@ Console="*res://src/console/Console.tscn"
 Armoury="*res://src/globals/Armoury.gd"
 Utility="*res://src/globals/Utility.gd"
 Dispatcher="*res://src/globals/Dispatcher.gd"
+Creator="*res://Creator.gd"
+Relay="*res://Relay.gd"
 
 [importer_defaults]
 
