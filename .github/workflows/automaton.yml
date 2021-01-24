@@ -15,8 +15,10 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.AUTOMATON_TOKEN }}
       with:
         target_repo: 'Emaleth-BSE/Emaleth-BSE.github.io'
-        user_email: 'emaleth@protonmail.com'
-        user_name: 'Emaleth-BSE'
+        user_email: '<>'
+        user_name: 'Emaleth'
         target_file_name: 'Beleth'
-        front_matter_permalink: /beleth/
+        permalink: /beleth/
+        title: 'Beleth'
+
 
