@@ -18,5 +18,6 @@ jobs:
         target_file_name: 'Beleth'
         permalink: /beleth/
         title: 'Beleth'
+        collection: 'gh-repos'
 
 
