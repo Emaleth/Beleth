@@ -1,32 +1,19 @@
-# [Beleth](https://en.wikipedia.org/wiki/Beleth)
-// creenshots here //
+# Beleth
 
-##### Sources:
-**3D Models:**  
-&emsp;◈ https://free3d.com/3d-model/pack-of-15-modern-weapons-6-attachments-734779.html (Weapons)  
-&emsp;◈ Emaleth  
+Experimental godot first person shooter.
 
-**Sound:**  
-&emsp;◈ https://opengameart.org/content/2-high-quality-explosions  
-&emsp;◈ https://opengameart.org/content/q009s-weapon-sounds  
-&emsp;◈ https://opengameart.org/content/chaingun-pistol-rifle-shotgun-shots  
-&emsp;◈ KenneyNL  
+## Installation
 
-**Textures:**  
-kenneynl (crosshair, particles)
-controls: https://opengameart.org/content/onscreen-controls-8-styles
-else is placeholder
-https://cc0textures.com - materials
+n/a.
 
 
-blender config:
-magazine mesh name: "Magazine"
-slider mesh named: "Slider"
-aligned hight on sight line
-aligned lenght on rear sight
+## Usage
+
+n/a
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 
-asset list:
-https://opengameart.org/content/lens-flares-and-particles
-https://opengameart.org/content/fps-arms-rigged-only
-
+## License
+n/a

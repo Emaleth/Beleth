@@ -10,13 +10,11 @@ jobs:
       uses: actions/checkout@master
 
     - name: Push a file to another repository
-      uses: Emaleth-BSE/Automaton@master
+      uses: Emaleth/Automaton@master
       env:
         API_TOKEN_GITHUB: ${{ secrets.AUTOMATON_TOKEN }}
       with:
-        target_repo: 'Emaleth-BSE/Emaleth-BSE.github.io'
-        user_email: '<>'
-        user_name: 'Emaleth'
+        target_repo: 'Emaleth/Emaleth.github.io'
         target_file_name: 'Beleth'
         permalink: /beleth/
         title: 'Beleth'
