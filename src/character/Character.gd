@@ -169,7 +169,7 @@ func _input(event):
 	
 func _process(delta):
 	calculate_gravity(delta)
-	
+
 	cosine_time += delta
 	breathing_animation()
 	if Input.is_action_pressed("fire"):
@@ -214,7 +214,7 @@ func calculate_gravity(delta):
 				gravity_vec = Vector3.ZERO
 			floor_state = false
 		else:
-			gravity_vec += Vector3.DOWN * gravity * delta
+			gravity_vec += (Vector3.DOWN * gravity * delta)
 #			
 		
 	if Input.is_action_just_pressed("jump") and is_on_floor():

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://new_wepons_system/new_script.gd" type="Script" id=1]
+
+[node name="weapon_component" type="RigidBody"]
+script = ExtResource( 1 )
+mobility = 4.0
