@@ -44,13 +44,12 @@ var linear_velocity = Vector3()
 var gravity_vec = Vector3()
 var current_w = 0
 
-onready var head = $Head
-onready var hands = $Hands
-onready var camera_ray = $Head/WorldCamera/CameraRay
-onready var camera = $Head/WorldCamera
-onready var camera2 = $Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
+onready var head = $UpperBody/Head
+onready var hands = $UpperBody/Hands
+onready var camera_ray = $UpperBody/Head/WorldCamera/CameraRay
+onready var camera = $UpperBody/Head/WorldCamera
+onready var camera2 = $UpperBody/Head/CharacterViewportRender/CharacterCameraViewport/CharacterCamera
 onready var c_shape = $CollisionShape
-onready var sk = null
 
 onready var recoil_tween = Creator.request_tween(self)
 
@@ -68,25 +67,19 @@ var cosine_waves : Dictionary = {
 	}
 
 onready var right_hand : Dictionary = {
-	"ik_target" : $Hands/Right/IKTarget,
-	"hand" : $Hands/Right/Hand,
+	"hand" : $UpperBody/Hands/Right/Hand,
 	"tween" : Creator.request_tween(self),
-	"hipfire_pos" : $Hands/Right/HipfirePos,
-	"ads_pos" : $Hands/Right/AdsPos,
-	"ik" : null,
-	"weapon" : null,
-	"follow_pos" : null
+	"hipfire_pos" : $UpperBody/Hands/Right/HipfirePos,
+	"ads_pos" : $UpperBody/Hands/Right/AdsPos,
+	"weapon" : null
 	}
 	
 onready var left_hand : Dictionary = {
-	"ik_target" : $Hands/Left/IKTarget,
-	"hand" : $Hands/Left/Hand,
+	"hand" : $UpperBody/Hands/Left/Hand,
 	"tween" : Creator.request_tween(self),
-	"hipfire_pos" : $Hands/Left/HipfirePos,
-	"ads_pos" : $Hands/Left/AdsPos,
-	"ik" : null,
-	"weapon" : null,
-	"follow_pos" : null
+	"hipfire_pos" : $UpperBody/Hands/Left/HipfirePos,
+	"ads_pos" : $UpperBody/Hands/Left/AdsPos,
+	"weapon" : null
 	}
 
 onready var spine_ik = null
@@ -99,45 +92,14 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Console.player = self
 	get_weapon(Armoury.ak47) 
-	get_ik_nodes()
-	start_ik_chains()
-	
-	
-func get_ik_nodes():
-	spine_ik = find_node("SpineIK")
-	right_hand.ik = find_node("RightHandIK")
-	left_hand.ik = find_node("LeftHandIK")
-	
 
-func start_ik_chains():
-	left_hand.ik.start()
-	right_hand.ik.start()
-	spine_ik.start()
-	
 	
 func _physics_process(delta):
 	get_input()
 	get_direction()
-#	touch_cam_dir()
-#	calculate_gravity(delta)
 	calculate_velocity(delta)
 	aim(delta) 
-	hand_follow()
 	head_bobbing()
-
-		
-# warning-ignore:return_value_discarded
-#	move_and_slide(velocity, Vector3.UP)
-
-#Vector3 move_and_slide_with_snap(
-#	linear_velocity: Vector3, 
-#	snap: Vector3, 
-#	up_direction: Vector3 = Vector3( 0, 0, 0 ), 
-#	stop_on_slope: bool = false, 
-#	max_slides: int = 4, 
-#	floor_max_angle: float = 0.785398, 
-#	infinite_inertia: bool = true)
-
 
 	move_and_slide(velocity + gravity_vec, Vector3.UP, true, 4, deg2rad(45), false)
 
@@ -171,7 +133,6 @@ func _process(delta):
 	calculate_gravity(delta)
 
 	cosine_time += delta
-	breathing_animation()
 	if Input.is_action_pressed("fire"):
 		if right_hand.weapon:
 			right_hand.weapon.fire()
@@ -231,8 +192,6 @@ func aim(delta):
 	match aim_mode:
 		HIPFIRE:
 			$HUD/Crosshair.visible = true
-#			bobbing_offset = h_bob_hip
-#			bobbing_rotation = h_rot_hip
 			mouse_sensitivity = hipfire_mouse_sensitivity
 			camera.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, hipfire_cam_fov, ads_speed * delta)
@@ -245,8 +204,6 @@ func aim(delta):
 			if (right_hand.weapon && right_hand.weapon.reloading) || (left_hand.weapon && left_hand.weapon.reloading):
 				aim_mode = HIPFIRE
 			$HUD/Crosshair.visible = false
-#			bobbing_offset = h_bob_ads
-#			bobbing_rotation = h_rot_ads
 			mouse_sensitivity = ads_mouse_sensitivity
 			camera.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
 			camera2.fov = lerp(camera.fov, ads_cam_fov, ads_speed * delta)
@@ -301,7 +258,6 @@ func get_weapon(wpn):
 	right_hand.weapon.holder = self
 	right_hand.hand.add_child(right_hand.weapon)
 
-#	sk.clear_bones_global_pose_override()
 
 func cycle_w(updown):
 	var w = [Armoury.usp, Armoury.ak47, Armoury.mosberg_shotgun]
@@ -332,40 +288,3 @@ func get_input():
 		height = normal_height
 		c_height = c_normal_height
 		
-
-func hand_motion(hand, target, time = 0.3): 
-	hand.follow_pos = target
-
-	hand.tween.remove_all()
-	hand.tween.interpolate_property(hand.ik_target, "transform", hand.ik_target.transform, target.transform, time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	hand.tween.start()
-
-#	print("target: " + str(target.name) + "reached")
-
-
-func hand_follow():
-	if not right_hand.tween.is_active() && right_hand.follow_pos:
-		right_hand.ik_target.global_transform = right_hand.follow_pos.global_transform
-
-	if not left_hand.tween.is_active() && left_hand.follow_pos:
-		left_hand.ik_target.global_transform = left_hand.follow_pos.global_transform
-			
-
-#func touch_cam_dir():
-#	var evrel = $HUD.cam_dir.normalized()
-#	if evrel != Vector2.ZERO:
-#		actor_rotation += deg2rad(-evrel.x * 4)
-#		head.rotate_x(deg2rad(-evrel.y * 4))
-#		head.rotation.x = clamp(head.rotation.x, deg2rad(-maxdeg_camera_rotation), deg2rad(maxdeg_camera_rotation))
-#		$HUD.cam_dir = Vector2.ZERO
-
-
-func weapon_sway():
-	pass
-	
-	
-func breathing_animation():
-	pass
-#	hands.transform.origin = Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), 0.6 + (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)
-#
-#	var f =  Vector3(Utility.calculate_cosine_wave(cosine_waves.horizontal, cosine_time), (Utility.calculate_cosine_wave(cosine_waves.vertical, cosine_time)), 0)

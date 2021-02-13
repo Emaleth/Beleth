@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://custom_classes/DispatcherClass.gd"
 }, {
+"base": "Node",
+"class": "Utility",
+"language": "GDScript",
+"path": "res://src/globals/Utility.gd"
+}, {
 "base": "RigidBody",
 "class": "weapon_component",
 "language": "GDScript",
@@ -21,6 +26,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "DispatcherClass": "",
+"Utility": "",
 "weapon_component": ""
 }
 
@@ -38,7 +44,6 @@ default_bus_layout="res://resources/audio/Audio.tres"
 
 Console="*res://src/console/Console.tscn"
 Armoury="*res://src/globals/Armoury.gd"
-Utility="*res://src/globals/Utility.gd"
 Creator="*res://src/globals/Creator.gd"
 Relay="*res://src/globals/Relay.gd"
 Dispatcher="*res://src/globals/Dispatcher.gd"

@@ -110,8 +110,6 @@ func reload():
 		if self == holder.left_hand.weapon:
 			yield(holder.right_hand.weapon, "free_hand")
 		
-		# MOVE HAND TO MAGAZINE
-		holder.hand_motion(off_hand, h_mag_pos)
 		
 		 # ROTATE MODEL SIDE TO ACCESS MAGAZINE SLOT
 		reload_tween.remove_all()
@@ -138,9 +136,6 @@ func reload():
 		reload_tween.start()
 		yield(reload_tween,"tween_all_completed")
 		
-		# MOVE HAND TO SLIDER AND WAIT FOR IT
-		holder.hand_motion(off_hand, h_slider_pos)
-		yield(off_hand.tween, "tween_all_completed")
 		
 		 # PULL SLIDER
 		reload_tween.remove_all()
@@ -160,20 +155,7 @@ func reload():
 		clip_size = max_clip_size
 		reloading = false
 
-		# MOVE HAND TO DEFAULT POSITION
-		if not off_hand.weapon: 
-			holder.hand_motion(off_hand, h_secondary_grip_pos)
-
-		else:
-			if side == 1:
-				holder.hand_motion(off_hand, holder.left_hand.weapon.h_grip_pos)
-
-			else:
-				holder.hand_motion(off_hand, holder.right_hand.weapon.h_grip_pos)
-
-		yield(off_hand.tween, "tween_all_completed")
-#		holder.sk.clear_bones_global_pose_override()
-		
+	
 		emit_signal("free_hand")
 		
 		
@@ -290,13 +272,6 @@ func get_hands():
 		-1:
 			main_hand = holder.left_hand
 			off_hand = holder.right_hand
-			
-	holder.hand_motion(main_hand, h_grip_pos)
-
-	if not off_hand.weapon:
-		holder.hand_motion(off_hand, h_secondary_grip_pos)
-	
-#	holder.sk.clear_bones_global_pose_override()
 
 	
 func create_fire_animation():

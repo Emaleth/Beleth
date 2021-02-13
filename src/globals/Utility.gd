@@ -2,6 +2,7 @@
 Utility singleton with helper methods
 """
 extends Node
+class_name Utility
 
 	
 ### WAVE FUNCTIONS ###
