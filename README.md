@@ -1,6 +1,6 @@
 # Beleth
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Emaleth&repo=Beleth&show_owner=true&include_all_commits=true&theme=radical)](https://github.com/anuraghazra/github-readme-stats)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Emaleth&repo=Beleth&show_owner=true&include_all_commits=true&theme=radical)](https://github.com/emaleth/beleth)
 
 Experimental godot first person shooter.
 <!--more-->
