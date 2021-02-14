@@ -1,6 +1,11 @@
 # Beleth
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Emaleth&repo=Beleth&show_owner=true&include_all_commits=true&theme=radical&title_color=#e5b083&text_color=#fbf7f3&icon_color=#e5b083&bg_color=#426e5d)](https://github.com/emaleth/beleth)
+<figure>
+  <a href="https://github.com/emaleth/beleth">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Emaleth&repo=Beleth&show_owner=true&include_all_commits=true&title_color=e5b083&text_color=fbf7f3&icon_color=e5b083&bg_color=426e5d" />
+  </a>
+  <figcaption>Beautifull <a href="https://github.com/anuraghazra/github-readme-stats">Repo Pins</a> courtesy of <a href="https://twitter.com/anuraghazru">Anurag Hazra</a></figcaption>
+</figure>
 
 Experimental godot first person shooter.
 <!--more-->
