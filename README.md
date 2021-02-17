@@ -1,7 +1,7 @@
 # Beleth
 
 <div style="text-align:center">
-  <figure>
+  <figure style="text-align:center">
     <a style="text-align:center" href="https://github.com/emaleth/beleth">
       <img src="https://github-readme-stats.vercel.app/api/pin/?username=Emaleth&repo=Beleth&show_owner=true&include_all_commits=true&title_color=e5b083&text_color=fbf7f3&icon_color=e5b083&bg_color=20283d" />
     </a>
